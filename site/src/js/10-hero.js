@@ -1,25 +1,25 @@
 /* Hero: the factory floor. Two serpentine lines in one SVG.
    Line A (left → right): seed cell → background → style → judge → persona bank.
    Line B (right → left): the bank's personas meet seed logs → match → rewrite → regenerate → sanity gate → corpus.
-   Every persona and prompt on the belts is a real example from the paper (Figures 2, 6–11). */
+   Every persona and prompt on the belts is a real record from the released dataset (swiss-ai/PersonaFactory). */
 const PERSONAS = [
-  { id: 'fl', who: '23 · F · Florida, US', job: 'PhD cand., bilingual education', style: 'lowercase · u r k · 😭' },
-  { id: 'be', who: '23 · M · Bern, CH', job: 'Mechanical CAD designer', style: 'Bernese · & for und · ok?' },
-  { id: 'zh', who: '66 · F · Zurich, CH', job: 'Supermarket checkout operator', style: 'Grüezi! · !!! · 🙂' },
-  { id: 'gl', who: '29 · M · Geneva, CH', job: 'Microbiology lab technician', style: 'FR/EN · labo · pff' },
-  { id: 'fr', who: '24 · F · Geneva, CH', job: 'ML ops engineer, fintech', style: 'pq · je kiffe · ends ?' },
-  { id: 'ua', who: '22 · F · Zaporizhzhia, UA', job: 'Junior ML engineer, logistics', style: 'romanised UA+EN' },
-  { id: 'vi', who: '24 · M · Vietnam', job: 'Factory line worker', style: 'nhé · mk · bulleted asks' }
+  { id: 'fl', who: '27 · M · Florida, US', job: 'Freight train operations lead', style: 'fixin’ to · we · no final period' },
+  { id: 'be', who: '23 · M · Bern, CH', job: 'VAT-compliance auditor', style: 'Bärndütsch · btw · Salü' },
+  { id: 'zh', who: '35 · M · Zurich, CH', job: 'Pediatric speech therapist', style: '?? · oder? · okay?' },
+  { id: 'ge', who: '52 · F · Geneva, CH', job: 'Regional courier supervisor', style: 'Salut · stp · n’avons' },
+  { id: 'sk', who: '36 · M · Bratislava, SK', job: 'Finance transformation consultant', style: 'No, … · Dúfam na pomoc. Čau.' },
+  { id: 'ua', who: '35 · M · Zaporizhzhia, UA', job: 'Business insurance specialist', style: 'no final period · ладно' },
+  { id: 'vi', who: '35 · F · Ho Chi Minh City, VN', job: 'Senior payroll analyst', style: 'nè · Cảm ơn nhé :)' }
 ];
-// seed prompt → augmented prompt, from the paper's examples (source dataset where the paper names it)
+// seed prompt → augmented first turn, from the released chats subset (seed dataset in src)
 const CONVS = [
-  { ini: 'MR', who: 'Florida persona', tier: 'location', src: 'seed log', seed: 'Can you give me some recommendations for other parks in San Antonio that are worth visiting?', aug: 'yo just curious if u can hook me up with some other parks in san antonio…' },
-  { ini: 'AD', who: 'Bern persona', tier: 'location', src: 'Nemotron', seed: 'Hallo, ich bin Andreas Dim. Kannst du Deutsch sprechen?', aug: 'hallo, bin andreas dim. chasch du deutsch spreche, ok?' },
-  { ini: 'CM', who: 'Geneva persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'How can loved ones support someone experiencing empty nest syndrome…', aug: 'comment les proches peuvent aider qqun en crise du nid vide…' },
-  { ini: 'RG', who: 'Zurich persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Can you provide me with some more information on how the earthquake affected…', aug: 'Grüezi! I have been thinking about the earthquake in Nepal…' },
-  { ini: 'TN', who: 'Vietnam persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Write a free verse poem that delves into the intricacies of the cosmos…', aug: 'viết 1 bài thơ tự do mà khám phá những bí ẩn của vũ trụ nhé' },
-  { ini: 'LB', who: 'Geneva persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'Hey, I was just rewatching that old vet show from the early 2000s…', aug: 'hey was just rewatching that old vet show again - ya know…' },
-  { ini: 'OK', who: 'Zaporizhzhia persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'Hi, I’m planning a low-cost trip to Albania from August 7 to 18, 2023…', aug: 'planyu povtorne: low-cost trip do albanii z 7 po 18 avqusta…' }
+  { ini: 'FL', who: 'Florida persona', tier: 'embedding', src: 'UltraChat', seed: 'What are some essential items that someone should pack for a camping trip…', aug: 'We fixin\' to head out and need to know what the essential items are for a camping trip…' },
+  { ini: 'BE', who: 'Bern persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Can you describe the architectural significance of the Sydney Opera House…', aug: 'Chasch du d\'architektonischi Bedütig vom Sydney Opera House beschriibe…' },
+  { ini: 'ZH', who: 'Zurich persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Can you explain the mechanisms behind various sleep disorders…', aug: 'Chasch mer erkläre, wie s\' mit dene verschiedene Schlafstörige funktioniert… ?? okay?' },
+  { ini: 'GE', who: 'Geneva persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'I keep running into a query timeout error in our database layer…', aug: 'Salut, j\'ai systématiquement une erreur de timeout de requête…' },
+  { ini: 'BA', who: 'Bratislava persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'I’m launching a television network dedicated entirely to animated shows…', aug: 'Ahoj, spúšťam TV stanicu s focusom na animované seriály…' },
+  { ini: 'ZP', who: 'Zaporizhzhia persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'I have two tables in a SQL database: `People` with columns…', aug: 'маю дві таблиці в sql: `People` з колонками…' },
+  { ini: 'VN', who: 'Ho Chi Minh City persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'How can data analytics be used to improve public health outcomes…', aug: 'Làm thế nào nè để sử dụng phân tích dữ liệu…' }
 ];
 
 (function factory(){

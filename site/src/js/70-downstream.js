@@ -23,12 +23,12 @@ const DSX = {
   contractions: [1.75, 0.92, 0.47, 0.95, 0.71, 0.52, 0.96] // Table 28 "Contractions / 100 words", row order of D.finetune.rows
 };
 // The Fig. 2 persona, used to show what the matcher keeps. Two signal fields are not printed in Fig. 2.
-const DS_CARD = {
+const DS_CARD = {   // persona_bank 4cb592cc and its released conversation chats f42fc40b
   ini: 'MR', name: '23 · F · Florida, USA', blurb: 'Full profile in, reduced card out.',
-  seen: [['AI stance', 'Skeptical'], ['Digital fluency', 'High'], ['Sentence length', null], ['Question framing', null], ['Code-switching', 'High']],
-  keys: [['Capitalization', 'first-word-only, no final period'], ['Abbreviations', 'u r k · sometimes xq = porque'], ['Emoji', 'frequent, decorative: 💀 😭 🎉'], ['Sign-off', 'ok or no?']],
-  withheld: [['Occupation', 'Graduate student, education sector - TA and PhD candidate in bilingual education policy (ES/EN), state-funded public university'], ['Gender', 'F'], ['Age', '23'], ['Location', 'North America → USA → Florida'], ['Languages', 'English native · Floridian Spanish English dialect'], ['Free-text style', 'all-lowercase messages with elliptical punctuation, drops articles, lards sentences with Spanish loanwords or fragmented Spanish verbs…']],
-  first: 'yo just curious if u can hook me up with some other parks in san antonio that’re actually worth the trip no? like the ones that don’t feel like they got approved by some florida education bureaucrat just to check a box 😭'
+  seen: [['AI stance', 'Skeptical'], ['Digital fluency', 'High'], ['Sentence length', 'Medium'], ['Question framing', 'Direct'], ['Code-switching', 'High']],
+  keys: [['Capitalization', 'first-word-only, no final period'], ['Abbreviations', '‘u’ for ‘you’, ‘r’ for ‘are’, ‘k’ for ‘okay’, sometimes ‘xq’ = ‘porque’'], ['Emoji', 'none'], ['Sign-off', '‘ok’ or ‘no?’ (with no logoff)']],
+  withheld: [['Occupation', 'Graduate student, education sector: teaching assistant and PhD candidate in bilingual education policy (Spanish/English), state-funded public university'], ['Gender', 'F'], ['Age', '23'], ['Location', 'North America → USA → Florida'], ['Languages', 'English native · Floridian Spanish English dialect'], ['Free-text style', 'Uses all-lowercase messages with elliptical punctuation, drops articles, and lards sentences with Spanish loanwords or fragmented Spanish verbs…']],
+  first: 'yo can u sketch me a budget-friendly weekend itinerary for a nearby national park that includes a short hike and a simple campsite meal plus a few spanish phrases i can practice while i\'m out there please format ur answer in exactly five paragraphs, separating each with the markdown divider *** and make sure u don\'t use any commas at all no?'
 };
 
 (function downstream(){
@@ -143,10 +143,10 @@ const DS_CARD = {
   // 1 · reduced user card
   ST[0] = {
     how: 'Struck-out fields never reach the matcher. Values are from the Florida persona; two signal fields are not given for her.',
-    src: 'Source: paper App. G.2 · Fig. 2 · App. B.1',
+    src: 'Source: paper App. G.2 · released persona 4cb592cc · App. B.1',
     left(){
       const c = DS_CARD;
-      put(left, ph('Work piece · the Florida persona'));
+      put(left, ph('Work piece · the paper’s Florida persona'));
       const who = put(E('div', 'who'), E('div', 'avatar', c.ini), put(E('div'), E('b', null, c.name), E('span', null, c.blurb)));
       left.appendChild(who);
       const field = ([k, v], cls) => { const d = put(E('div', 'rf ' + (cls || '')), E('span', 'rk', k), E('span', 'rv' + (v == null ? ' nv' : ''), v == null ? 'not given' : v)); return d; };

@@ -1443,12 +1443,12 @@ svg.viz text { pointer-events: none; }
 <section class="sec" id="bank">
   <div class="sec-head">
     <h2>Persona assembly</h2>
-    <p class="lede">A seed cell fixes where a persona lives and what they do. Two generated layers follow: a <b>background</b> (who they are) and a <b>style</b> (how they type). An independent judge then decides whether the profile enters the bank. Pick a persona from the paper.</p>
+    <p class="lede">A seed cell fixes where a persona lives and what they do. Two generated layers follow: a <b>background</b> (who they are) and a <b>style</b> (how they type). An independent judge then decides whether the profile enters the bank. Pick a persona from the released bank.</p>
   </div>
 
   <div class="demo line" id="bkLine">
     <div class="demo-top">
-      <div class="chips" id="bkChips" role="group" aria-label="Persona from the paper"></div>
+      <div class="chips" id="bkChips" role="group" aria-label="Persona from the released bank"></div>
       <div class="demo-btns">
         <button class="ctl primary" data-play type="button">Run the line</button>
         <button class="ctl" data-all type="button">Show all</button>
@@ -1486,7 +1486,7 @@ svg.viz text { pointer-events: none; }
 <section class="sec alt" id="augment">
   <div class="sec-head">
     <h2>From persona to conversation</h2>
-    <p class="lede">We start from a real chat log. A matched persona re-voices each user turn, and the request and its constraints stay the same. The assistant turns are then regenerated, and a judge screens the whole conversation. Pick an example from the paper and run it through the line.</p>
+    <p class="lede">We start from a real chat log. A matched persona re-voices each user turn, and the request and its constraints stay the same. The assistant turns are then regenerated, and a judge screens the whole conversation. Pick a conversation from the released dataset and run it through the line.</p>
   </div>
 
   <div class="demo" id="demo">
@@ -1703,7 +1703,7 @@ svg.viz text { pointer-events: none; }
   year    = {2026}
 }</pre>
   </div>
-  <div class="foot-line"><span>Every number on this page comes from the paper.</span><a href="#top">Back to top</a></div>
+  <div class="foot-line"><span>Every number on this page comes from the paper. Every persona and conversation is a record from the released dataset.</span><a href="#top">Back to top</a></div>
 </section>
 </main>
 </div>
@@ -2218,25 +2218,25 @@ function legend(items){
 /* Hero: the factory floor. Two serpentine lines in one SVG.
    Line A (left → right): seed cell → background → style → judge → persona bank.
    Line B (right → left): the bank's personas meet seed logs → match → rewrite → regenerate → sanity gate → corpus.
-   Every persona and prompt on the belts is a real example from the paper (Figures 2, 6–11). */
+   Every persona and prompt on the belts is a real record from the released dataset (swiss-ai/PersonaFactory). */
 const PERSONAS = [
-  { id: 'fl', who: '23 · F · Florida, US', job: 'PhD cand., bilingual education', style: 'lowercase · u r k · 😭' },
-  { id: 'be', who: '23 · M · Bern, CH', job: 'Mechanical CAD designer', style: 'Bernese · & for und · ok?' },
-  { id: 'zh', who: '66 · F · Zurich, CH', job: 'Supermarket checkout operator', style: 'Grüezi! · !!! · 🙂' },
-  { id: 'gl', who: '29 · M · Geneva, CH', job: 'Microbiology lab technician', style: 'FR/EN · labo · pff' },
-  { id: 'fr', who: '24 · F · Geneva, CH', job: 'ML ops engineer, fintech', style: 'pq · je kiffe · ends ?' },
-  { id: 'ua', who: '22 · F · Zaporizhzhia, UA', job: 'Junior ML engineer, logistics', style: 'romanised UA+EN' },
-  { id: 'vi', who: '24 · M · Vietnam', job: 'Factory line worker', style: 'nhé · mk · bulleted asks' }
+  { id: 'fl', who: '27 · M · Florida, US', job: 'Freight train operations lead', style: 'fixin’ to · we · no final period' },
+  { id: 'be', who: '23 · M · Bern, CH', job: 'VAT-compliance auditor', style: 'Bärndütsch · btw · Salü' },
+  { id: 'zh', who: '35 · M · Zurich, CH', job: 'Pediatric speech therapist', style: '?? · oder? · okay?' },
+  { id: 'ge', who: '52 · F · Geneva, CH', job: 'Regional courier supervisor', style: 'Salut · stp · n’avons' },
+  { id: 'sk', who: '36 · M · Bratislava, SK', job: 'Finance transformation consultant', style: 'No, … · Dúfam na pomoc. Čau.' },
+  { id: 'ua', who: '35 · M · Zaporizhzhia, UA', job: 'Business insurance specialist', style: 'no final period · ладно' },
+  { id: 'vi', who: '35 · F · Ho Chi Minh City, VN', job: 'Senior payroll analyst', style: 'nè · Cảm ơn nhé :)' }
 ];
-// seed prompt → augmented prompt, from the paper's examples (source dataset where the paper names it)
+// seed prompt → augmented first turn, from the released chats subset (seed dataset in src)
 const CONVS = [
-  { ini: 'MR', who: 'Florida persona', tier: 'location', src: 'seed log', seed: 'Can you give me some recommendations for other parks in San Antonio that are worth visiting?', aug: 'yo just curious if u can hook me up with some other parks in san antonio…' },
-  { ini: 'AD', who: 'Bern persona', tier: 'location', src: 'Nemotron', seed: 'Hallo, ich bin Andreas Dim. Kannst du Deutsch sprechen?', aug: 'hallo, bin andreas dim. chasch du deutsch spreche, ok?' },
-  { ini: 'CM', who: 'Geneva persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'How can loved ones support someone experiencing empty nest syndrome…', aug: 'comment les proches peuvent aider qqun en crise du nid vide…' },
-  { ini: 'RG', who: 'Zurich persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Can you provide me with some more information on how the earthquake affected…', aug: 'Grüezi! I have been thinking about the earthquake in Nepal…' },
-  { ini: 'TN', who: 'Vietnam persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Write a free verse poem that delves into the intricacies of the cosmos…', aug: 'viết 1 bài thơ tự do mà khám phá những bí ẩn của vũ trụ nhé' },
-  { ini: 'LB', who: 'Geneva persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'Hey, I was just rewatching that old vet show from the early 2000s…', aug: 'hey was just rewatching that old vet show again - ya know…' },
-  { ini: 'OK', who: 'Zaporizhzhia persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'Hi, I’m planning a low-cost trip to Albania from August 7 to 18, 2023…', aug: 'planyu povtorne: low-cost trip do albanii z 7 po 18 avqusta…' }
+  { ini: 'FL', who: 'Florida persona', tier: 'embedding', src: 'UltraChat', seed: 'What are some essential items that someone should pack for a camping trip…', aug: 'We fixin\' to head out and need to know what the essential items are for a camping trip…' },
+  { ini: 'BE', who: 'Bern persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Can you describe the architectural significance of the Sydney Opera House…', aug: 'Chasch du d\'architektonischi Bedütig vom Sydney Opera House beschriibe…' },
+  { ini: 'ZH', who: 'Zurich persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Can you explain the mechanisms behind various sleep disorders…', aug: 'Chasch mer erkläre, wie s\' mit dene verschiedene Schlafstörige funktioniert… ?? okay?' },
+  { ini: 'GE', who: 'Geneva persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'I keep running into a query timeout error in our database layer…', aug: 'Salut, j\'ai systématiquement une erreur de timeout de requête…' },
+  { ini: 'BA', who: 'Bratislava persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'I’m launching a television network dedicated entirely to animated shows…', aug: 'Ahoj, spúšťam TV stanicu s focusom na animované seriály…' },
+  { ini: 'ZP', who: 'Zaporizhzhia persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'I have two tables in a SQL database: `People` with columns…', aug: 'маю дві таблиці в sql: `People` з колонками…' },
+  { ini: 'VN', who: 'Ho Chi Minh City persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'How can data analytics be used to improve public health outcomes…', aug: 'Làm thế nào nè để sử dụng phân tích dữ liệu…' }
 ];
 
 (function factory(){
@@ -2690,96 +2690,1093 @@ const BANK_X = {
   topCountries: [['Indonesia', 27004], ['China', 26109], ['India', 25947]]  // Figure 3 caption
 };
 
-// The seven personas the paper prints in full. Every value below is transcribed from the named figure.
-// Fields: [label, value, keys of the readout charts this field explains]. hl: chart key -> [bank category, what the paper says].
-// seed.occ: the grid occupation is printed only in Figure 2; the other figures give a job title and sector.
+// Seven personas from the released persona_bank subset (swiss-ai/PersonaFactory). Every value below is copied from the
+// record whose id prefix is in `fig`; long free-text values are cut with […], and only some quirks are listed.
+// Fields: [label, value, keys of the readout charts this field explains]. hl: chart key -> [bank category, what the record says].
 const BK = [
-  { id: 'fl', chip: 'Florida', fig: 'Figure 2', tag: 'FL', head: '23 · F · Florida, USA',
-    seed: { region: 'North America → USA → Florida', occ: 'Graduate student', sector: 'Education' },
-    bg: [ ['Age', '23', ['Age']], ['Gender', 'Female', ['Gender']],
-          ['Job title', 'TA and PhD candidate in bilingual education policy (ES/EN), state-funded public university'],
-          ['Education', 'Master’s, bilingual education/policy', ['Education']],
-          ['Language', 'English native · Floridian Spanish English dialect', ['Main language (top 10)']],
-          ['AI stance', 'Skeptical', ['AI stance']], ['Digital fluency', 'High (core segment)', ['Digital fluency']],
-          ['Summary', 'Teaching assistant and PhD candidate in bilingual education policy who argues Florida’s politicized curriculum online, and is skeptical of AI because model output reads “too polished”, or worse, “non-Floridian.”'] ],
-    st: [ ['Free-text style', 'all-lowercase messages with elliptical punctuation, drops articles, lards sentences with Spanish loanwords or fragmented Spanish verbs (like vamos we’re ready) and almost always ends with a question or backchannel'],
-          ['Code-switching', 'High', ['Code-switching']],
-          ['Reference pool', 'Education-policy memes on TikTok · Florida education-funding jokes · indie Latin music · Valorant · ESL side hustle'],
-          ['Capitalization', 'first-word-only, no final period', ['Capitalization']],
-          ['Abbreviations', 'u r k · sometimes xq = porque'],
-          ['Emoji', 'Frequent, decorative: 💀 😭 🎉', ['Emoji use']],
-          ['Sign-off', 'ok or no? · no logoff'],
-          ['Quirks', ['Spells academick when frustrated by Florida’s system', 'reflexive them', 'code-switches mid-sentence, finishes in English', 'occasional uncorrected typos']] ],
-    hl: { 'Macro-region': ['North America', 'North America'], 'Occupation (top 10 of 575)': ['Graduate student', 'graduate student'],
-          'Age': ['23–27', 'age 23'], 'Gender': ['Female', 'female'], 'Education': ["Master's degree", 'Master’s'],
-          'Digital fluency': ['High', 'high'], 'AI stance': ['Skeptical', 'skeptical'], 'Main language (top 10)': ['English', 'English native'],
-          'Code-switching': ['High', 'high'], 'Capitalization': ['first-word only', 'first-word-only'], 'Emoji use': ['frequent / decorative', 'frequent, decorative'] } },
-  { id: 'vi', chip: 'Vietnam', fig: 'Figure 6', tag: 'VN', head: '24 · M · Vietnam',
-    seed: { region: 'Vietnam', sector: 'Manufacturing' },
-    bg: [ ['Age', '24', ['Age']], ['Gender', 'Male', ['Gender']], ['Job title', 'Factory line worker'],
-          ['Language', 'Vietnamese (main / native)', ['Main language (top 10)']] ],
-    st: [ ['Free-text style', 'Lowercase tendency, minimal punctuation, casual particle endings (nhé, á, ah), self-referential pronouns (mk for mình), bulleted prompt structure.', ['Punctuation']],
-          ['Code-switching', 'English (technical terms / code-switching)'],
-          ['Example message', '“anh có thể giúp mk tìm cách fix máy khi nó bị treo ở step 4 của dòng lắp ráp không ạ?...”'] ],
-    hl: { 'Age': ['23–27', 'age 24'], 'Gender': ['Male', 'male'], 'Main language (top 10)': ['Vietnamese', 'Vietnamese'],
-          'Punctuation': ['minimal (no punct.)', '“minimal punctuation”'] } },
-  { id: 'be', chip: 'Bern', fig: 'Figure 7', tag: 'BE', head: '23 · M · Bern, Switzerland',
-    seed: { region: 'Bern, Switzerland', sector: 'Engineering' },
-    bg: [ ['Age', '23', ['Age']], ['Gender', 'Male', ['Gender']], ['Job title', 'mechanical CAD designer, machine-tool prototyping firm, freelance subcontracts'],
-          ['Education', 'Vocational / Trade training', ['Education']],
-          ['Language', 'German (main) · Swiss German (native) · dialect bernische Deutsch', ['Main language (top 10)']] ],
-    st: [ ['Free-text style', 'short sentences with minimal punctuation, German contractions leaking into English (e.g., ‘und → &’), adds ‘z.z.’ as placeholder expansions (‘z.Z.’ = ‘zur Zeit’/‘for now’) when unsure, ends with ‘ok’ or ‘no?’ for most questions', ['Punctuation', 'Sentence length']],
-          ['Code-switching', 'High', ['Code-switching']],
-          ['Quirks', ['replaces German filler words with ‘sä’ (Bern-specific, e.g., ‘sä, ich meen...’)', 'uses ‘düber’ for ‘digital’ or ‘über’-infused tech terms (e.g., ‘düber-lag’ instead of ‘digital lag’)']],
-          ['Example message', '“hey. just checked the stl export from last model - some faces in the reverse-mitered joint are flipped. how can i fix that in freeCAD before rendering? z.Z. i’ll try the ‘normal’ toggle, but if that […]”'] ],
-    hl: { 'Age': ['23–27', 'age 23'], 'Gender': ['Male', 'male'], 'Education': ['Vocational / trade', 'vocational / trade training'],
-          'Main language (top 10)': ['German', 'German'], 'Code-switching': ['High', 'high'],
-          'Punctuation': ['minimal (no punct.)', '“minimal punctuation”'], 'Sentence length': ['Short / fragmented', '“short sentences”'] } },
-  { id: 'zh', chip: 'Zurich', fig: 'Figure 8', tag: 'ZH', head: '66 · F · Zurich, Switzerland',
-    seed: { region: 'Zurich, Switzerland', sector: 'Sales & retail' },
-    bg: [ ['Age', '66', ['Age']], ['Gender', 'Female', ['Gender']], ['Job title', 'Part-time checkout operator at a large supermarket chain'],
-          ['Education', 'Vocational / Trade training', ['Education']],
-          ['Language', 'German (main) · German (native) · dialect Swiss German', ['Main language (top 10)']] ],
-    st: [ ['Free-text style', 'Writes in complete sentences with standard capitalization, often using multiple exclamation marks and friendly emojis to show warmth.', ['Capitalization', 'Punctuation']],
-          ['Code-switching', 'Low', ['Code-switching']],
-          ['Quirks', ['Uses ‘Grüezi’ as a habitual greeting even in text', 'Frequent use of the ‘smiley’ face to soften requests']],
-          ['Example message', '“Hallo! I am trying to organize my garden for the spring, could you please suggest which flowers grow best in a shaded balcony in Zurich? [blossom][tulip]”'] ],
-    hl: { 'Age': ['65–69', 'age 66'], 'Gender': ['Female', 'female'], 'Education': ['Vocational / trade', 'vocational / trade training'],
-          'Main language (top 10)': ['German', 'German'], 'Code-switching': ['Low', 'low'],
-          'Capitalization': ['standard', '“standard capitalization”'], 'Punctuation': ['excessive (!!/???)', '“multiple exclamation marks”'] } },
-  { id: 'gl', chip: 'Geneva lab', fig: 'Figure 9', tag: 'GE', head: '29 · M · Geneva, Switzerland',
-    seed: { region: 'Geneva, Switzerland', sector: 'Healthcare' },
-    bg: [ ['Age', '29', ['Age']], ['Gender', 'Male', ['Gender']], ['Job title', 'Senior clinical microbiology lab tech at Geneva University Hospital’s diagnostics division'],
-          ['Education', 'Vocational / Trade training', ['Education']],
-          ['Language', 'French (main) · French (Swiss) (native) · dialect Genevois', ['Main language (top 10)']] ],
-    st: [ ['Free-text style', 'Terse sentences with minimal punctuation, heavy code-switching between French and English, and a tendency to drop final periods unless writing formally. Uses lowercase for informal messages but capitalizes proper nouns (e.g., ‘RStudio’). Ends messages with […]', ['Punctuation']],
-          ['Code-switching', 'High', ['Code-switching']],
-          ['Quirks', ['Uses ‘labo’ (French labo for ‘lab’) instead of laboratoire in informal context, even when typing in […]', 'When frustrated, substitutes ‘pff’ for ‘putain’ (French profanity) in messages, e.g., ‘pff this serum keeps […]']],
-          ['Example message', '“hey chatbot, can u generate a quick workflow for validating rapid COVID Ag tests against PCR in RStudio? like, step-by-step but w/ real data error rates. pff, i’ve got 3 failed batches this week and […]”'] ],
-    hl: { 'Age': ['28–32', 'age 29'], 'Gender': ['Male', 'male'], 'Education': ['Vocational / trade', 'vocational / trade training'],
-          'Main language (top 10)': ['French', 'French'], 'Code-switching': ['High', 'high'], 'Punctuation': ['minimal (no punct.)', '“minimal punctuation”'] } },
-  { id: 'fr', chip: 'Geneva ML ops', fig: 'Figure 10', tag: 'GE', head: '24 · F · Geneva, Switzerland',
-    seed: { region: 'Geneva, Switzerland', sector: 'Software & IT' },
-    bg: [ ['Age', '24', ['Age']], ['Gender', 'Female', ['Gender']], ['Job title', 'ML ops engineer at a fintech scale-up, fraud detection models'],
-          ['Education', 'Master’s degree', ['Education']],
-          ['Language', 'French (main) · Swiss French (native) · dialect Genève', ['Main language (top 10)']] ],
-    st: [ ['Free-text style', 'Mix of fragmented technical terms, French abbreviations, and a slash of emphatic emojis—no full sentences, all lowercase, ending with ‘?’ even if not a question or ‘!’ if annoyed—sometimes drops articles and prepositions in French when typing fast', ['Capitalization']],
-          ['Code-switching', 'Medium', ['Code-switching']],
-          ['Quirks', ['Uses ‘je te kiffe’ (roughly ‘I’m stoked’) instead of ‘j’adore’ in informal tech chats', 'Replace ‘pourquoi’ with ‘pq’ or ‘pqoui’ only when confused or frustrated']],
-          ['Example message', '“okay mais le dataset pour le modèle fraud déconne encore, tu peux m’aider à checker les false negatives ? genre l’anomaly detection marche pas sur les transactions <5k CHF. et pis faut que je fasse […]”'] ],
-    hl: { 'Age': ['23–27', 'age 24'], 'Gender': ['Female', 'female'], 'Education': ["Master's degree", 'Master’s'],
-          'Main language (top 10)': ['French', 'French'], 'Code-switching': ['Medium', 'medium'], 'Capitalization': ['all lowercase', '“all lowercase”'] } },
-  { id: 'ua', chip: 'Zaporizhzhia', fig: 'Figure 11', tag: 'ZP', head: '22 · F · Zaporizhzhia, Ukraine',
-    seed: { region: 'Zaporizhzhia, Ukraine', sector: 'Software & IT' },
-    bg: [ ['Age', '22', ['Age']], ['Gender', 'Female', ['Gender']], ['Job title', 'Junior ML engineer at logistics startup building routing AI'],
-          ['Education', 'Bachelor’s degree', ['Education']],
-          ['Language', 'Ukrainian (main) · Ukrainian (native) · dialect Eastern Ukrainian', ['Main language (top 10)']] ],
-    st: [ ['Free-text style', 'Uses lowercase mostly, rarely adds punctuation, mixes English tech terms and Ukrainian slang in one sentence like ‘demo strukhnulo tyznya’ (demo broke earlier week)'],
-          ['Code-switching', 'Medium', ['Code-switching']],
-          ['Quirks', ['Self-deprecating humor about rookie mistakes: ‘ada dlya mene na inshomu movi slovo ‘debug’ dosylo’ (for me in […]', 'Uses UI/UX jargon like ‘latency’ and ‘user flow’ as everyday adjectives']],
-          ['Example message', '“prymyrsya: i need a clean dataset for the new routing model. is there a way to filter out the duplicate coordinates without writing a custom script, or should i just preprocess it in pandas before […]”'] ],
-    hl: { 'Age': ['18–22', 'age 22'], 'Gender': ['Female', 'female'], 'Education': ["Bachelor's degree", 'Bachelor’s'],
-          'Main language (top 10)': ['Ukrainian', 'Ukrainian'], 'Code-switching': ['Medium', 'medium'] } }
+ {
+  "id": "fl",
+  "chip": "Florida",
+  "fig": "persona_bank 38c6bf98",
+  "tag": "FL",
+  "head": "27 · M · Florida, USA",
+  "seed": {
+   "region": "North America → USA → Florida",
+   "occ": "Train conductor",
+   "sector": "Logistics & transport"
+  },
+  "gen": "Ministral-3-14B",
+  "val": "coherent, location and user plausible, stereotype severity 0 of 3, realism 3 of 3",
+  "bg": [
+   [
+    "Age",
+    "27",
+    [
+     "Age"
+    ]
+   ],
+   [
+    "Gender",
+    "Male",
+    [
+     "Gender"
+    ]
+   ],
+   [
+    "Job title",
+    "Freight train operations lead for a regional logistics carrier (handles mixed cargo)"
+   ],
+   [
+    "Education",
+    "Vocational / Trade training, heavy machinery and transportation safety",
+    [
+     "Education"
+    ]
+   ],
+   [
+    "Language",
+    "English (main / native) · dialect Central Florida",
+    [
+     "Main language (top 10)"
+    ]
+   ],
+   [
+    "AI stance",
+    "Pragmatic",
+    [
+     "AI stance"
+    ]
+   ],
+   [
+    "Digital fluency",
+    "Low (underrepresented segment)",
+    [
+     "Digital fluency"
+    ]
+   ],
+   [
+    "Hobbies",
+    "collecting vintage toolboxes from 1970s–1990s trucks · DIY farm repairs with salvaged parts · restoring antique windmills for rural land"
+   ],
+   [
+    "Summary",
+    "This mid-level freight conductor splits time between a rural Panhandle village and Tallahassee […] His view of AI tools is ‘might as well try ‘em’—useful for field-day calendars or grocery lists, but he’d never trust one to handle a critical freight shipment."
+   ]
+  ],
+  "st": [
+   [
+    "Free-text style",
+    "Uses first-word capitalization, no final periods, treats digital devices like radios (‘can you *clear* that up for me’), and spells phonetically if typing on a phone",
+    [
+     "Capitalization",
+     "Typo tendency"
+    ]
+   ],
+   [
+    "Sentence length",
+    "Long/Elaborate",
+    [
+     "Sentence length"
+    ]
+   ],
+   [
+    "Code-switching",
+    "Low: occasional Southernisms (e.g., ‘fixin’ to’, ‘y’all’)",
+    [
+     "Code-switching"
+    ]
+   ],
+   [
+    "Emoji",
+    "rare/functional",
+    [
+     "Emoji use"
+    ]
+   ],
+   [
+    "Quirks",
+    [
+     "Replaces ‘I’ with ‘we’ when describing family logistics (e.g., ‘*we* need to fix the rain gutter’)",
+     "Uses ‘fixin’ to’ for immediate future (e.g., ‘*we fixin’ to* load the train’)",
+     "Spells ‘scheduling’ as ‘shedule’ when distracted by phone typing",
+     "Mixes railroad slang into sentences (e.g., ‘The kids are *on the double* for the bus’) without realizing it"
+    ]
+   ],
+   [
+    "Example message",
+    "“Okay the kids say they forgot their lunchboxes again *and* the school bus route changed for field day so they’ll be late to baseball practice but I got a train leaving in ten and the dispatcher wont bend the schedule no matter what […]”"
+   ]
+  ],
+  "hl": {
+   "Generator model": [
+    "Ministral-3-14B",
+    "Ministral-3-14B"
+   ],
+   "Macro-region": [
+    "North America",
+    "North America"
+   ],
+   "Age": [
+    "23–27",
+    "age 27"
+   ],
+   "Gender": [
+    "Male",
+    "male"
+   ],
+   "Education": [
+    "Vocational / trade",
+    "vocational / trade training"
+   ],
+   "Digital fluency": [
+    "Low",
+    "low"
+   ],
+   "AI stance": [
+    "Pragmatic",
+    "pragmatic"
+   ],
+   "Main language (top 10)": [
+    "English",
+    "English"
+   ],
+   "Capitalization": [
+    "first-word only",
+    "first-word-only"
+   ],
+   "Typo tendency": [
+    "phonetic spelling",
+    "phonetic spelling"
+   ],
+   "Sentence length": [
+    "Long / elaborate",
+    "long / elaborate"
+   ],
+   "Code-switching": [
+    "Low",
+    "low"
+   ],
+   "Emoji use": [
+    "rare / functional",
+    "rare / functional"
+   ]
+  }
+ },
+ {
+  "id": "vi",
+  "chip": "Ho Chi Minh City",
+  "fig": "persona_bank 38a9a06e",
+  "tag": "VN",
+  "head": "35 · F · Ho Chi Minh City, Vietnam",
+  "seed": {
+   "region": "Southeast Asia → Vietnam → Ho Chi Minh City",
+   "occ": "Payroll clerk",
+   "sector": "Business & finance"
+  },
+  "gen": "Ministral-3-14B",
+  "val": "coherent, location and user plausible, stereotype severity 0 of 3, realism 3 of 3",
+  "bg": [
+   [
+    "Age",
+    "35",
+    [
+     "Age"
+    ]
+   ],
+   [
+    "Gender",
+    "Female",
+    [
+     "Gender"
+    ]
+   ],
+   [
+    "Job title",
+    "Senior payroll analyst at a mid-sized manufacturing firm"
+   ],
+   [
+    "Education",
+    "Vocational / Trade training, accounting and payroll administration",
+    [
+     "Education"
+    ]
+   ],
+   [
+    "Language",
+    "Vietnamese (main) · Vietnamese (Southern) (native) · dialect Sài Gòn",
+    [
+     "Main language (top 10)"
+    ]
+   ],
+   [
+    "AI stance",
+    "Skeptical",
+    [
+     "AI stance"
+    ]
+   ],
+   [
+    "Digital fluency",
+    "Medium (core segment)",
+    [
+     "Digital fluency"
+    ]
+   ],
+   [
+    "Summary",
+    "A meticulous but weary payroll clerk who relocated to Ho Chi Minh City from Nha Trang three years ago for a higher salary […] Skeptical of AI tools after a failed experiment at her last job, she still turns to chatbots for draft explanations of tax code updates […]"
+   ]
+  ],
+  "st": [
+   [
+    "Free-text style",
+    "Types in medium-length sentences with standard capitalization and occasional phonetic typos; uses emoticons like :) and :D but rarely emojis; signs off with ‘Cảm ơn nhé’ or a short phrase like ‘Nghĩ xong sẽ reply’.",
+    [
+     "Capitalization",
+     "Emoji use",
+     "Typo tendency"
+    ]
+   ],
+   [
+    "Question framing",
+    "Indirect",
+    [
+     "Question framing"
+    ]
+   ],
+   [
+    "Code-switching",
+    "Medium",
+    [
+     "Code-switching"
+    ]
+   ],
+   [
+    "Sign-off",
+    "‘Cảm ơn nhé’ or ‘Nghĩ xong sẽ reply’"
+   ],
+   [
+    "Quirks",
+    [
+     "Uses ‘nè’ or ‘nha’ as conversational fillers even in formal queries to AI (e.g., ‘làm thế nào nè để tính lương hơn...’)"
+    ]
+   ]
+  ],
+  "hl": {
+   "Generator model": [
+    "Ministral-3-14B",
+    "Ministral-3-14B"
+   ],
+   "Macro-region": [
+    "Southeast Asia",
+    "Southeast Asia"
+   ],
+   "Age": [
+    "33–37",
+    "age 35"
+   ],
+   "Gender": [
+    "Female",
+    "female"
+   ],
+   "Education": [
+    "Vocational / trade",
+    "vocational / trade training"
+   ],
+   "Digital fluency": [
+    "Medium",
+    "medium"
+   ],
+   "AI stance": [
+    "Skeptical",
+    "skeptical"
+   ],
+   "Main language (top 10)": [
+    "Vietnamese",
+    "Vietnamese"
+   ],
+   "Capitalization": [
+    "standard",
+    "standard"
+   ],
+   "Emoji use": [
+    "emoticons only",
+    "emoticons only"
+   ],
+   "Typo tendency": [
+    "phonetic spelling",
+    "phonetic spelling"
+   ],
+   "Code-switching": [
+    "Medium",
+    "medium"
+   ],
+   "Question framing": [
+    "Indirect",
+    "indirect"
+   ]
+  }
+ },
+ {
+  "id": "be",
+  "chip": "Bern",
+  "fig": "persona_bank 0c188865",
+  "tag": "BE",
+  "head": "23 · M · Bern, Switzerland",
+  "seed": {
+   "region": "Western Europe → Switzerland → Bern",
+   "occ": "Bookkeeping freelancer",
+   "sector": "Business & finance"
+  },
+  "gen": "Ministral-3-14B",
+  "val": "coherent, location and user plausible, stereotype severity 0 of 3, realism 3 of 3",
+  "bg": [
+   [
+    "Age",
+    "23",
+    [
+     "Age"
+    ]
+   ],
+   [
+    "Gender",
+    "Male",
+    [
+     "Gender"
+    ]
+   ],
+   [
+    "Job title",
+    "self-employed VAT-compliance auditor, SME clients"
+   ],
+   [
+    "Education",
+    "Vocational / Trade training, financial administration and accounting",
+    [
+     "Education"
+    ]
+   ],
+   [
+    "Language",
+    "German (main) · Swiss German (Bernese variant) (native)",
+    [
+     "Main language (top 10)"
+    ]
+   ],
+   [
+    "AI stance",
+    "Skeptical",
+    [
+     "AI stance"
+    ]
+   ],
+   [
+    "Digital fluency",
+    "Medium (core segment)",
+    [
+     "Digital fluency"
+    ]
+   ],
+   [
+    "Hobbies",
+    "analogue photography (Leica M10) · retro gaming (Switch, SNES emulation) · local hiking and crags above Bern · financial tech podcasts"
+   ]
+  ],
+  "st": [
+   [
+    "Free-text style",
+    "Types with moderate sentence length, spells shortcuts like ‘btw’ or ‘nvm’ but capitalizes proper nouns in Swiss German (e.g. ‘d Bärnerdütsch’), occasionally drops periods in quick replies, and signs off with a casual ‘Grüezi’ or ‘Salü’ if the conversation is local.",
+    [
+     "Punctuation"
+    ]
+   ],
+   [
+    "Code-switching",
+    "Medium: swaps into English for technical terms (e.g. ‘VAT refund’), Swiss German for informal chat",
+    [
+     "Code-switching"
+    ]
+   ],
+   [
+    "Abbreviations",
+    "btw, nvm, lol, thx, pls"
+   ],
+   [
+    "Emoji",
+    "rare/functional (e.g. 👍 for agreement, 😅 for ironic self-awareness)",
+    [
+     "Emoji use"
+    ]
+   ],
+   [
+    "Quirks",
+    [
+     "Swaps English terms into Swiss German flow (e.g. ‘Ich mach das *fine-tuning* der Zahlen’).",
+     "Occasionally inserts *Bärnerdütsch* interjections like ‘chunnt’ (means ‘really’) or ‘isch guet’ in place of German ‘klar’.",
+     "Writes ‘u’ instead of ‘ü’ in Swiss German when typing fast (e.g. ‘Lueg’ for ‘Lüeg’)"
+    ]
+   ]
+  ],
+  "hl": {
+   "Generator model": [
+    "Ministral-3-14B",
+    "Ministral-3-14B"
+   ],
+   "Macro-region": [
+    "Western Europe",
+    "Western Europe"
+   ],
+   "Age": [
+    "23–27",
+    "age 23"
+   ],
+   "Gender": [
+    "Male",
+    "male"
+   ],
+   "Education": [
+    "Vocational / trade",
+    "vocational / trade training"
+   ],
+   "Digital fluency": [
+    "Medium",
+    "medium"
+   ],
+   "AI stance": [
+    "Skeptical",
+    "skeptical"
+   ],
+   "Main language (top 10)": [
+    "German",
+    "German"
+   ],
+   "Punctuation": [
+    "minimal (no punct.)",
+    "minimal (drops end punctuation)"
+   ],
+   "Code-switching": [
+    "Medium",
+    "medium"
+   ],
+   "Emoji use": [
+    "rare / functional",
+    "rare / functional"
+   ]
+  }
+ },
+ {
+  "id": "zh",
+  "chip": "Zurich",
+  "fig": "persona_bank eca507a4",
+  "tag": "ZH",
+  "head": "35 · M · Zurich, Switzerland",
+  "seed": {
+   "region": "Western Europe → Switzerland → Zurich",
+   "occ": "Speech-and-language therapist",
+   "sector": "Healthcare"
+  },
+  "gen": "Ministral-3-14B",
+  "val": "coherent, location and user plausible, stereotype severity 0 of 3, realism 3 of 3",
+  "bg": [
+   [
+    "Age",
+    "35",
+    [
+     "Age"
+    ]
+   ],
+   [
+    "Gender",
+    "Male",
+    [
+     "Gender"
+    ]
+   ],
+   [
+    "Job title",
+    "Childhood speech neurodiversity specialist at a cantonal pediatric clinic"
+   ],
+   [
+    "Education",
+    "Master’s degree, speech-language pathology",
+    [
+     "Education"
+    ]
+   ],
+   [
+    "Language",
+    "German (main) · Swiss German (native) · dialect Zurich",
+    [
+     "Main language (top 10)"
+    ]
+   ],
+   [
+    "AI stance",
+    "Naive",
+    [
+     "AI stance"
+    ]
+   ],
+   [
+    "Digital fluency",
+    "High (core segment)",
+    [
+     "Digital fluency"
+    ]
+   ],
+   [
+    "Summary",
+    "Markus is a 35-year-old Zurich-based speech therapist specializing in neurodivergent children, blending clinical precision with a dry, observational humor. […] His Swiss-German upbringing means he code-switches fluidly—correcting a child’s grammar one moment, then texting a friend in ‘Jo, gell?’ the next […]"
+   ]
+  ],
+  "st": [
+   [
+    "Free-text style",
+    "Types in complete sentences with Standard German grammar but peppered with Swiss-German words, uses ‘??’ to mimic Swiss-German filler pauses in speech, and ends messages with ‘*okay*?’—half-question, half-confirmation.",
+    [
+     "Punctuation"
+    ]
+   ],
+   [
+    "Code-switching",
+    "High",
+    [
+     "Code-switching"
+    ]
+   ],
+   [
+    "Emoji",
+    "none",
+    [
+     "Emoji use"
+    ]
+   ],
+   [
+    "Sign-off",
+    "‘Grüezi [name]!’ (to friends), ‘*okay*?’ (to unknowns/AIs), ‘Alles gut?’ (to clients)"
+   ],
+   [
+    "Quirks",
+    [
+     "Adds *‘oder’* to questions to soften them (*‘Kannst du das erklären *oder*?’*), a Swiss-German habit.",
+     "Uses ‘und dann’ as a narrative placeholder (‘Also, wir haben das Wort gemacht und dann...’), mimicking speech rhythm.",
+     "Replaces Standard German *‘das’* with Swiss-German *‘s’* before consonants, even when writing formally."
+    ]
+   ],
+   [
+    "Example message",
+    "“Hallo! Ich bräuch *bitte* ein paar Sätze auf Swissdeutsch, die ich mit *neurodiversen* Kindern üben kann—vor allem so *Alltagsfloskeln*, die auch die Eltern verstehen. […] *okay*?”"
+   ]
+  ],
+  "hl": {
+   "Generator model": [
+    "Ministral-3-14B",
+    "Ministral-3-14B"
+   ],
+   "Macro-region": [
+    "Western Europe",
+    "Western Europe"
+   ],
+   "Age": [
+    "33–37",
+    "age 35"
+   ],
+   "Gender": [
+    "Male",
+    "male"
+   ],
+   "Education": [
+    "Master's degree",
+    "Master’s"
+   ],
+   "Digital fluency": [
+    "High",
+    "high"
+   ],
+   "AI stance": [
+    "Naive",
+    "naive"
+   ],
+   "Main language (top 10)": [
+    "German",
+    "German"
+   ],
+   "Punctuation": [
+    "minimal (no punct.)",
+    "minimal, ‘??’ as speech rhythm"
+   ],
+   "Code-switching": [
+    "High",
+    "high"
+   ],
+   "Emoji use": [
+    "none",
+    "none"
+   ]
+  }
+ },
+ {
+  "id": "ge",
+  "chip": "Geneva",
+  "fig": "persona_bank 72e3225b",
+  "tag": "GE",
+  "head": "52 · F · Geneva, Switzerland",
+  "seed": {
+   "region": "Western Europe → Switzerland → Geneva",
+   "occ": "Postal carrier",
+   "sector": "Logistics & transport"
+  },
+  "gen": "Ministral-3-14B",
+  "val": "coherent, location and user plausible, stereotype severity 0 of 3, realism 3 of 3",
+  "bg": [
+   [
+    "Age",
+    "52",
+    [
+     "Age"
+    ]
+   ],
+   [
+    "Gender",
+    "Female",
+    [
+     "Gender"
+    ]
+   ],
+   [
+    "Job title",
+    "Regional courier supervisor, Swiss postal sector"
+   ],
+   [
+    "Education",
+    "Vocational / Trade training, postal logistics and dispatch coordination",
+    [
+     "Education"
+    ]
+   ],
+   [
+    "Language",
+    "French (main) · French, Swiss French (Genève) (native) · dialect Romand",
+    [
+     "Main language (top 10)"
+    ]
+   ],
+   [
+    "AI stance",
+    "Enthusiastic",
+    [
+     "AI stance"
+    ]
+   ],
+   [
+    "Digital fluency",
+    "High (core segment)",
+    [
+     "Digital fluency"
+    ]
+   ],
+   [
+    "Summary",
+    "Claire is a no-nonsense courier supervisor whose routes wind through Geneva’s dense streets, where she knows every shortcut—both literal and bureaucratic. […] now she’s testing AI dispatch tools to cut delays in her team’s morning chaos."
+   ]
+  ],
+  "st": [
+   [
+    "Free-text style",
+    "Uses minimal punctuation, mixes French and Swiss French contractions, capitalizes inconsistently after em-dashes or dashes for emphasis, abbreviates common words (e.g., ‘p.ex.’ for ‘par exemple’), and signs off with ‘salut’ or ‘à plus’ unless formal.",
+    [
+     "Capitalization",
+     "Punctuation"
+    ]
+   ],
+   [
+    "Code-switching",
+    "Medium",
+    [
+     "Code-switching"
+    ]
+   ],
+   [
+    "Abbreviations",
+    "‘p.ex.’, ‘stp’ (s’il vous plaît), ‘ck’ (c’est quoi), ‘à biento’"
+   ],
+   [
+    "Emoji",
+    "Rare/functional (✔️ for confirmations, ⏳ for ‘taking time’)",
+    [
+     "Emoji use"
+    ]
+   ],
+   [
+    "Quirks",
+    [
+     "Contracts ‘nous avons’ → ‘n’avons’ even in formal chat",
+     "Uses ‘tu/vous’ inconsistently—switches to ‘tu’ mid-message when excited",
+     "Double negatives for emphasis (‘J’en sais rien du tout’)",
+     "Linguistic fillers like ‘voilà’ or ‘donc’ inserted abruptly mid-sentence"
+    ]
+   ],
+   [
+    "Example message",
+    "“Salut, j’ai 3 colis urgents à livrer en Rue du Rhône avant 16h... Comment je peux optimiser les arrêts? J’utilise déjà Swissmail mais si t’as un truc en plus, ça m’intéresse. Stp pas les pubs.”"
+   ]
+  ],
+  "hl": {
+   "Generator model": [
+    "Ministral-3-14B",
+    "Ministral-3-14B"
+   ],
+   "Macro-region": [
+    "Western Europe",
+    "Western Europe"
+   ],
+   "Age": [
+    "48–57",
+    "age 52"
+   ],
+   "Gender": [
+    "Female",
+    "female"
+   ],
+   "Education": [
+    "Vocational / trade",
+    "vocational / trade training"
+   ],
+   "Digital fluency": [
+    "High",
+    "high"
+   ],
+   "AI stance": [
+    "Enthusiastic",
+    "enthusiastic"
+   ],
+   "Main language (top 10)": [
+    "French",
+    "French"
+   ],
+   "Capitalization": [
+    "inconsistent",
+    "inconsistent"
+   ],
+   "Punctuation": [
+    "minimal (no punct.)",
+    "minimal"
+   ],
+   "Code-switching": [
+    "Medium",
+    "medium"
+   ],
+   "Emoji use": [
+    "rare / functional",
+    "rare / functional"
+   ]
+  }
+ },
+ {
+  "id": "ua",
+  "chip": "Zaporizhzhia",
+  "fig": "persona_bank bc100812",
+  "tag": "ZP",
+  "head": "35 · M · Zaporizhzhia, Ukraine",
+  "seed": {
+   "region": "Eastern Europe → Ukraine → Zaporizhzhia",
+   "occ": "Insurance broker",
+   "sector": "Business & finance"
+  },
+  "gen": "Ministral-3-14B",
+  "val": "coherent, location and user plausible, stereotype severity 0 of 3, realism 3 of 3",
+  "bg": [
+   [
+    "Age",
+    "35",
+    [
+     "Age"
+    ]
+   ],
+   [
+    "Gender",
+    "Male",
+    [
+     "Gender"
+    ]
+   ],
+   [
+    "Job title",
+    "business insurance specialist at a regional insurance brokerage firm"
+   ],
+   [
+    "Education",
+    "High school diploma, business administration and accounting",
+    [
+     "Education"
+    ]
+   ],
+   [
+    "Language",
+    "Ukrainian (main) · Ukrainian (Zaporizhzhian dialect) (native) · dialect Zaporizhzhia surzhyk",
+    [
+     "Main language (top 10)"
+    ]
+   ],
+   [
+    "AI stance",
+    "Enthusiastic",
+    [
+     "AI stance"
+    ]
+   ],
+   [
+    "Digital fluency",
+    "Medium (core segment)",
+    [
+     "Digital fluency"
+    ]
+   ],
+   [
+    "Summary",
+    "He works as a business insurance specialist in a regional brokerage, handling policies for small-to-medium enterprises around Zaporizhzhia. […] Despite the war and economic struggles, he’s optimistic about tech tools that simplify workflows […]"
+   ]
+  ],
+  "st": [
+   [
+    "Free-text style",
+    "types in a mix of Ukrainian and Russian loanwords, short sentences or fragments, no periods at the end, sometimes drops commas",
+    [
+     "Punctuation",
+     "Message structure"
+    ]
+   ],
+   [
+    "Sentence length",
+    "Short/Fragmented",
+    [
+     "Sentence length"
+    ]
+   ],
+   [
+    "Capitalization",
+    "first-word-only, no final period",
+    [
+     "Capitalization"
+    ]
+   ],
+   [
+    "Code-switching",
+    "Medium: occasional Russian nouns/verbs when discussing work or finance",
+    [
+     "Code-switching"
+    ]
+   ],
+   [
+    "Sign-off",
+    "‘okey’ or ‘ладно’ (casual sign-off)"
+   ],
+   [
+    "Emoji",
+    "none",
+    [
+     "Emoji use"
+    ]
+   ],
+   [
+    "Example message",
+    "“ну шо то за форми для оформлення поліса з тих змін які були після весни тижнею тому? я в кес довго сидів а там кажуть що щось застаріло вже”"
+   ]
+  ],
+  "hl": {
+   "Generator model": [
+    "Ministral-3-14B",
+    "Ministral-3-14B"
+   ],
+   "Macro-region": [
+    "Eastern Europe",
+    "Eastern Europe"
+   ],
+   "Age": [
+    "33–37",
+    "age 35"
+   ],
+   "Gender": [
+    "Male",
+    "male"
+   ],
+   "Education": [
+    "High school diploma",
+    "high school diploma"
+   ],
+   "Digital fluency": [
+    "Medium",
+    "medium"
+   ],
+   "AI stance": [
+    "Enthusiastic",
+    "enthusiastic"
+   ],
+   "Main language (top 10)": [
+    "Ukrainian",
+    "Ukrainian"
+   ],
+   "Punctuation": [
+    "minimal (no punct.)",
+    "minimal (drops end punctuation)"
+   ],
+   "Message structure": [
+    "terse one-liners",
+    "terse one-liners"
+   ],
+   "Sentence length": [
+    "Short / fragmented",
+    "short / fragmented"
+   ],
+   "Capitalization": [
+    "first-word only",
+    "first-word-only"
+   ],
+   "Code-switching": [
+    "Medium",
+    "medium"
+   ],
+   "Emoji use": [
+    "none",
+    "none"
+   ]
+  }
+ },
+ {
+  "id": "sk",
+  "chip": "Bratislava",
+  "fig": "persona_bank 862ad91e",
+  "tag": "BA",
+  "head": "36 · M · Bratislava, Slovakia",
+  "seed": {
+   "region": "Eastern Europe → Slovakia → Bratislava",
+   "occ": "Management consultant",
+   "sector": "Business & finance"
+  },
+  "gen": "Ministral-3-14B",
+  "val": "coherent, location and user plausible, stereotype severity 0 of 3, realism 3 of 3",
+  "bg": [
+   [
+    "Age",
+    "36",
+    [
+     "Age"
+    ]
+   ],
+   [
+    "Gender",
+    "Male",
+    [
+     "Gender"
+    ]
+   ],
+   [
+    "Job title",
+    "Finance transformation consultant, corporate strategy unit at mid-sized EU consultancy"
+   ],
+   [
+    "Education",
+    "Master’s degree, business administration & economics",
+    [
+     "Education"
+    ]
+   ],
+   [
+    "Language",
+    "Slovak (main) · Slovak (Bratislava dialect) (native) · dialect Standard Slovak",
+    [
+     "Main language (top 10)"
+    ]
+   ],
+   [
+    "AI stance",
+    "Pragmatic",
+    [
+     "AI stance"
+    ]
+   ],
+   [
+    "Digital fluency",
+    "Medium (core segment)",
+    [
+     "Digital fluency"
+    ]
+   ],
+   [
+    "Hobbies",
+    "analyzing market trends · competitive online poker (MTT tournaments) · DIY renovations of a historic Bratislava apartment · hiking the Malé Karpaty hills"
+   ]
+  ],
+  "st": [
+   [
+    "Free-text style",
+    "Types in tightly constructed Slovak sentences […] mixes English acronyms (ROI musí byť vyšší) with em dashes for emphasis, and rarely uses emoji beyond ≃ or ❓ for ambiguity. Signs off with Čau or No vidím (informal), but adds dúfam na pomoc (‘hope for help’) if the task feels complex.",
+    [
+     "Emoji use"
+    ]
+   ],
+   [
+    "Code-switching",
+    "Medium: English for technical terms, metaphors and abbreviations (KPI, ROI)",
+    [
+     "Code-switching"
+    ]
+   ],
+   [
+    "Sign-off",
+    "Čau + name or No vidím, ak môžem. Dúfam na pomoc. (if polite)"
+   ],
+   [
+    "Quirks",
+    [
+     "Adds no (‘well’) as a filler at the start of sentences in email replies (No, ty môžeš zverejniť tie čísla, ale...)",
+     "Overuses German loanwords in Slovak (projekt, algoritmus, marketing) even when native terms exist, reflecting Bratislava’s business lexicon"
+    ]
+   ]
+  ],
+  "hl": {
+   "Generator model": [
+    "Ministral-3-14B",
+    "Ministral-3-14B"
+   ],
+   "Macro-region": [
+    "Eastern Europe",
+    "Eastern Europe"
+   ],
+   "Age": [
+    "33–37",
+    "age 36"
+   ],
+   "Gender": [
+    "Male",
+    "male"
+   ],
+   "Education": [
+    "Master's degree",
+    "Master’s"
+   ],
+   "Digital fluency": [
+    "Medium",
+    "medium"
+   ],
+   "AI stance": [
+    "Pragmatic",
+    "pragmatic"
+   ],
+   "Main language (top 10)": [
+    "Slovak",
+    "Slovak"
+   ],
+   "Code-switching": [
+    "Medium",
+    "medium"
+   ],
+   "Emoji use": [
+    "rare / functional",
+    "rare / functional"
+   ]
+  }
+ }
 ];
 window.PF_PERSONAS = BK;   // the hero's spec sheet reads these, so both always agree
 const BG_SCHEMA = ['Age', 'Gender', 'Job title', 'Education', 'Language', 'Hobbies', 'AI stance', 'Digital fluency', 'Character'];
@@ -2830,7 +3827,7 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
 
   BK.forEach((x, i) => {
     const b = el('button', 'chip', x.chip, chips); b.type = 'button'; b.setAttribute('aria-pressed', i ? 'false' : 'true');
-    b.title = 'Persona printed in the paper';
+    b.title = 'Persona from the released bank';
     b.addEventListener('click', () => { $$('.chip', chips).forEach(c => c.setAttribute('aria-pressed', c === b ? 'true' : 'false')); p = x; line.stop(); line.show(line.stage, false); });
   });
 
@@ -2855,18 +3852,18 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
   }
   function missing(L, schema, given){
     const m = schema.filter(k => !given.includes(k) && !(k === 'Character' && given.includes('Summary')));
-    if (m.length) el('p', 'missing', 'Not shown in the paper: ' + m.map(s => s.startsWith('AI') ? s : s.toLowerCase()).join(', ') + '.', L);
+    if (m.length) el('p', 'missing', 'Not shown here: ' + m.map(s => s.startsWith('AI') ? s : s.toLowerCase()).join(', ') + '.', L);
   }
   function renderCard(s, animate){
     card.replaceChildren();
     const linkKeys = s === 0 ? SEED_KEYS : s === 1 ? BG_KEYS : s === 2 ? ST_KEYS : [];
     const who = el('div', 'who', null, card);
     el('div', 'avatar', p.tag, who);
-    const tx = el('div', null, null, who); el('b', null, p.head, tx); el('span', null, 'Persona from the paper', tx);
+    const tx = el('div', null, null, who); el('b', null, p.head, tx); el('span', null, 'Persona from the released bank', tx);
     // verdict stamps sit on top of the card, where they are seen without scrolling the long card
     if (s >= 3){
       const st = el('div', 'stamps', null, card); anim(st, 0, animate && s === 3);
-      el('span', 'stamp ok', 'Judge: kept', st).title = 'Inferred: this persona is in the released bank, which keeps only judge-passed profiles';
+      el('span', 'stamp ok', 'Judge: kept', st).title = 'Judge verdict stored with the record: ' + p.val;
       if (s >= 4) anim(el('span', 'stamp bank', 'In the bank · 1 of ' + fmt0(D.bankGate.kept), st), 2, animate && s === 4);
     }
 
@@ -2874,9 +3871,8 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
     const occKeys = p.hl['Occupation (top 10 of 575)'] ? ['Occupation (top 10 of 575)'] : [];
     field(L, ['Region', p.seed.region, p.hl['Macro-region'] ? ['Macro-region'] : []], linkKeys, 1, animate && s === 0);
     field(L, ['Sector', p.seed.sector], linkKeys, 2, animate && s === 0);
-    const o = field(L, ['Occupation', p.seed.occ || 'not printed (job title below)', occKeys], linkKeys, 3, animate && s === 0);
-    if (!p.seed.occ) o.classList.add('dim');
-    const g = field(L, ['Generator', 'not named in the paper'], linkKeys, 4, animate && s === 0); g.classList.add('dim');
+    field(L, ['Occupation', p.seed.occ, occKeys], linkKeys, 3, animate && s === 0);
+    field(L, ['Generator', p.gen, ['Generator model']], linkKeys, 4, animate && s === 0);
     el('p', 'missing', 'Occupation is drawn independently of region. The seed also fixes age, gender, AI stance and digital fluency.', L);
     if (s < 1) return;
 
@@ -2911,8 +3907,7 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
     const pv = el('p', 'pv' + (inRows ? '' : ' none'), null, m);
     if (inRows){ el('i', null, null, pv); pv.append(p.chip + ': ' + h[1]); }
     else if (h) pv.textContent = p.chip + ': ' + h[1] + ', outside the top 10 shown';
-    else if (key === 'Generator model') pv.textContent = 'The paper does not name the generator of this profile.';
-    else pv.textContent = 'Not stated for this persona.';
+        else pv.textContent = 'Not stated for this persona.';
     if (inRows) m.classList.add('has');
     return anim(m, i, on);
   }
@@ -2986,7 +3981,7 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
         el('span', 'mv', v < 1 ? v.toFixed(2) + '%' : pct(v), r);
         const b = el('div', 'bar', null, r); el('b', null, null, b).style.width = v + '%';
       });
-      el('div', 'unit', '% of the ' + fmt0(G.kept) + ' released profiles, 0–100 scale. Only values the paper states for this persona.', sm);
+      el('div', 'unit', '% of the ' + fmt0(G.kept) + ' released profiles, 0–100 scale. Only values stored in this persona’s record.', sm);
       note(out, 'Largest countries: ' + BANK_X.topCountries.map(c => c[0] + ' ' + fmt0(c[1])).join(', ') + ' profiles.');
     }
     wire();
@@ -3006,7 +4001,7 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
   function render(s, animate){
     timers.forEach(clearTimeout); timers = [];
     renderCard(s, animate); renderOut(s, animate);
-    $('#bkSrc').textContent = 'Persona: paper ' + p.fig + ' · bank: Table 4, Figs. 3–5';
+    $('#bkSrc').textContent = 'Persona: ' + p.fig + ' · bank: Table 4, Figs. 3–5';
   }
   const line = lineCtl(lineEl, { count: 5, render, dur: s => s === 2 ? 3200 : 2400, onStop: () => { timers.forEach(clearTimeout); timers = []; } });
   renders.push(() => local.forEach(f => f()));
@@ -3070,62 +4065,486 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
 /* 30-augment.js */
 (function(){
 /* ======================= AUGMENTATION DEMO ======================= */
+// Conversations from the released chats subset (swiss-ai/PersonaFactory), one per persona above.
+// src: chats id prefix and seed dataset. Augmented turns and assistant replies are verbatim (long replies cut with …).
+// Seed turns after the first come from the public seed dataset (UltraChat); where they are not public, only the rewrite is shown.
 // Augmented text uses [[n|span]] markers that link to profile field n.
 const EX = [
-  { id: 'fl', chip: 'Florida · English', ini: 'MR', name: '23 · F · Florida, USA', blurb: 'TA and PhD candidate in bilingual education policy; skeptical of AI because model output reads “too polished”.', src: 'Figure 2',
-    bg: [ [1,'Region','North America → USA → Florida'], [2,'Occupation','Graduate student, education sector: TA and PhD candidate in bilingual education policy (ESL/ML), public university'], [0,'Education','Master’s, bilingual education / policy'], [0,'Language','English native · Floridian Spanish English · high code-switching'], [0,'AI stance','Skeptical · digital fluency high'], [0,'References','Education-policy memes on TikTok · indie Latin music · Valorant'] ],
-    st: [ [6,'Free-text style','all-lowercase messages with elliptical punctuation, drops articles, Spanish loanwords, almost always ends with a question or backchannel'], [4,'Abbreviations','u r k · sometimes xq = porque'], [5,'Emoji rule','Frequent, decorative: 💀 😭 🎉'], [3,'Sign-off','ok or no? · capitalization first-word-only, no final period'], [0,'Quirks','spells “academick” when frustrated · code-switches mid-sentence'] ],
-    match: { lang: 'English (Latin)', set: 'Language-matched', tier: 'Location: “San Antonio”, Texas → US personas', resp: 'Gemma-4-31B' },
-    turns: [ { seed: 'Can you give me some recommendations for other parks in San Antonio that are worth visiting?', aug: '[[6|yo just curious if]] [[4|u]] can hook me up with some other parks in san antonio that’re actually worth the trip [[3|no?]] like the ones that don’t feel like they got approved by some [[1|florida]] [[2|education bureaucrat]] just to check a box [[5|😭]]' } ],
-    bot: 'ok so skipping the ones that feel like a checkbox: Hardberger Park has the land bridge and actual woods, the Japanese Tea Garden is a quiet one, and Mission Reach along the river is great on a bike…', botIllustrative: true
+ {
+  "id": "fl",
+  "chip": "Florida · English",
+  "ini": "FL",
+  "name": "27 · M · Florida, USA",
+  "blurb": "Freight train operations lead for a regional logistics carrier; ‘might as well try ‘em’ about AI tools.",
+  "src": "chats 74e8c8fd · ultrachat",
+  "bg": [
+   [
+    0,
+    "Region",
+    "North America → USA → Florida"
+   ],
+   [
+    0,
+    "Occupation",
+    "Train conductor (Logistics & transport): freight train operations lead"
+   ],
+   [
+    1,
+    "Language",
+    "English native · Central Florida · occasional Southernisms (‘fixin’ to’, ‘y’all’)"
+   ],
+   [
+    0,
+    "AI stance",
+    "Pragmatic · digital fluency low"
+   ]
+  ],
+  "st": [
+   [
+    2,
+    "Free-text style",
+    "first-word capitalization, no final periods, treats digital devices like radios (‘can you clear that up for me’)"
+   ],
+   [
+    3,
+    "Quirks",
+    "replaces ‘I’ with ‘we’ when describing family logistics"
+   ],
+   [
+    4,
+    "Quirks",
+    "spells ‘scheduling’ as ‘shedule’ when distracted by phone typing"
+   ]
+  ],
+  "match": {
+   "lang": "English (Latin)",
+   "set": "Language-matched",
+   "tier": "Embedding",
+   "resp": "Gemma-4-31B"
   },
-  { id: 'be', chip: 'Bern · Swiss German', ini: 'AD', name: '23 · M · Bern, Switzerland', blurb: 'Mechanical CAD designer at a machine-tool prototyping firm, freelance subcontracts.', src: 'Figure 7 · Nemotron 234625',
-    bg: [ [1,'Region','Bern, Switzerland'], [0,'Occupation','Mechanical CAD designer (Engineering sector)'], [0,'Education','Vocational / trade training'], [2,'Language','German (main), Swiss German native, Bernese dialect · code-switching high'] ],
-    st: [ [3,'Free-text style','short sentences, minimal punctuation, German contractions leaking in (‘und → &’)'], [4,'Sign-off','ends with ‘ok’ or ‘no?’ for most questions'], [0,'Quirks','‘sä’ as filler; ‘düber’ for digital terms'], [0,'Example','“hey. just checked the stl export from last model - some faces in the reverse-mitered joint are flipped…”'] ],
-    match: { lang: 'German (Latin)', set: 'Language-matched', tier: 'Location pool', resp: 'Gemma-4-31B' },
-    turns: [ { seed: 'Hallo, ich bin Andreas Dim. Kannst du Deutsch sprechen?', aug: '[[3|hallo, bin andreas dim.]] [[2|chasch]] du deutsch spreche, [[4|ok?]]', gloss: '“hello, i’m andreas dim. can you speak german, ok?” (chasch is Bernese for kannst; the request is unchanged)' },
-             { seed: 'Das ist toll, Nemotron! Kannst du mir helfen, einen Brief auf Deutsch zu verfassen? Es geht um eine formelle Anfrage an eine Behörde – ich möchte, dass er höflich, aber klar klingt.', aug: '[[3|cool, Nemotron.]] hilfst du mir bsp. einen brief auf deutsch zu schreiben? formelle anfrage an eine behörde - soll höflich [[3|&]] klar klingen. [[4|ok?]]' } ],
-    bot: 'Hallo Andreas. Ja, ich kann Deutsch sprechen. Wie kann ich dir helfen, ok?'
+  "turns": [
+   {
+    "seed": "What are some essential items that someone should pack for a camping trip, and how can they prioritize their packing list based on their activity schedule?",
+    "aug": "[[3|We]] [[1|fixin' to]] head out and need to know what the essential items are for a camping trip and how [[3|we]] can prioritize that packing list based on the activity [[4|shedule]]"
+   },
+   {
+    "seed": "Do I really need a multi-purpose tool or knife? Can't I just use regular utensils or a kitchen knife?",
+    "aug": "Do [[3|we]] really need to go out and get a multi-purpose tool or some kind of knife or can [[3|we]] just use regular utensils or a kitchen knife instead"
+   },
+   {
+    "seed": "Who needs a map and compass when we have GPS on our phones now? Can't we just rely on that?",
+    "aug": "Who needs a map and a compass when [[1|we got]] GPS right on our phones now so [[2|can you clear up]] if we can just rely on that"
+   }
+  ],
+  "bot": "Start with the essentials for safety and shelter. You will need a tent, sleeping bags, pads, and a reliable light source like a headlamp or lantern. For food and water, pack a portable stove, fuel, a cooler with ice, and more water than you think you will need.\n\nTo prioritize the packing list based on your schedule, group your gear by when it will be used…"
+ },
+ {
+  "id": "be",
+  "chip": "Bern · Swiss German",
+  "ini": "BE",
+  "name": "23 · M · Bern, Switzerland",
+  "blurb": "Self-employed VAT-compliance auditor for small businesses; skeptical of ‘automatische Lösungen’.",
+  "src": "chats 0294ea21 · ultrachat",
+  "bg": [
+   [
+    0,
+    "Region",
+    "Western Europe → Switzerland → Bern"
+   ],
+   [
+    0,
+    "Occupation",
+    "Bookkeeping freelancer (Business & finance): self-employed VAT-compliance auditor"
+   ],
+   [
+    1,
+    "Language",
+    "German (main), Swiss German (Bernese variant) native · code-switching medium"
+   ],
+   [
+    0,
+    "AI stance",
+    "Skeptical · digital fluency medium"
+   ]
+  ],
+  "st": [
+   [
+    0,
+    "Free-text style",
+    "moderate sentence length, occasionally drops periods in quick replies"
+   ],
+   [
+    2,
+    "Abbreviations",
+    "btw, nvm, lol, thx, pls"
+   ],
+   [
+    3,
+    "Quirks",
+    "inserts Bärnerdütsch interjections like ‘isch guet’ in place of German ‘klar’"
+   ],
+   [
+    0,
+    "Sign-off",
+    "‘Grüezi’ or ‘Salü’ if the conversation is local"
+   ]
+  ],
+  "match": {
+   "lang": "English → German (Swiss)",
+   "set": "Cross-lingual (translate, then restyle)",
+   "tier": "Cross-lingual",
+   "resp": "Gemma-4-31B"
   },
-  { id: 'zh', chip: 'Zurich · verbatim guard', ini: 'RG', name: '66 · F · Zurich, Switzerland', blurb: 'Part-time checkout operator at a large supermarket chain.', src: 'Figure 8 · UltraChat 3168',
-    bg: [ [0,'Region','Zurich, Switzerland'], [0,'Occupation','Checkout operator (Sales & retail)'], [0,'Language','German (main), Swiss German dialect · code-switching low'] ],
-    st: [ [1,'Free-text style','complete sentences, standard capitalization, often multiple exclamation marks and friendly emojis'], [2,'Quirks','uses ‘Grüezi’ as a habitual greeting even in text'], [3,'Quirks','frequent smiley to soften requests'] ],
-    match: { lang: 'English (Latin)', set: 'Cross-lingual (register only)', tier: 'Cross-lingual', resp: 'Gemma-4-31B' },
-    turns: [ { seed: 'All 25 houses in Dadagaun village, Nepal, were destroyed by the quake. Jenny reports on rescue work in Nepal - April Aid agencies used helicopters to get help and supplies to people who live in […]', aug: 'All 25 houses in Dadagaun village, Nepal, were destroyed by the quake. Jenny reports on rescue work in Nepal - April Aid agencies used helicopters to get help and supplies to people who live in […]', guard: true },
-             { seed: 'Can you provide me with some more information on how the earthquake affected the people of Nepal and how the country is recovering from the disaster?', aug: '[[2|Grüezi!]] I have been thinking about the earthquake in Nepal, and I was wondering if you could provide me with some more information on how it affected the people there and how the country is recovering from the disaster[[1|???]] [[3|🙂🙏]]' } ],
-    bot: 'Grüezi! Based on the text provided, here is more information regarding the impact on the people and the recovery efforts in Nepal: Impact on the People. Loss of Life and Injury: nearly 9,000 people died and nearly 22,000 were injured…'
+  "turns": [
+   {
+    "seed": "Can you describe the architectural significance of the Sydney Opera House, and why it is considered a masterpiece of modern design?",
+    "aug": "[[1|Chasch du d'architektonischi Bedütig vom Sydney Opera House beschriibe]] und erkläre, worum es als Meischterwärk vom moderne Design gilt? [[3|Isch guet]], wenn du das churz machsch [[2|btw]]",
+    "gloss": "“Can you describe the architectural significance of the Sydney Opera House and explain why it counts as a masterpiece of modern design? Fine if you keep it short btw” (Bernese Swiss German; the English seed is translated, then restyled)"
+   },
+   {
+    "seed": "How has the Sydney Opera House influenced modern architecture and design?",
+    "aug": "Wie hät s Sydney Opera House d moderni Architektur und s Design beiflusst?"
+   },
+   {
+    "seed": "It's fascinating how the Sydney Opera House has had such a profound impact on modern architecture and design. Do you know of any other iconic buildings that have similarly influenced the industry?",
+    "aug": "S isch faszinierend, wie s Sydney Opera House so en tüüfe Ifluss uf d moderni Architektur und s Design gha hät. Kennsch du no anderi ikonischi Gebäude, wo d Branche ähnlich prägt händ?"
+   }
+  ],
+  "bot": "S Sydney Opera House isch vor allem wäge sinere innovative Form und dr technische Leischtig bekannt. D'Architektur bricht mit de traditionelle, rechteckige Gebäude und nutzt stattdessen die berühmte \"Schalen\" (Sails), wo d'Dynamik vom Wasser und d'Segel vo de Schiffe im Hafen widerspiegle…"
+ },
+ {
+  "id": "zh",
+  "chip": "Zurich · Swiss German",
+  "ini": "ZH",
+  "name": "35 · M · Zurich, Switzerland",
+  "blurb": "Speech therapist for neurodivergent children at a cantonal pediatric clinic.",
+  "src": "chats cd274cf3 · ultrachat",
+  "bg": [
+   [
+    0,
+    "Region",
+    "Western Europe → Switzerland → Zurich"
+   ],
+   [
+    0,
+    "Occupation",
+    "Speech-and-language therapist (Healthcare): childhood speech neurodiversity specialist"
+   ],
+   [
+    1,
+    "Language",
+    "German (main), Swiss German native, Zurich dialect · code-switching high"
+   ]
+  ],
+  "st": [
+   [
+    2,
+    "Punctuation",
+    "adds ‘??’ to mimic Swiss-German filler pauses in speech"
+   ],
+   [
+    3,
+    "Sign-off",
+    "‘okay?’ to unknowns and AIs, half-question, half-confirmation"
+   ],
+   [
+    4,
+    "Quirks",
+    "adds ‘oder’ to questions to soften them"
+   ],
+   [
+    0,
+    "Emoji",
+    "none"
+   ]
+  ],
+  "match": {
+   "lang": "English → German (Swiss)",
+   "set": "Cross-lingual (translate, then restyle)",
+   "tier": "Cross-lingual",
+   "resp": "Gemma-4-31B"
   },
-  { id: 'gl', chip: 'Geneva · code-switching', ini: 'LB', name: '29 · M · Geneva, Switzerland', blurb: 'Senior clinical microbiology lab tech at Geneva University Hospital’s diagnostics division.', src: 'Figure 9 · Nemotron 116857',
-    bg: [ [0,'Region','Geneva, Switzerland'], [0,'Occupation','Clinical microbiology lab tech (Healthcare)'], [1,'Language','French (main), Swiss French native, Genevois · code-switching high'] ],
-    st: [ [2,'Free-text style','terse, minimal punctuation, heavy French/English switching, lowercase for informal messages'], [3,'Quirks','‘labo’ instead of laboratoire, even in English'], [4,'Quirks','substitutes ‘pff’ when frustrated'], [5,'Sign-off','ends messages with a short French sign-off'] ],
-    match: { lang: 'English (Latin)', set: 'Cross-lingual', tier: 'Cross-lingual', resp: 'Ministral-3-14B' },
-    turns: [ { seed: 'Hey, I was just rewatching that old vet show from the early 2000s — the one with the quirky small-town clinic and the way the staff always ended up in the middle of bizarre animal emergencies. Do you remember that? I’m curious — what’s the most unexpected thing you’ve ever seen a pet do?', aug: '[[2|hey was just rewatching]] that old vet show again - ya know the one with dr. stone’s [[3|labo]] disasters and the goat that got into the ultrasound gel. [[1|ouais]] but like what’s the wildest pet behavior u’ve seen? not the “cat in the sink” stuff but the [[4|*pff*]] “why did i just find a parrot with a pipette in its beak” level of chaos. [[5|à+]]' } ],
-    bot: 'ouais, i’ve got some trop wild ones from labo gossip circles - though nothing beats the time a lab tech in Lyon (don’t ask how i know this) found a macaque in the PCR hood…', botWarn: 'The paper keeps this sanity-gate miss on purpose. The reply claims first-person experience, which the fabricated-experience class should have caught.'
+  "turns": [
+   {
+    "seed": "Can you explain the mechanisms behind various sleep disorders, and how they are treated?",
+    "aug": "[[1|Chasch mer erkläre]], wie s' mit dene verschiedene Schlafstörige funktioniert und wie mer die behandlet [[2|??]] [[3|okay?]]",
+    "gloss": "“Can you explain how the different sleep disorders work and how they are treated ?? okay?” (Zurich Swiss German)"
+   },
+   {
+    "seed": "Okay, but can you explain in simpler terms how these sleep disorders affect our daily lives? I'm not really understanding it.",
+    "aug": "[[3|Okay]], aber chasch mer das [[2|??]] in eifachere Wort erkläre, wie s' Schlafstörige euse Alltag beiflussed [[4|oder?]] Ich checke es nonig ganz... [[3|okay?]]"
+   },
+   {
+    "seed": "Can you recommend any natural remedies for these sleep disorders? I don't really like the idea of taking medications.",
+    "aug": "Chasch mir natürlichi Heilmittel für s'Schlafstörige empfehle[[2|??]] Ich find d'Idee, Medikament z'neh, nöd so toll, [[4|oder?]] [[3|okay?]]"
+   }
+  ],
+  "bot": "Schlafstörige sind sehr vielfältig und chönd verschiedeni Ursache ha. Me cha sie grob in es paar Hauptkategorie iiteile:\n\nInsomnie (Iischlaf- und Durchschlafstörige)\nDas isch die hüfigst Form. D'Lüt händ Müeh iizschlafe oder wached i de Nacht uf und chönd nümme schlafe…"
+ },
+ {
+  "id": "ge",
+  "chip": "Geneva · French",
+  "ini": "GE",
+  "name": "52 · F · Geneva, Switzerland",
+  "blurb": "Regional courier supervisor in the Swiss postal sector, testing AI dispatch tools.",
+  "src": "chats b461b864 · nemotron",
+  "bg": [
+   [
+    0,
+    "Region",
+    "Western Europe → Switzerland → Geneva"
+   ],
+   [
+    0,
+    "Occupation",
+    "Postal carrier (Logistics & transport): regional courier supervisor"
+   ],
+   [
+    1,
+    "Language",
+    "French (main), Swiss French (Genève) native, Romand · code-switching medium"
+   ]
+  ],
+  "st": [
+   [
+    2,
+    "Greeting",
+    "‘Salut’ / ‘Ciao’ (informal)"
+   ],
+   [
+    3,
+    "Abbreviations",
+    "p.ex., stp (s’il vous plaît), ck (c’est quoi)"
+   ],
+   [
+    4,
+    "Quirks",
+    "contracts ‘nous avons’ → ‘n’avons’ even in formal chat"
+   ],
+   [
+    5,
+    "Punctuation",
+    "minimal, ellipses for pauses (‘C’est ça...’)"
+   ]
+  ],
+  "match": {
+   "lang": "English → French",
+   "set": "Cross-lingual (translate, then restyle)",
+   "tier": "Cross-lingual",
+   "resp": "Gemma-4-31B"
   },
-  { id: 'fr', chip: 'Geneva · cross-lingual FR', ini: 'CM', name: '24 · F · Geneva, Switzerland', blurb: 'ML ops engineer at a fintech scale-up, working on fraud-detection models.', src: 'Figure 10 · UltraChat 1042',
-    bg: [ [0,'Region','Geneva, Switzerland'], [4,'Occupation','ML ops engineer, fraud detection (Software & IT)'], [1,'Language','French (main), Swiss French native · code-switching medium'] ],
-    st: [ [2,'Free-text style','fragmented technical terms, French abbreviations, all lowercase, ends with ‘?’ even if not a question'], [3,'Quirks','‘pq’ / ‘pqoui’ for pourquoi when confused'], [5,'Quirks','‘je te kiffe’ instead of ‘j’adore’ in informal chats'] ],
-    match: { lang: 'English → French', set: 'Cross-lingual (translate, then restyle)', tier: 'Cross-lingual', resp: 'Ministral-3-14B' },
-    turns: [ { seed: 'How can loved ones support someone experiencing empty nest syndrome and their mental health?', aug: '[[1|comment les proches peuvent aider]] [[2|qqun]] en crise du nid vide et son mental sain [[3|pq]] ça c’est vraiment une galère, tu as des conseils ou des ressources [[3|pq]] je veux pas merder là-dessus [[2|?]]', gloss: '“how can loved ones support someone in an empty-nest crisis and their mental health, because that is really tough, do you have advice or resources, because i don’t want to mess this up?”' },
-             { seed: 'I think I’ll try to plan some fun activities with my loved one to help them feel better. Do you have any specific activity ideas?', aug: 'salut je [[5|kiffe]] l’idée d’organiser qqch p notre bien-aimé·e p l’aider à décompresser t’as des idées d’activités sympas à proposer ? genre [[3|pqoui]] j’ai rien sous la main là.' },
-             { seed: 'I think a weekend getaway sounds like a great idea! Do you have any recommendations for a nice and relaxing destination?', aug: 'un w-e relax [[5|kifferait]] bien ouais tu connais des coins sympa [[3|pq]] là j’ai aucune idée genre un endroit où on peut décompresser sans stress [[4|(trop d’API first en ce moment pour que ça soit un trip tech)]]' } ],
-    bot: 'voici une liste structurée avec des pistes concrètes, adaptées à un soutien sans bienveillance toxique (le pire dans ces cas). tout est classé par type d’aide, avec des ressources en français/CH/UE…'
+  "turns": [
+   {
+    "seed": "I keep running into a query timeout error in our database layer — any idea what might be causing it, and how we can track down the slow query without bringing down the whole system?",
+    "aug": "[[2|Salut]], [[1|j'ai systématiquement une erreur de timeout de requête]] dans notre couche de base de données[[5|...]] t'as une idée de ce qui cause ça et comment identifier la requête lente sans faire tomber tout le système [[3|stp]]?",
+    "gloss": "“Hi, I keep getting a query timeout error in our database layer... any idea what causes it and how to find the slow query without bringing the whole system down, please?”"
+   },
+   {
+    "aug": "Salut, j'ai activé le log des requêtes lentes et j'ai sorti les plus problématiques de pg_stat_statements[[5|...]] y'a une requête qui ressort : c'est une JOIN entre `orders` et `customers` qui scanne des millions de lignes, alors que les deux tables ont des clés primaires et je pensais que [[4|n'avons]] des index partout. La requête filtre sur `orders.created_at > '2024-01-01'` et `customers.status = 'active'`. Est-ce que le problème vient de la définition des index, ou alors c'est autre chose avec le planner? [[3|stp]] dis-moi.\n\n[[2|Salut]]"
+   }
+  ],
+  "bot": "C'est souvent lié à un manque d'index sur les colonnes utilisées dans les clauses WHERE ou JOIN, ou alors à un verrouillage de table (lock) si plusieurs processus tentent de modifier les mêmes données en même temps.\n\nPour identifier la requête sans risquer le crash, voici les meilleures méthodes :\n\n1. Activer le Slow Query Log\nC'est la méthode la plus sûre…"
+ },
+ {
+  "id": "ua",
+  "chip": "Zaporizhzhia · Ukrainian",
+  "ini": "ZP",
+  "name": "35 · M · Zaporizhzhia, Ukraine",
+  "blurb": "Business insurance specialist at a regional brokerage; optimistic about tools that simplify workflows.",
+  "src": "chats b62bab2d · nemotron",
+  "bg": [
+   [
+    0,
+    "Region",
+    "Eastern Europe → Ukraine → Zaporizhzhia"
+   ],
+   [
+    0,
+    "Occupation",
+    "Insurance broker (Business & finance): business insurance specialist"
+   ],
+   [
+    0,
+    "Language",
+    "Ukrainian (main), Zaporizhzhian dialect (surzhyk) · code-switching medium"
+   ]
+  ],
+  "st": [
+   [
+    2,
+    "Free-text style",
+    "short sentences or fragments, no periods at the end, sometimes drops commas"
+   ],
+   [
+    3,
+    "Sign-off",
+    "‘okey’ or ‘ладно’"
+   ],
+   [
+    0,
+    "Emoji",
+    "none"
+   ]
+  ],
+  "match": {
+   "lang": "English → Ukrainian",
+   "set": "Cross-lingual (translate, then restyle)",
+   "tier": "Cross-lingual",
+   "resp": "Gemma-4-31B"
   },
-  { id: 'ua', chip: 'Zaporizhzhia · Ukrainian', ini: 'OK', name: '22 · F · Zaporizhzhia, Ukraine', blurb: 'Junior ML engineer at a logistics startup building routing AI.', src: 'Figure 11 · Nemotron 240612',
-    bg: [ [0,'Region','Zaporizhzhia, Ukraine'], [3,'Occupation','Junior ML engineer, routing AI (Software & IT)'], [1,'Language','Ukrainian (main), Eastern Ukrainian · code-switching medium'] ],
-    st: [ [2,'Free-text style','lowercase mostly, rarely punctuates, mixes English tech terms and Ukrainian slang in one sentence'], [4,'Quirks','UI/UX jargon like ‘latency’ and ‘user flow’ as everyday words'] ],
-    match: { lang: 'English → Ukrainian (romanised)', set: 'Cross-lingual', tier: 'Cross-lingual', resp: 'Ministral-3-14B' },
-    turns: [ { seed: 'Hi, I’m planning a low-cost trip to Albania from August 7 to 18, 2023, and I need help putting together a realistic itinerary that includes affordable flight options. Can you suggest the best budget airlines, cheapest entry points, and a day-by-day plan that covers must-see spots without breaking the bank?', aug: '[[1|planyu povtorne:]] [[2|low-cost trip]] do albanii z 7 po 18 avqusta, 2023, shchoby vstanovyt realnyy [[2|itinerary]] z uchetam [[2|budget flightov]]. mozhlyvo posoradyt deshevi shliakhy, cherez kakyi aeroport lepshe priletat, i [[2|day-bi-day plan]] z must-see spravdzheno bez zbytochnykh vytrat [[3|rekyuemnts:]] 1. budget airlines dlya marshrutu 2. cheapest entry point (aeroport/port) do albanii 3. day-by-day plan (12 dney) z obov’yazkovymy lokatsiyamy […]', gloss: '“planning again: a low-cost trip to Albania from 7 to 18 August 2023… which cheap routes, which airport is better to fly into, and a day-by-day plan of must-sees without excess spending”' } ],
-    bot: 'отлично, давайте розберемось з бюджетним маршрутом до Албанії на 7 - 18 серпня 2023 року з акцентом на реальний itinerary, дешеві перельоти та ефективний маршрут без зайвих витрат. 1. Бюджетні авіакомпанії для маршруту…'
+  "turns": [
+   {
+    "seed": "I have two tables in a SQL database: `People` with columns `name` (text), `department` (text), and `job_id` (integer); and `Jobs` with columns `job_title` (text) and `salary` (int). Can you write a SQL query that returns the total sum of salaries by department along with the name of the highest-earning person in each department?",
+    "aug": "[[2|маю дві таблиці в sql]]: `People` з колонками `name` (text), `department` (text) та `job_id` (integer) і `Jobs` з `job_title` (text) та `salary` (int)\n[[2|напишіть sql-запит щоб була загальна сума зарплат по відділу і ім'я того хто заробляє найбільше в кожному відділі]]\n[[3|ладно]]",
+    "gloss": "“i have two tables in sql: […] write a sql query giving the total salary per department and the name of the top earner in each department. alright” (table and column names stay verbatim)"
+   },
+   {
+    "aug": "та правильно зауважили про схему, давайте уточнимо. в моїй конфігурації `People.job_id` має посилатися на `job_id` в таблиці `Jobs`, значить `Jobs` має цілочисельний стовпець `job_id` як первинний ключ, разом з `job_title` та `salary`. з цим виправленням ваш фінальний запит ще актуальний чи щось зміните для точності? і покажіть як додати в вивід фактичну зарплату особи з найвищим заробітком в кожному відділі\n\n[[3|ладно]]"
+   },
+   {
+    "aug": "нормально, зі схемою тепер все ок. додай ще посаду того хто найбільше заробляє в кожному відділі. і як переписати запит щоб виводило всіх лідерів якщо в одному відділі у кількох людей однакова макс зарплата\n\n[[3|ладно]]"
+   }
+  ],
+  "bot": "Для цього завдання найкраще використати віконні функції, щоб визначити працівника з максимальною зарплатою в кожному відділі, та звичайну групування для суми.\n\nОсь запит: …"
+ },
+ {
+  "id": "vi",
+  "chip": "Ho Chi Minh City · Vietnamese",
+  "ini": "VN",
+  "name": "35 · F · Ho Chi Minh City, Vietnam",
+  "blurb": "Senior payroll analyst at a mid-sized manufacturing firm; checks chatbot answers against her payroll Zalo group.",
+  "src": "chats 557a69f8 · ultrachat",
+  "bg": [
+   [
+    0,
+    "Region",
+    "Southeast Asia → Vietnam → Ho Chi Minh City"
+   ],
+   [
+    0,
+    "Occupation",
+    "Payroll clerk (Business & finance): senior payroll analyst"
+   ],
+   [
+    1,
+    "Language",
+    "Vietnamese (main), Southern (Sài Gòn) · code-switching medium"
+   ]
+  ],
+  "st": [
+   [
+    2,
+    "Quirks",
+    "uses ‘nè’ or ‘nha’ as conversational fillers even in formal queries to AI"
+   ],
+   [
+    3,
+    "Sign-off",
+    "‘Cảm ơn nhé’"
+   ],
+   [
+    4,
+    "Emoji",
+    "emoticons only ( :) )"
+   ],
+   [
+    5,
+    "Typos",
+    "phonetic spelling"
+   ]
+  ],
+  "match": {
+   "lang": "English → Vietnamese",
+   "set": "Cross-lingual (translate, then restyle)",
+   "tier": "Cross-lingual",
+   "resp": "Gemma-4-31B"
   },
-  { id: 'vi', chip: 'Vietnam · Vietnamese', ini: 'TN', name: '24 · M · Vietnam', blurb: 'Factory line worker in manufacturing.', src: 'Figure 6 · UltraChat 74264',
-    bg: [ [0,'Region','Vietnam'], [4,'Occupation','Factory line worker (Manufacturing)'], [1,'Language','Vietnamese (main / native), English technical terms'] ],
-    st: [ [2,'Free-text style','lowercase tendency, minimal punctuation, casual particle endings (nhé, á, ah)'], [3,'Structure','bulleted prompt structure'], [5,'Quirks','mk for mình (self-reference)'] ],
-    match: { lang: 'English → Vietnamese', set: 'Cross-lingual', tier: 'Cross-lingual', resp: 'Gemma-4-31B' },
-    turns: [ { seed: 'Write a free verse poem that delves into the intricacies of the cosmos, discussing the mysteries of dark matter and black holes, the birth and death of stars, and the infinite expanse of space. Use vivid imagery and descriptive language to convey the sheer scale and majesty of the universe, while also exploring the complexities of our place within it.', aug: '[[1|viết 1 bài thơ tự do]] mà khám phá những bí ẩn của vũ trụ [[2|nhé]]\n[[3|cụ thể phải nhắc đến:\n1.]] dark matter và black holes (chỉ cần nói đc tính chất của nó là đủ)\n[[3|2.]] sự ra đời và chết của những vì sao (những hình ảnh sống động)\n[[3|3.]] vẻ vô tận của không gian...\ngiống như khi [[4|xem video DIY sửa phone]] mà có cảm giác ’đẹp quá’ vậy', gloss: '“write a free verse poem exploring the mysteries of the universe, specifically mentioning: 1. dark matter and black holes… 2. birth and death of stars (vivid imagery)… like the ‘so beautiful’ feeling when watching a phone repair DIY video”' },
-             { seed: 'Wow, the poem you generated is truly mesmerizing… Would it be possible for you to add some information on how the concept of dark matter was first hypothesized…', aug: 'thế bài thơ của anh hay quá [[2|á]], hình ảnh còn sống động như mình đang bay trong vũ trụ vậy đấy [[2|ah]]. anh có thể cho [[5|mk]] thêm về dark matter không?...' } ],
-    bot: 'The model acknowledges the user in natural Vietnamese and explains the cosmology while matching the interactive context.', botSummary: true
-  }
+  "turns": [
+   {
+    "seed": "How can data analytics be used to improve public health outcomes and reduce healthcare costs?",
+    "aug": "[[1|Làm thế nào]] [[2|nè]] để sử dụng phân tích dữ liệu nhằm cải thiện kết quả sức khỏe cộng đồng và giảm chi phí chăm sóc sức khỏe vậy ạ? [[3|Cảm ơn nhé]] [[4|:)]]",
+    "gloss": "“How can data analytics be used to improve community health outcomes and reduce healthcare costs? Thanks :)”"
+   },
+   {
+    "seed": "It's amazing how data analytics can revolutionize the healthcare industry. Do you think there are any potential privacy concerns with collecting and analyzing this much data on individuals?",
+    "aug": "Thấy bảo phân tích dữ liệu có thể làm thay đổi cả ngành y tế, nghe cũng kinh ngạc thiệt [[2|nè]]. Nhưng mà tôi thắc mắc là khi thu thập với phân tích nhiều dữ liệu cá nhân như vậy thì liệu có lo ngại gì về quyền riêng tư không nhỉ? [[3|Cảm ơn nhé]] [[4|:)]]"
+   },
+   {
+    "seed": "Can you give an example of how data analytics has been successfully used to improve public health outcomes in a specific community?",
+    "aug": "Bạn cho tôi xin một ví dụ về việc phân tích dữ liệu [[5|dươc]] dùng thành công để cải thiện kết quả sức khỏe cộng đồng ở một cộng đồng cụ thể nào đó được [[5|kông]] [[2|nè]]? [[3|Cảm ơn nhé]] [[4|:)]]"
+   }
+  ],
+  "bot": "Để sử dụng phân tích dữ liệu nhằm cải thiện sức khỏe cộng đồng và giảm chi phí, có thể tập trung vào một số hướng tiếp cận chính sau đây:\n\n1. Dự báo và phòng ngừa sớm\nThay vì đợi bệnh nhân đến khám, việc phân tích dữ liệu từ hồ sơ sức khỏe điện tử và dữ liệu nhân khẩu học giúp xác định các nhóm đối tượng có nguy cơ cao mắc bệnh…"
+ },
+ {
+  "id": "sk",
+  "chip": "Bratislava · Slovak",
+  "ini": "BA",
+  "name": "36 · M · Bratislava, Slovakia",
+  "blurb": "Finance transformation consultant; uses AI for data crunching but cross-checks against his P&L models.",
+  "src": "chats f5154c85 · nemotron",
+  "bg": [
+   [
+    0,
+    "Region",
+    "Eastern Europe → Slovakia → Bratislava"
+   ],
+   [
+    0,
+    "Occupation",
+    "Management consultant (Business & finance): finance transformation consultant"
+   ],
+   [
+    1,
+    "Language",
+    "Slovak (main), Bratislava dialect · code-switching medium (English for technical terms)"
+   ],
+   [
+    0,
+    "AI stance",
+    "Pragmatic · digital fluency medium"
+   ]
+  ],
+  "st": [
+   [
+    2,
+    "Sign-off",
+    "‘Čau’, or ‘dúfam na pomoc’ (‘hope for help’) if the task feels complex"
+   ],
+   [
+    3,
+    "Quirks",
+    "adds ‘no’ (‘well’) as a filler at the start of sentences"
+   ],
+   [
+    4,
+    "Quirks",
+    "overuses German loanwords even when native terms exist"
+   ],
+   [
+    5,
+    "Emoji",
+    "rare/functional (≃ for ‘approximately’, ❓ for ‘unsure’)"
+   ]
+  ],
+  "match": {
+   "lang": "English → Slovak",
+   "set": "Cross-lingual (translate, then restyle)",
+   "tier": "Cross-lingual",
+   "resp": "Gemma-4-31B"
+  },
+  "turns": [
+   {
+    "seed": "I’m launching a television network dedicated entirely to animated shows, and I need a sleek, memorable two-word brand name. Can you suggest some creative options that sound modern and fun while capturing the spirit of animation?",
+    "aug": "Ahoj, spúšťam TV stanicu s [[1|focusom]] na animované seriály a hľadám elegantný zapamätateľný názov značky z dvoch slov. Navrhni mi niekoľko kreatívnych možností - chcem aby to znelo moderne a zábavne a zároveň zachytilo ducha animácie. [[2|Dúfam na pomoc.]]",
+    "gloss": "“Hi, I’m launching a TV channel focused on animated series and I’m looking for an elegant, memorable two-word brand name. Suggest a few creative options - I want it to sound modern and fun and capture the spirit of animation. Hoping for help.”"
+   },
+   {
+    "aug": "[[3|No]], páči sa mi energia názvov ako *Frame Rush* a *Bounce Frame* - pôsobia dynamicky a sú ideálne pre moderné publikum. Potreboval by som navrhnúť aj možnosti, ktoré sú viac prémiové a sofistikované, zamerané na dospelých, ktorí oceňujú indie arthouse alebo medzinárodnú animáciu.\n\nKým na tom budete, vymyslite [[4|passende]] slogany pre top tri názvy z oboch zoznamov (z toho zábavného aj prémiového) [[5|❓]]\n\n[[2|Dúfam na pomoc. Čau.]]"
+   }
+  ],
+  "bot": "Ahoj, to znie ako zaujímavý projekt. Keďže ide o animácie, mal by názov evokovať pohyb, farby alebo samotný proces tvorby, ale zároveň zostať dostatočne čistý, aby fungoval ako moderná značka.\n\nTu je niekoľko návrhov rozdelených podľa toho, aký vibe chceš vyvolať:\n\n• Dynamické a moderné\nFrame Rush\nBounce Frame\nPixel Flow\nMotion Mix…"
+ }
 ];
 const CHECKS = ['Language matches', 'Instruction / format kept', 'Not truncated', 'No fabricated experience', 'No hallucination', 'Request addressed'];
 (function demo(){
@@ -3175,17 +4594,17 @@ const CHECKS = ['Language matches', 'Instruction / format kept', 'Not truncated'
   function render(s, animate){
     stage = s;
     renderCard();
-    // Source of each example: the paper figure in ex.src (kept in the data, not shown on the page).
+    // Source of each example: the released chats record in ex.src (kept in the data, not shown on the page).
     chat.replaceChildren();
     // stage 0: matching
     const mb = document.createElement('dl'); mb.className = 'matchbox';
     [['Detected', ex.match.lang], ['Persona set', ex.match.set], ['Match tier', ex.match.tier], ['Responder', ex.match.resp]].forEach(([k, v]) => { const a = document.createElement('dt'); a.textContent = k; const b = document.createElement('dd'); b.textContent = v; mb.append(a, b); });
     chat.appendChild(mb);
-    if (s === 0){ ex.turns.forEach((t, i) => msg('seed', ['original turn ' + (i + 1)], t.seed)); return; }
+    if (s === 0){ ex.turns.forEach((t, i) => { if (t.seed) msg('seed', ['original turn ' + (i + 1)], t.seed); }); return; }
     // stage 1+: rewritten turns
     const typeTargets = [];
     ex.turns.forEach((t, i) => {
-      msg('seed', ['original turn ' + (i + 1)], t.seed);
+      if (t.seed) msg('seed', ['original turn ' + (i + 1)], t.seed);
       const head = [t.guard ? 'kept verbatim by the guard' : 'persona-augmented turn ' + (i + 1)];
       const body = msg('user', head, []);
       typeTargets.push({ body, str: t.aug });
@@ -3604,11 +5023,11 @@ const F21B = [
 // Fig. 22b, read from the figure: real WildChat users, % of first user turns, same order as D.calibration.features.
 // Replaces the real-user column in data.js, which put the first two rates below the style-layer rates (the figure shows them just above).
 const F22B_REAL = [32, 61, 2, 3, 0, 3, 1, 0];
-// Figure 2: the Florida persona's style layer, as printed in the paper
+// The Florida persona's style layer (released persona_bank 4cb592cc; the paper's Figure 2 persona)
 const FIG2 = {
-  flat: 'all-lowercase messages with elliptical punctuation, drops articles, lards sentences with Spanish loanwords or fragmented Spanish verbs (like vamos we’re ready) and almost always ends with a question or backchannel',
-  keys: [['Abbreviations', 'u r k · sometimes xq = porque'], ['Emoji rule', 'Frequent, decorative: 💀 😭 🎉'], ['Sign-off', 'ok or no? · no logoff · capitalization first-word-only, no final period'], ['Quirks', 'Spells academick when frustrated by Florida’s system · reflexive them · code-switches mid-sentence, finishes in English · occasional uncorrected typos']],
-  marks: ['u', 'no?', '😭']
+  flat: 'Uses all-lowercase messages with elliptical punctuation, drops articles, and lards sentences with Spanish loanwords or fragmented Spanish verbs (like ‘vamos we’re ready’) and almost always ends with a question or backchannel (‘right?’ or ‘no?’).',
+  keys: [['Capitalization', 'first-word-only, no final period'], ['Abbreviations', '‘u’ for ‘you’, ‘r’ for ‘are’, ‘k’ for ‘okay’, sometimes ‘xq’ = ‘porque’'], ['Emoji', 'none'], ['Sign-off', '‘ok’ or ‘no?’ (with no logoff)'], ['Typos', 'occasional uncorrected typos (e.g. ‘supposted’ for ‘supposed’)']],
+  marks: ['u', 'ur', 'no?']
 };
 // Human study (App. E). Pooled ratings and Part C rates live in D.human (Tables 17, 20).
 const HS = { forms: 60, items: 40, perPart: 10, subs: 11, langs: 'nine', evals: 476 };  // App. E.1, E.4
@@ -4701,12 +6120,12 @@ const DSX = {
   contractions: [1.75, 0.92, 0.47, 0.95, 0.71, 0.52, 0.96] // Table 28 "Contractions / 100 words", row order of D.finetune.rows
 };
 // The Fig. 2 persona, used to show what the matcher keeps. Two signal fields are not printed in Fig. 2.
-const DS_CARD = {
+const DS_CARD = {   // persona_bank 4cb592cc and its released conversation chats f42fc40b
   ini: 'MR', name: '23 · F · Florida, USA', blurb: 'Full profile in, reduced card out.',
-  seen: [['AI stance', 'Skeptical'], ['Digital fluency', 'High'], ['Sentence length', null], ['Question framing', null], ['Code-switching', 'High']],
-  keys: [['Capitalization', 'first-word-only, no final period'], ['Abbreviations', 'u r k · sometimes xq = porque'], ['Emoji', 'frequent, decorative: 💀 😭 🎉'], ['Sign-off', 'ok or no?']],
-  withheld: [['Occupation', 'Graduate student, education sector - TA and PhD candidate in bilingual education policy (ES/EN), state-funded public university'], ['Gender', 'F'], ['Age', '23'], ['Location', 'North America → USA → Florida'], ['Languages', 'English native · Floridian Spanish English dialect'], ['Free-text style', 'all-lowercase messages with elliptical punctuation, drops articles, lards sentences with Spanish loanwords or fragmented Spanish verbs…']],
-  first: 'yo just curious if u can hook me up with some other parks in san antonio that’re actually worth the trip no? like the ones that don’t feel like they got approved by some florida education bureaucrat just to check a box 😭'
+  seen: [['AI stance', 'Skeptical'], ['Digital fluency', 'High'], ['Sentence length', 'Medium'], ['Question framing', 'Direct'], ['Code-switching', 'High']],
+  keys: [['Capitalization', 'first-word-only, no final period'], ['Abbreviations', '‘u’ for ‘you’, ‘r’ for ‘are’, ‘k’ for ‘okay’, sometimes ‘xq’ = ‘porque’'], ['Emoji', 'none'], ['Sign-off', '‘ok’ or ‘no?’ (with no logoff)']],
+  withheld: [['Occupation', 'Graduate student, education sector: teaching assistant and PhD candidate in bilingual education policy (Spanish/English), state-funded public university'], ['Gender', 'F'], ['Age', '23'], ['Location', 'North America → USA → Florida'], ['Languages', 'English native · Floridian Spanish English dialect'], ['Free-text style', 'Uses all-lowercase messages with elliptical punctuation, drops articles, and lards sentences with Spanish loanwords or fragmented Spanish verbs…']],
+  first: 'yo can u sketch me a budget-friendly weekend itinerary for a nearby national park that includes a short hike and a simple campsite meal plus a few spanish phrases i can practice while i\'m out there please format ur answer in exactly five paragraphs, separating each with the markdown divider *** and make sure u don\'t use any commas at all no?'
 };
 
 (function downstream(){
@@ -4821,10 +6240,10 @@ const DS_CARD = {
   // 1 · reduced user card
   ST[0] = {
     how: 'Struck-out fields never reach the matcher. Values are from the Florida persona; two signal fields are not given for her.',
-    src: 'Source: paper App. G.2 · Fig. 2 · App. B.1',
+    src: 'Source: paper App. G.2 · released persona 4cb592cc · App. B.1',
     left(){
       const c = DS_CARD;
-      put(left, ph('Work piece · the Florida persona'));
+      put(left, ph('Work piece · the paper’s Florida persona'));
       const who = put(E('div', 'who'), E('div', 'avatar', c.ini), put(E('div'), E('b', null, c.name), E('span', null, c.blurb)));
       left.appendChild(who);
       const field = ([k, v], cls) => { const d = put(E('div', 'rf ' + (cls || '')), E('span', 'rk', k), E('span', 'rv' + (v == null ? ' nv' : ''), v == null ? 'not given' : v)); return d; };

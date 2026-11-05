@@ -19,11 +19,11 @@ const F21B = [
 // Fig. 22b, read from the figure: real WildChat users, % of first user turns, same order as D.calibration.features.
 // Replaces the real-user column in data.js, which put the first two rates below the style-layer rates (the figure shows them just above).
 const F22B_REAL = [32, 61, 2, 3, 0, 3, 1, 0];
-// Figure 2: the Florida persona's style layer, as printed in the paper
+// The Florida persona's style layer (released persona_bank 4cb592cc; the paper's Figure 2 persona)
 const FIG2 = {
-  flat: 'all-lowercase messages with elliptical punctuation, drops articles, lards sentences with Spanish loanwords or fragmented Spanish verbs (like vamos we’re ready) and almost always ends with a question or backchannel',
-  keys: [['Abbreviations', 'u r k · sometimes xq = porque'], ['Emoji rule', 'Frequent, decorative: 💀 😭 🎉'], ['Sign-off', 'ok or no? · no logoff · capitalization first-word-only, no final period'], ['Quirks', 'Spells academick when frustrated by Florida’s system · reflexive them · code-switches mid-sentence, finishes in English · occasional uncorrected typos']],
-  marks: ['u', 'no?', '😭']
+  flat: 'Uses all-lowercase messages with elliptical punctuation, drops articles, and lards sentences with Spanish loanwords or fragmented Spanish verbs (like ‘vamos we’re ready’) and almost always ends with a question or backchannel (‘right?’ or ‘no?’).',
+  keys: [['Capitalization', 'first-word-only, no final period'], ['Abbreviations', '‘u’ for ‘you’, ‘r’ for ‘are’, ‘k’ for ‘okay’, sometimes ‘xq’ = ‘porque’'], ['Emoji', 'none'], ['Sign-off', '‘ok’ or ‘no?’ (with no logoff)'], ['Typos', 'occasional uncorrected typos (e.g. ‘supposted’ for ‘supposed’)']],
+  marks: ['u', 'ur', 'no?']
 };
 // Human study (App. E). Pooled ratings and Part C rates live in D.human (Tables 17, 20).
 const HS = { forms: 60, items: 40, perPart: 10, subs: 11, langs: 'nine', evals: 476 };  // App. E.1, E.4
