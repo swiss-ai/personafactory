@@ -1,0 +1,60 @@
+{
+  "_comment": "Run config template of the downstream SFT (Apertus-v1.5-8B base, Megatron-LM, one arm per run). render_config.py fills run_name, work_root, source.jsonl/sha256, model.hf_checkpoint (the run-local tokenizer view) and the validation fraction.",
+  "schema_version": 1,
+  "run_name": "personafactory_downstream_apertus_v1p5_8b_base_{arm}",
+  "dataset_bins": {"chat": ["chat"]},
+  "model": {
+    "architecture": {
+      "ffn_hidden_size": 21504,
+      "hidden_size": 4096,
+      "max_position_embeddings": 262144,
+      "num_attention_heads": 32,
+      "num_layers": 32,
+      "num_query_groups": 8,
+      "rope_scaling_factor": 32,
+      "rope_scaling_type": "llama3",
+      "rotary_base": 4000000
+    },
+    "runtime_tokenizer_vocab_size": 131072,
+    "text_training_vocab_size": 131072,
+    "tokenizer_eos_override": "<|assistant_end|>",
+    "tokenizer_template_repo_id": "swiss-ai/Apertus-v1.5-8B",
+    "weight_repo_id": "swiss-ai/Apertus-v1.5-8B-base"
+  },
+  "snapshots": {
+    "megatron_commit": "512aae23559aff142f1488c4a3dee2192cfbba1a",
+    "transformers_commit": "b9f90dc388fd415a2ba2a6a31a372f451d4a4eed"
+  },
+  "source": {
+    "require_validation_per_bin": true,
+    "split_key": "family_id",
+    "split_seed": "pf_downstream_family_split",
+    "stratification": "language",
+    "validation_fraction": 0.01
+  },
+  "tokenization": {
+    "add_generation_prompt": false,
+    "assistant_begin_sequence": [67],
+    "assistant_end_sequence": [68],
+    "enable_thinking": false,
+    "template_origin": "Apertus-v1.5-8B",
+    "workers": 16
+  },
+  "training": {
+    "global_batch_size": 128,
+    "learning_rate": 1e-05,
+    "max_docs_per_bin": 8,
+    "micro_batch_size": 1,
+    "min_learning_rate": 1e-06,
+    "nodes": 4,
+    "packing_strategy": "bfd",
+    "pipeline_parallel_size": 1,
+    "seed": 1234,
+    "seq_length": 4096,
+    "tensor_parallel_size": 4,
+    "train_weights": {"chat": 1.0},
+    "train_weights_basis": "one bin, full multi-turn conversations",
+    "warmup_fraction": 0.03,
+    "weight_decay": 0.0
+  }
+}

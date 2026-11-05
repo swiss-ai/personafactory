@@ -1,0 +1,68 @@
+# Per-attribute ablation and multi-judge agreement study.
+# Endpoints are placeholders: point base_url at any OpenAI-compatible server (.../v1).
+# api_key: ENV=<VAR> reads the key from that environment variable.
+
+# The four rewriters (each also generates the reply for its own cells).
+models:
+  - id: minimax
+    base_url: "http://MINIMAX_HOST:8080/v1"
+    api_key: ENV=PF_API_KEY
+    model: "MiniMaxAI/MiniMax-M2.5"
+  - id: ministral
+    base_url: "http://MINISTRAL_HOST:8080/v1"
+    api_key: ENV=PF_API_KEY
+    model: "mistralai/Ministral-3-14B-Instruct-2512"
+  - id: glm
+    base_url: "http://GLM_HOST:8080/v1"
+    api_key: ENV=PF_API_KEY
+    model: "zai-org/GLM-4.7-Flash"
+  - id: gemma
+    base_url: "http://GEMMA_HOST:8080/v1"
+    api_key: ENV=PF_API_KEY
+    model: "google/gemma-4-31B-it"
+
+# Single judge for style and intent across all ablation cells.
+judge:
+  base_url: "http://GEMMA_HOST:8080/v1"
+  api_key: ENV=PF_API_KEY
+  model: "google/gemma-4-31B-it"
+
+# Judges for the multi-judge agreement study (run_judge_ablation.py); unreachable judges are skipped.
+judges:
+  gemma:     {base_url: "http://GEMMA_HOST:8080/v1",     api_key: ENV=PF_API_KEY, model: "google/gemma-4-31B-it"}
+  glm:       {base_url: "http://GLM_HOST:8080/v1",       api_key: ENV=PF_API_KEY, model: "zai-org/GLM-4.7-Flash"}
+  ministral: {base_url: "http://MINISTRAL_HOST:8080/v1", api_key: ENV=PF_API_KEY, model: "mistralai/Ministral-3-14B-Instruct-2512"}
+  minimax:   {base_url: "http://MINIMAX_HOST:8080/v1",   api_key: ENV=PF_API_KEY, model: "MiniMaxAI/MiniMax-M2.5"}
+
+ablation:
+  num_samples: 200
+  seed: 1337
+  # Max concurrent (sample x condition x model) cells in flight; each cell makes 1-4 API calls.
+  concurrency: 15
+  output: "./outputs/attribute_ablation/results.jsonl"
+  # Source prompts: JSONL with sample_id and original_message (or original_messages, first user turn is used),
+  # e.g. produced by sample_dataset.py.
+  sample_cache: "./data/attribute_ablation/samples.jsonl"
+  # Optional {sample_id: persona_id} mapping that fixes the base persona per sample (skips matching).
+  persona_mapping: "./data/attribute_ablation/sample_persona_mapping.json"
+  # Persona bank file(s) the base personas are matched from.
+  persona_files:
+    - "./data/persona_bank.jsonl"
+
+# Generation parameters for the user-message rewrite
+adaptation_generation:
+  max_tokens: 8192
+  temperature: 0.7
+  top_p: 0.95
+
+# Generation parameters for the reply
+generation:
+  max_tokens: 8192
+  temperature: 0.5
+  top_p: 0.95
+
+# Parameters for the LLM judges (style + intent)
+judge_generation:
+  max_tokens: 8192
+  temperature: 0.1
+  top_p: 1.0

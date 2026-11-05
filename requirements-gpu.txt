@@ -1,0 +1,10 @@
+# GPU nodes only: model serving, offline vLLM passes (emoji rebalancing), the SFT ablation and downstream evaluation.
+# Any OpenAI-compatible server works for the model calls; the released runs used vLLM (generators, responders)
+# and SGLang (MiniMax-M2.5 judge).
+vllm
+sglang
+trl
+accelerate
+lm_eval[vllm]
+# The Apertus SFT runs (sft_ablation/apertus, downstream/megatron) use a Megatron-LM checkout with Apertus support,
+# which is not pip-installable; put it on PYTHONPATH as described in personafactory/downstream/README.md.

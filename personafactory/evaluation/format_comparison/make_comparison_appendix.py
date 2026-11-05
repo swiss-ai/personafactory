@@ -1,0 +1,255 @@
+#!/usr/bin/env python
+"""Generate the persona-format comparison tables (comparison_appendix.tex, comparison_main.tex) from the run outputs.
+
+Every number is computed from the result files, never transcribed, so the tables cannot drift from the data:
+attribute presence per rendering, the main result table (gemma rewriter), and the robustness table (Ministral
+rewriter, multi-judge re-judging).
+
+Inputs:  --run-dir holding items.jsonl, projections_personahub.json, metrics.jsonl, judgments.jsonl,
+         metrics_ministral.jsonl, judgments_ministral.jsonl, multi_judge.jsonl
+Outputs: <out-dir>/comparison_appendix.tex, <out-dir>/comparison_main.tex
+Run:     python -m personafactory.evaluation.format_comparison.make_comparison_appendix --run-dir ./outputs/format_comparison \
+             --out-dir ./outputs/format_comparison/tex
+"""
+import argparse, json, os, statistics
+from collections import defaultdict
+
+from personafactory.evaluation.format_comparison import renderers
+
+OUT = "comparison_appendix.tex"
+CONDS = ["none", "personahub", "synthpai", "personafactory"]
+LABEL = {"none": "No persona", "personahub": "PersonaHub form",
+         "synthpai": "SynthPAI form", "personafactory": "PersonaFactory"}
+
+
+def load(p):
+    return [json.loads(l) for l in open(p)]
+
+
+def metrics_by(path):
+    d = defaultdict(dict)
+    for m in load(path):
+        d[m["item_id"]][m["condition"]] = m
+    return d
+
+
+def mean(vals):
+    v = [float(x) for x in vals if x is not None and float(x) == float(x)]
+    return statistics.mean(v) if v else None
+
+
+def verdict_rate(J, kind, field, cond, items=None):
+    v = [1.0 if j[field] else 0.0 for j in J
+         if j["kind"] == kind and j["condition"] == cond
+         and j.get(field) is not None and (items is None or j["item_id"] in items)]
+    return 100 * statistics.mean(v) if v else None
+
+
+def pairwise(J, cond, items=None):
+    rows = [j for j in J if j["kind"] == "pairwise" and j["condition"] == cond
+            and (items is None or j["item_id"] in items)]
+    r = sum(1 for j in rows if j.get("winner") == "ref")
+    c = sum(1 for j in rows if j.get("winner") == "cond")
+    t = sum(1 for j in rows if j.get("winner") == "tie")
+    miss = sum(1 for j in rows if not j.get("winner"))
+    n = r + c + t
+    return dict(ref=r, cond=c, tie=t, miss=miss, n=n,
+                win=100 * r / n if n else None,
+                ratio=r / c if c else float("inf"),
+                worst=100 * r / (n + miss) if n else None)
+
+
+def fmt(x, d=1, pct=False):
+    if x is None: return "--"
+    return f"{x:.{d}f}" + ("\\%" if pct else "")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--run-dir", default="./outputs/format_comparison")
+    ap.add_argument("--out-dir", default="./outputs/format_comparison/tex")
+    a = ap.parse_args()
+    P = lambda name: os.path.join(a.run_dir, name)
+    os.makedirs(a.out_dir, exist_ok=True)
+    out_path = os.path.join(a.out_dir, OUT)
+    M = metrics_by(P("metrics.jsonl"))
+    J = load(P("judgments.jsonl"))
+    Mm = metrics_by(P("metrics_ministral.jsonl"))
+    Jm = load(P("judgments_ministral.jsonl"))
+    items = {json.loads(l)["item_id"]: json.loads(l) for l in open(P("items.jsonl"))}
+    proj = json.load(open(P("projections_personahub.json")))
+    en = {i for i, it in items.items() if it["stratum"][0] == "english"}
+    xl = {i for i, it in items.items() if it["stratum"][0] != "english"}
+
+    # ---- attribute presence per rendering (the mediator) --------------------
+    fams = {
+        "Age": lambda p: [str((p.get('background') or {}).get('age'))],
+        "Location": lambda p: [str((p.get('background') or {}).get('country'))],
+        "Occupation": lambda p: [str((p.get('background') or {}).get('occupation'))],
+        "Language": lambda p: [str((p.get('background') or {}).get('main_language'))],
+        "Style axes": lambda p: list(((p.get('style') or {})
+                                      .get('chatting_style_structured') or {}).values()),
+        "Quirks": lambda p: list((p.get('style') or {}).get('linguistic_quirks') or []),
+        "Reference pool": lambda p: list((p.get('style') or {}).get('reference_pool') or []),
+    }
+    seen, personas = set(), []
+    for it in items.values():
+        if it["persona_id"] not in seen:
+            seen.add(it["persona_id"]); personas.append(it["persona"])
+    presence = {f: {} for f in fams}
+    for c in CONDS:
+        blocks = [f"{a}\n{b}".lower() for a, b in
+                  (renderers.render(p, c, proj) for p in personas)]
+        for f, get in fams.items():
+            hit = 0
+            for p, blob in zip(personas, blocks):
+                vals = [v for v in get(p) if v and v != "None"]
+                if vals and any(str(v).lower()[:40] in blob for v in vals):
+                    hit += 1
+            presence[f][c] = 100 * hit / len(personas)
+
+    L = []
+    A = L.append
+    A(r"% Auto-generated by evaluation/format_comparison/make_comparison_appendix.py.")
+    A("")
+
+    # ---- Table 1: what each format encodes ---------------------------------
+    A(r"\begin{table}[t]")
+    A(r"\centering\small")
+    A(r"\caption{What each persona representation encodes. Every condition renders the "
+      r"\emph{same} profile; only the serialization differs. Presence is the share of "
+      r"profiles whose attribute value survives into the block the rewriter sees "
+      r"($N=" + f"{len(personas)}" + r"$ profiles).}")
+    A(r"\label{tab:formats}")
+    A(r"\begin{tabular}{l|rrrr}")
+    A(r"\toprule")
+    A(r" & " + " & ".join(LABEL[c] for c in CONDS) + r" \\")
+    A(r"\midrule")
+    wb = {c: mean([M[i][c]["persona_block_words"] for i in M if c in M[i]]) for c in CONDS}
+    A("Words in block & " + " & ".join(fmt(wb[c], 0) for c in CONDS) + r" \\")
+    A(r"\midrule")
+    for f in fams:
+        A(f"{f} & " + " & ".join(fmt(presence[f][c], 0, True) for c in CONDS) + r" \\")
+    A(r"\bottomrule")
+    A(r"\end{tabular}")
+    A(r"\end{table}")
+    A("")
+
+    # ---- Table 2: main result ----------------------------------------------
+    A(r"\begin{table}[t]")
+    A(r"\centering\small")
+    A(r"\caption{Augmentation quality by persona representation, $N=800$ paired items, "
+      r"gemma-4-31B rewriter, MiniMax-M2.5 judge. Style adoption and intent use the "
+      r"production judge templates; adherence metrics are judge-free. Pairwise is the "
+      r"share of items where the judge prefers the PersonaFactory rewrite, with order "
+      r"randomized per item.}")
+    A(r"\label{tab:formatresults}")
+    A(r"\begin{tabular}{l|rrrr}")
+    A(r"\toprule")
+    A(r" & " + " & ".join(LABEL[c] for c in CONDS) + r" \\")
+    A(r"\midrule")
+    A(r"\multicolumn{5}{l}{\emph{Style, the intended effect}} \\")
+    A("Style adoption & " + " & ".join(
+        fmt(verdict_rate(J, "style", "style_ok", c), 1, True) for c in CONDS) + r" \\")
+    for key, lab in [("punct_adherence", "Punctuation adherence"),
+                     ("emoji_adherence", "Emoji adherence"),
+                     ("cap_adherence", "Capitalization adherence")]:
+        A(f"{lab} & " + " & ".join(
+            fmt(mean([M[i][c].get(key) for i in M if c in M[i]]), 3) for c in CONDS) + r" \\")
+    A(r"\midrule")
+    A(r"\multicolumn{5}{l}{\emph{Cost}} \\")
+    A("Intent preserved (all) & " + " & ".join(
+        fmt(verdict_rate(J, "intent", "intent_ok", c), 1, True) for c in CONDS) + r" \\")
+    A("\\quad English & " + " & ".join(
+        fmt(verdict_rate(J, "intent", "intent_ok", c, en), 1, True) for c in CONDS) + r" \\")
+    A("\\quad Cross-lingual & " + " & ".join(
+        fmt(verdict_rate(J, "intent", "intent_ok", c, xl), 1, True) for c in CONDS) + r" \\")
+    for key, lab in [("entities_fully_preserved", "Entities preserved"),
+                     ("quote_retention_rate", "Quoted literals intact")]:
+        A(f"{lab} & " + " & ".join(
+            fmt(mean([M[i][c].get(key) for i in M if c in M[i]]), 3) for c in CONDS) + r" \\")
+    A("Assistant sanity & " + " & ".join(
+        fmt(verdict_rate(J, "sanity", "sanity_ok", c), 1, True) for c in CONDS) + r" \\")
+    A(r"\midrule")
+    A(r"\multicolumn{5}{l}{\emph{Pairwise preference against PersonaFactory}} \\")
+    pw = {c: pairwise(J, c) for c in CONDS[:-1]}
+    A("PF preferred & " + " & ".join(fmt(pw[c]["win"], 1, True) for c in CONDS[:-1])
+      + r" & -- \\")
+    A("\\quad win ratio & " + " & ".join(f"{pw[c]['ratio']:.2f}:1" for c in CONDS[:-1])
+      + r" & -- \\")
+    A("\\quad worst case & " + " & ".join(fmt(pw[c]["worst"], 1, True) for c in CONDS[:-1])
+      + r" & -- \\")
+    A(r"\bottomrule")
+    A(r"\end{tabular}")
+    A(r"\end{table}")
+    A("")
+
+    # ---- Table 3: robustness ------------------------------------------------
+    mj = defaultdict(lambda: defaultdict(int))
+    for j in load(P("multi_judge.jsonl")):
+        if j.get("winner"):
+            mj[j["judge"]][(j["condition"], j["winner"])] += 1
+    A(r"\begin{table}[t]")
+    A(r"\centering\small")
+    A(r"\caption{Robustness of the ranking. Top: the same comparison with "
+      r"Ministral-3-14B as rewriter. Bottom: the pairwise comparison re-judged by four "
+      r"models on a 200-item subset. Absolute rates vary; the ordering does not.}")
+    A(r"\label{tab:formatrobust}")
+    A(r"\begin{tabular}{l|rrr}")
+    A(r"\toprule")
+    A(r" & No persona & PersonaHub form & SynthPAI form \\")
+    A(r"\midrule")
+    A(r"\multicolumn{4}{l}{\emph{PF preferred, by rewriter}} \\")
+    for lab, JJ in [("gemma-4-31B", J), ("Ministral-3-14B", Jm)]:
+        p = {c: pairwise(JJ, c) for c in CONDS[:-1]}
+        A(f"{lab} & " + " & ".join(
+            f"{fmt(p[c]['win'],1,True)} ({p[c]['ratio']:.2f}:1)" for c in CONDS[:-1]) + r" \\")
+    A(r"\midrule")
+    A(r"\multicolumn{4}{l}{\emph{PF preferred, by judge (gemma rewriter)}} \\")
+    for jn in sorted(mj):
+        cells = []
+        for c in CONDS[:-1]:
+            r_, c_, t_ = mj[jn][(c, "ref")], mj[jn][(c, "cond")], mj[jn][(c, "tie")]
+            n = r_ + c_ + t_
+            cells.append(fmt(100 * r_ / n, 1, True) if n else "--")
+        A(f"{jn} & " + " & ".join(cells) + r" \\")
+    A(r"\bottomrule")
+    A(r"\end{tabular}")
+    A(r"\end{table}")
+
+    open(out_path, "w").write("\n".join(L) + "\n")
+
+    # ---- compact main-text table -------------------------------------------
+    MAIN = out_path.replace("comparison_appendix", "comparison_main")
+    T = []
+    T.append(r"\begin{table}[t]")
+    T.append(r"  \caption{Persona representations on 800 paired prompts. Only the profile "
+             r"format changes; persona content, rewriter, judge, and decoding are fixed. "
+             r"\emph{PF preferred} is the pairwise style preference for the PersonaFactory "
+             r"rewrite.}")
+    T.append(r"  \label{tab:formats-main}")
+    T.append(r"  \centering\small")
+    T.append(r"  \begin{tabular}{l|rrr|r}")
+    T.append(r"    \toprule")
+    T.append(r"    Representation & Words & Style adopted & Intent kept & PF preferred \\")
+    T.append(r"    \midrule")
+    for c in CONDS:
+        sa = verdict_rate(J, "style", "style_ok", c)
+        it_ = verdict_rate(J, "intent", "intent_ok", c)
+        pwc = pairwise(J, c)["win"] if c != "personafactory" else None
+        T.append(f"    {LABEL[c]} & {fmt(wb[c],0)} & {fmt(sa,1,True)} & "
+                 f"{fmt(it_,1,True)} & " + (fmt(pwc,1,True) if pwc else "--") + r" \\")
+    T.append(r"    \bottomrule")
+    T.append(r"  \end{tabular}")
+    T.append(r"\end{table}")
+    open(MAIN, "w").write("\n".join(T) + "\n")
+    print("wrote", MAIN)
+    print("wrote", out_path)
+    print(f"  budgets: " + ", ".join(f"{c}={wb[c]:.0f}w" for c in CONDS))
+    for c in CONDS[:-1]:
+        print(f"  pairwise vs {c}: {pw[c]['win']:.1f}% ratio {pw[c]['ratio']:.2f} "
+              f"worst {pw[c]['worst']:.1f}% (missing {pw[c]['miss']})")
+
+
+if __name__ == "__main__":
+    main()

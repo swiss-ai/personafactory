@@ -1,0 +1,17 @@
+# accelerate config for trl_sft_mt.py: FSDP2 full sharding, bf16, Llama decoder layer named explicitly
+# (for another architecture change fsdp_transformer_layer_cls_to_wrap). --num_machines, --num_processes and
+# --machine_rank are passed on the command line. cpu_ram_efficient_loading is off because its FSDP2 path
+# assumes every parameter is a DTensor.
+compute_environment: LOCAL_MACHINE
+distributed_type: FSDP
+mixed_precision: bf16
+use_cpu: false
+fsdp_config:
+  fsdp_version: 2
+  fsdp_auto_wrap_policy: TRANSFORMER_BASED_WRAP
+  fsdp_transformer_layer_cls_to_wrap: LlamaDecoderLayer
+  fsdp_reshard_after_forward: true
+  fsdp_offload_params: false
+  fsdp_state_dict_type: FULL_STATE_DICT
+  fsdp_cpu_ram_efficient_loading: false
+  fsdp_use_orig_params: true

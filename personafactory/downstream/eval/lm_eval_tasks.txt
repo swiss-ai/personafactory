@@ -1,0 +1,12 @@
+# lm-evaluation-harness tasks of the downstream fine-tuning tables (one task per line; '#' lines are comments).
+# Clean capability, all arms (tab:downstream-clean), with the metric reported in the paper:
+mmlu_flan_cot_zeroshot        # exact_match, ordered-extract
+arc_challenge_chat            # exact_match
+gsm8k_cot                     # exact_match
+ifeval                        # prompt_level_strict_acc and prompt_level_loose_acc
+mbpp_instruct                 # pass_at_1
+# Cross-lingual arms add (tab:downstream-x):
+#multi-if                     # prompt-level strict accuracy (prompt_level_strict_acc)
+#mgsm_en_cot                  # exact_match
+#global_mmlu_gen_0shot        # exact_match
+#include_base_44_gen_0shot    # exact_match, 44 languages

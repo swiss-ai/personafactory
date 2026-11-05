@@ -1,0 +1,26 @@
+# Core dependencies: persona bank clients, augmentation clients, post-processing, release build, statistics,
+# evaluation clients and figures. Python >= 3.10 (tested with 3.12); versions are the ones we tested with.
+# All model calls go to OpenAI-compatible endpoints (vLLM / SGLang servers, see requirements-gpu.txt).
+aiohttp==3.13.3
+openai==2.14.0
+pydantic==2.12.5
+python-dotenv            # optional, reads a local .env
+PyYAML==6.0.3
+requests==2.32.5
+numpy==2.4.0
+scipy==1.17.0
+tqdm==4.67.1
+datasets==4.0.0
+pyarrow==22.0.0
+huggingface_hub==1.26.0
+langcodes==3.5.1
+matplotlib==3.10.9
+# language identification (download the fastText lid.176 model file separately, see PF_LID_MODEL)
+fasttext-wheel
+lingua-language-detector==2.2.0
+# persona matching (embeddings), LaBSE fidelity, style metrics
+torch
+transformers==5.0.0
+sentence-transformers==6.0.1
+safetensors==0.7.0
+scikit-learn==1.9.0
