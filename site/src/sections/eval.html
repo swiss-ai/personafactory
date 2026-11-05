@@ -1,0 +1,31 @@
+<section class="sec alt" id="eval">
+  <div class="sec-head">
+    <h2>Quality control</h2>
+    <p class="lede">We check each rewrite for two things: whether it still asks for the same thing (<b>intent</b>) and whether it sounds like the persona (<b>style</b>). Model judges and plain string checks test both in several ways, and the QC sheet collects the results. In the last stage, people rate samples in languages they know well.</p>
+  </div>
+
+  <div class="demo line" id="evalLine">
+    <div class="demo-top">
+      <div class="qkey" id="qKey"></div>
+      <div class="demo-btns">
+        <button class="ctl primary" data-play type="button">Run the line</button>
+        <button class="ctl" data-all type="button">Show all</button>
+      </div>
+    </div>
+    <div class="stages">
+      <button class="stage" data-s="0" type="button"><span class="k">1</span><span class="t">LLM judge</span></button>
+      <button class="stage" data-s="1" type="button"><span class="k">2</span><span class="t">Judge-free</span></button>
+      <button class="stage" data-s="2" type="button"><span class="k">3</span><span class="t">Structured vs flat</span></button>
+      <button class="stage" data-s="3" type="button"><span class="k">4</span><span class="t">Other formats</span></button>
+      <button class="stage" data-s="4" type="button"><span class="k">5</span><span class="t">Real users</span></button>
+      <button class="stage" data-s="5" type="button"><span class="k">6</span><span class="t">Across judges</span></button>
+      <button class="stage" data-s="6" type="button"><span class="k">7</span><span class="t">QC sheet</span></button>
+      <button class="stage" data-s="7" id="eval-humans" type="button"><span class="k">8</span><span class="t">Human raters</span></button>
+    </div>
+    <div class="qbody">
+      <div class="piece" id="qPiece" aria-live="polite"></div>
+      <div class="rd" id="qRead"></div>
+    </div>
+    <div class="demo-foot"><span>Left: what is inspected and how. Right: the result. Hover a mark for exact values.</span><span class="mono" id="qSrc"></span></div>
+  </div>
+</section>

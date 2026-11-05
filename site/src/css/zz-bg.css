@@ -1,0 +1,65 @@
+/* Shop-floor background (js/95-bg.js). The SVG sits behind the whole page and paints the chapter bands
+   itself, so once it is up the bands stop painting their own opaque fill. */
+.floor { position: absolute; left: 0; top: 0; width: 100%; z-index: -1; overflow: hidden; pointer-events: none; user-select: none; }
+.floor svg { display: block; }
+@media screen { html.has-floor .sec { border-image: none; } }
+@media print { .floor, .fl-truck { display: none; } }
+
+.fl-band { fill: var(--paper); }
+.fl-band.alt { fill: var(--paper-2); }
+.fl-rule { fill: var(--rule-2); }
+
+/* blueprint grid (aisles only, see the mask in JS) */
+.fl-gmin { fill: none; stroke: color-mix(in oklab, var(--ink) 5%, transparent); stroke-width: 1; }
+.fl-gmaj { fill: none; stroke: color-mix(in oklab, var(--ink) 9%, transparent); stroke-width: 1; }
+
+/* paint: machine orange, worn */
+.fl-lanes { opacity: .46; }
+.fl-lane { fill: none; stroke: var(--machine); stroke-width: 2.5; stroke-dasharray: 16 9; }
+.fl-lane.solid { stroke-dasharray: none; stroke-width: 3; }
+.fl-lane.corner { stroke-dasharray: none; stroke-linecap: square; }
+.fl-arrow { fill: none; stroke: color-mix(in oklab, var(--machine) 55%, transparent); stroke-width: 3.5; stroke-linecap: square; stroke-linejoin: miter; }
+.fl-arrow.thin { stroke-width: 2.5; stroke: color-mix(in oklab, var(--machine) 40%, transparent); }
+.fl-hz { fill: color-mix(in oklab, var(--machine) 55%, transparent); }
+.fl-walk { font-family: var(--f-display); font-weight: 800; font-size: 9.5px; letter-spacing: 0.24em; fill: color-mix(in oklab, var(--machine) 55%, transparent); }
+.fl-stencil { font-family: var(--f-title); font-weight: 800; font-stretch: 62%; font-variation-settings: "wdth" 62; letter-spacing: 0.01em; fill: color-mix(in oklab, var(--ink) 5.5%, transparent); }
+.fl-bridge { fill: var(--paper); }
+.fl-bridge.alt { fill: var(--paper-2); }
+.fl-hatch { fill: color-mix(in oklab, var(--machine) 22%, transparent); }
+.fl-kc { fill: none; stroke: color-mix(in oklab, var(--machine) 55%, transparent); stroke-width: 2.5; }
+.fl-kc-pad { fill: var(--paper); }
+.fl-kc-pad.alt { fill: var(--paper-2); }
+.fl-kct { font-family: var(--f-display); font-weight: 800; font-size: 9.5px; letter-spacing: 0.12em; fill: color-mix(in oklab, var(--machine) 75%, transparent); }
+
+/* hardware: thin ink lines */
+.fl-plate { fill: color-mix(in oklab, var(--ink) 3%, transparent); stroke: color-mix(in oklab, var(--ink) 22%, transparent); stroke-width: 1; }
+.fl-bolt { fill: color-mix(in oklab, var(--ink) 28%, transparent); }
+.fl-beam { fill: none; stroke: color-mix(in oklab, var(--ink) 34%, transparent); stroke-width: 2.5; stroke-linecap: butt; }
+.fl-grate { fill: none; stroke: color-mix(in oklab, var(--ink) 20%, transparent); stroke-width: 1.6; stroke-linecap: round; }
+.fl-dim { fill: none; stroke: color-mix(in oklab, var(--ink) 20%, transparent); stroke-width: 1; }
+.fl-dim.dash { stroke-dasharray: 3 3; }
+.fl-dimt, .fl-bubt { font-family: var(--f-mono); font-size: 10px; fill: color-mix(in oklab, var(--ink) 38%, transparent); }
+.fl-bubble { fill: var(--paper); stroke: color-mix(in oklab, var(--ink) 25%, transparent); stroke-width: 1; }
+.fl-bubble.alt { fill: var(--paper-2); }
+
+/* the forklift: fixed in the walkway, faces the way you scroll, turns into the last station */
+.fl-truck { position: fixed; left: 0; top: 0; z-index: 0; pointer-events: none; width: 20px; height: 38px; will-change: transform; }
+.fl-truck .tk-rot { transition: transform .6s cubic-bezier(.4, 0, .2, 1); }
+.fl-truck[data-dir="up"] .tk-rot { transform: rotate(180deg); }
+.fl-truck[data-dir="in"] .tk-rot { transform: rotate(-90deg); }
+.fl-truck svg { display: block; overflow: visible; }
+.fl-truck .tk-whl rect { fill: var(--belt); }
+.fl-truck .tk-body { fill: var(--machine); }
+.fl-truck .tk-cw { fill: var(--belt-2); }
+.fl-truck .tk-cab { fill: var(--paper); stroke: var(--belt); stroke-width: 1.2; }
+.fl-truck .tk-cage { stroke: var(--belt); stroke-width: 1; }
+.fl-truck .tk-mast { fill: var(--belt); }
+.fl-truck .tk-fork { stroke: var(--belt-2); stroke-width: 2; stroke-linecap: round; }
+.fl-truck[hidden] { display: none; }
+
+/* gears (hardware, seen from above): turned by scrolling */
+.fl-gbody { fill: color-mix(in oklab, var(--ink) 5%, transparent); stroke: color-mix(in oklab, var(--ink) 32%, transparent); stroke-width: 1; stroke-linejoin: round; }
+.fl-gln { fill: none; stroke: color-mix(in oklab, var(--ink) 24%, transparent); stroke-width: 1; }
+.fl-gaxle { fill: color-mix(in oklab, var(--ink) 30%, transparent); }
+.fl-gear.acc .fl-gbody { fill: color-mix(in oklab, var(--machine) 14%, transparent); stroke: color-mix(in oklab, var(--machine) 60%, transparent); }
+.fl-gear.acc .fl-gln { stroke: color-mix(in oklab, var(--machine) 45%, transparent); }

@@ -1,0 +1,33 @@
+<section class="sec" id="downstream">
+  <div class="sec-head">
+    <h2>Assistant line and training bay</h2>
+    <p class="lede">With varied users alone, a model still answers everyone in one default style. The release therefore matches each conversation to one of 12 assistant response styles and regenerates the replies in that style. An ablation then trains Llama-3.1-8B and Apertus-8B on three versions of the corpus.</p>
+  </div>
+
+  <div class="demo line" id="dsLine">
+    <div class="demo-top">
+      <div class="dsphase" id="dsPhase" role="group" aria-label="Jump to part of the line">
+        <button type="button" data-p="0"><b>Assistant line</b><span>stages 1 to 3</span></button>
+        <button type="button" data-p="3"><b>Training bay</b><span>stages 4 to 7</span></button>
+      </div>
+      <div class="demo-btns">
+        <button class="ctl primary" data-play type="button">Run the line</button>
+        <button class="ctl" data-all type="button">Show all</button>
+      </div>
+    </div>
+    <div class="stages">
+      <button class="stage" data-s="0" type="button"><span class="k">1</span><span class="t">User card</span></button>
+      <button class="stage" data-s="1" type="button"><span class="k">2</span><span class="t">Style matching</span></button>
+      <button class="stage" data-s="2" type="button"><span class="k">3</span><span class="t">Regeneration</span></button>
+      <button class="stage" data-s="3" type="button"><span class="k">4</span><span class="t">Fine-tuning arms</span></button>
+      <button class="stage" data-s="4" type="button"><span class="k">5</span><span class="t">Adaptation</span></button>
+      <button class="stage" data-s="5" type="button"><span class="k">6</span><span class="t">Reply features</span></button>
+      <button class="stage" data-s="6" type="button"><span class="k">7</span><span class="t">Pairwise judge</span></button>
+    </div>
+    <div class="dsbody">
+      <div class="dsleft" id="dsLeft"></div>
+      <div class="dsright" id="dsRight" aria-live="polite"></div>
+    </div>
+    <div class="demo-foot"><span id="dsHow"></span><span class="mono" id="dsSrc"></span></div>
+  </div>
+</section>
