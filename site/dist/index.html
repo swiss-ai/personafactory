@@ -6119,13 +6119,13 @@ const DSX = {
   pairN: 'about 3,500',                 // Table 29 caption: decisive comparisons per pair
   contractions: [1.75, 0.92, 0.47, 0.95, 0.71, 0.52, 0.96] // Table 28 "Contractions / 100 words", row order of D.finetune.rows
 };
-// The Fig. 2 persona, used to show what the matcher keeps. Two signal fields are not printed in Fig. 2.
-const DS_CARD = {   // persona_bank 4cb592cc and its released conversation chats f42fc40b
-  ini: 'MR', name: '23 · F · Florida, USA', blurb: 'Full profile in, reduced card out.',
-  seen: [['AI stance', 'Skeptical'], ['Digital fluency', 'High'], ['Sentence length', 'Medium'], ['Question framing', 'Direct'], ['Code-switching', 'High']],
-  keys: [['Capitalization', 'first-word-only, no final period'], ['Abbreviations', '‘u’ for ‘you’, ‘r’ for ‘are’, ‘k’ for ‘okay’, sometimes ‘xq’ = ‘porque’'], ['Emoji', 'none'], ['Sign-off', '‘ok’ or ‘no?’ (with no logoff)']],
-  withheld: [['Occupation', 'Graduate student, education sector: teaching assistant and PhD candidate in bilingual education policy (Spanish/English), state-funded public university'], ['Gender', 'F'], ['Age', '23'], ['Location', 'North America → USA → Florida'], ['Languages', 'English native · Floridian Spanish English dialect'], ['Free-text style', 'Uses all-lowercase messages with elliptical punctuation, drops articles, and lards sentences with Spanish loanwords or fragmented Spanish verbs…']],
-  first: 'yo can u sketch me a budget-friendly weekend itinerary for a nearby national park that includes a short hike and a simple campsite meal plus a few spanish phrases i can practice while i\'m out there please format ur answer in exactly five paragraphs, separating each with the markdown divider *** and make sure u don\'t use any commas at all no?'
+// The Florida persona from Assembly, used to show what the matcher keeps.
+const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) and its released conversation chats 74e8c8fd
+  ini: 'FL', name: '27 · M · Florida, USA', blurb: 'Full profile in, reduced card out.',
+  seen: [['AI stance', 'Pragmatic'], ['Digital fluency', 'Low'], ['Sentence length', 'Long/Elaborate'], ['Code-switching', 'Low: occasional Southernisms (‘fixin’ to’, ‘y’all’)']],
+  keys: [['Capitalization', 'first-word-only'], ['Typo tendency', 'phonetic spelling'], ['Emoji', 'rare/functional']],
+  withheld: [['Occupation', 'Train conductor, logistics & transport: freight train operations lead for a regional logistics carrier (handles mixed cargo)'], ['Gender', 'M'], ['Age', '27'], ['Location', 'North America → USA → Florida'], ['Languages', 'English (main / native) · dialect Central Florida'], ['Free-text style', 'Uses first-word capitalization, no final periods, treats digital devices like radios (‘can you *clear* that up for me’)…']],
+  first: "We fixin' to head out and need to know what the essential items are for a camping trip and how we can prioritize that packing list based on the activity shedule"
 };
 
 (function downstream(){
@@ -6239,17 +6239,17 @@ const DS_CARD = {   // persona_bank 4cb592cc and its released conversation chats
 
   // 1 · reduced user card
   ST[0] = {
-    how: 'Struck-out fields never reach the matcher. Values are from the Florida persona; two signal fields are not given for her.',
-    src: 'Source: paper App. G.2 · released persona 4cb592cc · App. B.1',
+    how: 'Struck-out fields never reach the matcher. Values are from the Florida persona in Assembly.',
+    src: 'Source: paper App. G.2 · released persona 38c6bf98 · App. B.1',
     left(){
       const c = DS_CARD;
-      put(left, ph('Work piece · the paper’s Florida persona'));
+      put(left, ph('Work piece · the Florida persona'));
       const who = put(E('div', 'who'), E('div', 'avatar', c.ini), put(E('div'), E('b', null, c.name), E('span', null, c.blurb)));
       left.appendChild(who);
       const field = ([k, v], cls) => { const d = put(E('div', 'rf ' + (cls || '')), E('span', 'rk', k), E('span', 'rv' + (v == null ? ' nv' : ''), v == null ? 'not given' : v)); return d; };
       const sees = put(E('div', 'grp see'), put(E('div', 'gh'), E('span', null, 'Matcher sees'), E('span', null, 'communication signals')));
       c.seen.forEach(f => sees.appendChild(field(f)));
-      sees.appendChild(put(E('div', 'gsub'), 'Structured typing keys ', E('span', null, '(4 of 7 given)')));
+      sees.appendChild(put(E('div', 'gsub'), 'Structured typing keys ', E('span', null, '(' + c.keys.length + ' of 7 shown)')));
       c.keys.forEach(f => sees.appendChild(field(f)));
       left.appendChild(sees);
       const wh = put(E('div', 'grp wh'), put(E('div', 'gh'), E('span', null, 'Withheld'), E('span', null, 'demographics and free text')));
