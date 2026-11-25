@@ -2373,6 +2373,17 @@ const CONVS = [
       cards.push(card);
     }
     const xOf = c => START + dir * c.p;
+    function fitEl(el, txt, maxW){
+      el.textContent = txt;
+      if (!txt) return;
+      try {
+        if (el.getComputedTextLength() <= maxW) return;
+        let t = txt;
+        while (t.length > 3){ t = t.slice(0, -1); el.textContent = t.trimEnd() + '…'; if (el.getComputedTextLength() <= maxW) return; }
+      } catch (e){ el.textContent = fit(txt, maxW, 11); }
+    }
+    // the web fonts can arrive after the first frame: refit every card once they are in
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => cards.forEach(c => { c.st = -1; setStage(c); }));
     function setStage(c){
       const cx = xOf(c) + CW / 2;
       const st = stations.filter(s => dir > 0 ? cx >= s.cx : cx <= s.cx).length;
@@ -2388,8 +2399,10 @@ const CONVS = [
       set(I.person, look === 'seed' ? { fill: 'none', stroke: 'var(--faint)', 'stroke-width': 1.2, 'stroke-dasharray': '2 2' } : { fill: 'var(--paper)', stroke: null, 'stroke-dasharray': null });
       I.bubble.setAttribute('opacity', look === 'chat' ? 1 : 0);
       I.badge.setAttribute('opacity', v.badge && !c.reject ? 1 : 0);
-      c.l1.textContent = fit(v.l1, CW - 52, 11); c.l2.textContent = fit(v.l2, CW - 52, 10.5); c.l3.textContent = v.l3 ? fit(v.l3, CW - 18, 10.5) : '';
       const done = st >= stations.length;
+      // fit each line to the card with its real rendered font (the style line is monospace and wider than the body
+      // font), and keep the style line clear of the PASS stamp once the card is through
+      fitEl(c.l1, v.l1, CW - 52); fitEl(c.l2, v.l2, CW - 52); fitEl(c.l3, v.l3 || '', done && !c.reject ? CW - 60 : CW - 18);
       c.rect.setAttribute('stroke', done && !c.reject ? 'var(--good)' : v.ready ? 'var(--pf)' : 'var(--rule-2)');
       c.stamp.setAttribute('opacity', done && !c.reject ? 1 : 0);
       if (cfg.onStage) cfg.onStage(c, st);
