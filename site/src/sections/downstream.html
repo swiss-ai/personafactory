@@ -1,14 +1,14 @@
 <section class="sec" id="downstream">
   <div class="sec-head">
     <h2>Assistant line and training bay</h2>
-    <p class="lede">With varied users alone, a model still answers everyone in one default style. The release therefore matches each conversation to one of 12 assistant response styles and regenerates the replies in that style. An ablation then trains Llama-3.1-8B and Apertus-8B on three versions of the corpus.</p>
+    <p class="lede">With varied users alone, a model still answers everyone in one default style. In 234,723 released conversations, a matcher picks one of 12 assistant response styles for the user, and the replies are regenerated in that style. The training bay then fine-tunes models on versions of the corpus: an ablation of the assistant side, and a controlled comparison of the released conversations with the original training data.</p>
   </div>
 
   <div class="demo line" id="dsLine">
     <div class="demo-top">
       <div class="dsphase" id="dsPhase" role="group" aria-label="Jump to part of the line">
         <button type="button" data-p="0"><b>Assistant line</b><span>stages 1 to 3</span></button>
-        <button type="button" data-p="3"><b>Training bay</b><span>stages 4 to 7</span></button>
+        <button type="button" data-p="3"><b>Training bay</b><span>stages 4 to 10</span></button>
       </div>
       <div class="demo-btns">
         <button class="ctl primary" data-play type="button">Run the line</button>
@@ -19,10 +19,13 @@
       <button class="stage" data-s="0" type="button"><span class="k">1</span><span class="t">User card</span></button>
       <button class="stage" data-s="1" type="button"><span class="k">2</span><span class="t">Style matching</span></button>
       <button class="stage" data-s="2" type="button"><span class="k">3</span><span class="t">Regeneration</span></button>
-      <button class="stage" data-s="3" type="button"><span class="k">4</span><span class="t">Fine-tuning arms</span></button>
+      <button class="stage" data-s="3" type="button"><span class="k">4</span><span class="t">Assistant arms</span></button>
       <button class="stage" data-s="4" type="button"><span class="k">5</span><span class="t">Adaptation</span></button>
       <button class="stage" data-s="5" type="button"><span class="k">6</span><span class="t">Reply features</span></button>
       <button class="stage" data-s="6" type="button"><span class="k">7</span><span class="t">Pairwise judge</span></button>
+      <button class="stage" data-s="7" type="button"><span class="k">8</span><span class="t">Corpus arms</span></button>
+      <button class="stage" data-s="8" type="button"><span class="k">9</span><span class="t">Capability</span></button>
+      <button class="stage" data-s="9" type="button"><span class="k">10</span><span class="t">Head to head</span></button>
     </div>
     <div class="dsbody">
       <div class="dsleft" id="dsLeft"></div>

@@ -1,12 +1,12 @@
 /* ======================= PERSONA ASSEMBLY (station 1) ======================= */
-// Numbers not in data.js, with their source:
+// Numbers not in data.js, with their source (paper revision of 25 Nov 2026; Section 3 and Appendix A):
 const BANK_X = {
   macroRegions: 13,                 // Table 4: "Countries (Macro-regions) 177 (13)"
-  languages: 282,                   // Table 4: "Languages (Dialect labels) 282 (117,670)"
-  verdictsStored: 686814,           // Table 4 caption: keep rates computed over 686,814 candidates with stored verdicts
-  verdictsMissing: 108929,          // Table 4 caption: remaining 108,929 candidates (95.5 keep rate)
+  languages: 282,                   // Table 4: "Languages (Dialect labels) 282 (117,670)"; caption: main languages held by >= 50 profiles
+  verdictsStored: 686814,           // Appendix A text: keep and gate rates computed over 686,814 candidates with stored verdicts
+  verdictsMissing: 108929,          // Appendix A text: remaining 108,929 candidates (95.5% keep rate)
   meanAge: 39.6,                    // Table 4: mean age 39.6 yrs (18-80)
-  topCountries: [['Indonesia', 27004], ['China', 26109], ['India', 25947]]  // Figure 3 caption
+  topCountries: [['Indonesia', 27004], ['China', 26109], ['India', 25947]]  // Appendix A text (discussion of Figure 3)
 };
 
 // Seven personas from the released persona_bank subset (swiss-ai/PersonaFactory). Every value below is copied from the
@@ -1135,7 +1135,7 @@ function markLabel(svg, cat){
     if (full === cat) t.classList.add('hlab');
   });
 }
-const UNIT = { 'Age': 'personas per age bin (thousands) · mean ' + BANK_X.meanAge + ' years', 'Main language (top 10)': '% of bank · ' + BANK_X.languages + ' languages in total' };
+const UNIT = { 'Age': 'personas per age bin (thousands) · mean ' + BANK_X.meanAge + ' years', 'Main language (top 10)': '% of bank · ' + BANK_X.languages + ' main languages held by at least 50 profiles' };
 // a readout chart whose labels hbars would cut in a half-width panel spans the full readout (same rule as hbarsCore's label column)
 const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(key).map(r => r[0])) > Math.min(150, 0.42 * (gridW - 22) / 2) - 2;
 
@@ -1340,7 +1340,8 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
     if (opts.cap) el('p', 'cap', opts.cap, c);
     return ch;
   }
-  const CAPS = { 'Age': 'Adults only (18–80), mean 39.6 years. Bin edges approximate.', 'Occupation (top 10 of 575)': 'Students and technology roles lead.', 'Main language (top 10)': '282 languages and 117,670 free-text dialect labels.', 'Emoji use': 'Frequent decorative emoji is capped near 5% because it would otherwise dominate rewrites.', 'Capitalization': 'Almost a quarter type in all lowercase.', 'Punctuation': 'About two fifths drop end punctuation.' };
+  // Age bins and heights are read off the Figure 4 histogram (approximate); the paper states only mean and range.
+  const CAPS = { 'Age': 'Adults only (18–80), mean ' + BANK_X.meanAge + ' years.', 'Occupation (top 10 of 575)': 'Students and technology roles lead.', 'Main language (top 10)': BANK_X.languages + ' main languages held by at least 50 profiles, and ' + fmt0(D.headline.dialects) + ' distinct free-text dialect labels. Whether each dialect shows in the written text has not been verified.', 'Emoji use': 'Frequent decorative emoji is limited to about 5% of profiles, since it would otherwise dominate the rewritten turns.', 'Capitalization': 'Almost a quarter type in all lowercase.', 'Punctuation': 'About two fifths drop end punctuation.' };
   function dist(k){
     const ch = card(k, srcOf(k), { approx: isApprox(k), cap: CAPS[k], wide: k === 'Generator model' });
     const fn = () => { drawDist(ch, k, null, false); el('div', 'unit', k === 'Age' ? 'personas per age bin (thousands)' : '% of bank', ch); };

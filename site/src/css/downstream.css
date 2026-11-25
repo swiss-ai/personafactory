@@ -1,7 +1,8 @@
 /* ---------- Assistant line + training bay ---------- */
-#downstream .stages { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0 12px; }
-#downstream .stage .t { font-size: 14px; }
-@media (max-width: 1000px) { #downstream .stages { grid-template-columns: repeat(4, minmax(0, 1fr)); } #downstream .stage { border-bottom-color: var(--rule); } #downstream .stage[aria-current="step"] { border-bottom-color: var(--ink); } }
+#downstream .stages { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 0 10px; }
+#downstream .stage { gap: 6px; }
+#downstream .stage .t { font-size: 13.5px; }
+@media (max-width: 1000px) { #downstream .stages { grid-template-columns: repeat(5, minmax(0, 1fr)); } #downstream .stage { border-bottom-color: var(--rule); } #downstream .stage[aria-current="step"] { border-bottom-color: var(--ink); } }
 @media (max-width: 520px) { #downstream .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0 14px; } }
 
 /* phase switch in the top bar */
@@ -189,6 +190,28 @@
 #downstream .find .fh { color: var(--tr); font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; font-size: 12px; }
 #downstream .find p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink); }
 #downstream details.tbl { margin-top: 0; }
+
+/* stages 8-10: released-corpus study */
+#downstream .cgrid { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: stretch; }
+#downstream .cgh { font-size: 12px; font-weight: 600; color: var(--ink-2); align-self: end; padding-bottom: 2px; border-bottom: 2px solid var(--ink); }
+#downstream .cgh:first-child { border-bottom: 0; }
+#downstream .cgr { font-size: 12px; font-weight: 600; color: var(--ink-2); writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; align-self: center; }
+#downstream .cg { display: flex; flex-direction: column; gap: 5px; padding: 9px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--rule); border-left: 5px solid var(--c); min-width: 0; cursor: default; }
+#downstream .cg:hover, #downstream .cg:focus-visible { background: var(--tint); }
+#downstream .cg.rel { box-shadow: inset 0 0 0 1px var(--machine); }
+#downstream .cgt { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+#downstream .cg .ll { width: auto; min-width: 28px; padding: 0 5px; height: 24px; font-size: 13px; background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--c); }
+#downstream .lanes.x .lane:first-child .ll { color: var(--on-strong); }
+#downstream .cg em { font: 600 11px var(--f-mono); font-style: normal; color: var(--machine-ink); padding: 0 5px; border-radius: 3px; box-shadow: inset 0 0 0 1px var(--machine); }
+#downstream .cgn { font-size: 13px; line-height: 1.35; color: var(--ink); }
+#downstream .cgb { height: 6px; border-radius: 3px; background: var(--tint); overflow: hidden; }
+#downstream .cgb b { display: block; height: 100%; background: var(--c); border-radius: 3px; }
+#downstream .cgv { font: 500 11.5px var(--f-mono); color: var(--faint); }
+#downstream .lsub { font-size: 12.5px; line-height: 1.4; color: var(--ink-2); }
+#downstream .prow { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 10px; align-items: baseline; font-size: 13px; }
+#downstream .prh { color: var(--faint); }
+@media (max-width: 520px) { #downstream .prow { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+#downstream svg.viz line.sep { stroke: var(--rule); stroke-width: 1; }
 
 /* entering pieces while the line runs */
 @keyframes ds-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }

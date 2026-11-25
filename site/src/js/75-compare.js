@@ -1,13 +1,13 @@
 /* ======================= COMPARE: other persona datasets, and the style extension ======================= */
 // Every number on this station. Paper sources are kept here only; the page does not show them.
 const CMP = {
-  // Section 3 (743,010 personas; 177 countries), Section 4 / Table 3 (1,242,761 conversations), Abstract (85 languages)
-  pf: { personas: 743010, countries: 177, convs: 1242761, langs: 85 },
+  // Section 3 (743,010 personas; 177 countries), Section 6 / Table 3 (1,237,976 conversations), Abstract (85 languages)
+  pf: { personas: 743010, countries: 177, convs: 1237976, langs: 85 },
   // Appendix D, Design: "across all 200,000 released PersonaHub personas, only 1.4% mention any writing cue at all"
   ph: { released: 200000, cue: 1.4 },
   // Appendix D, format-neutral paragraph: "Real SynthPAI profiles, whose hand-written style descriptions cover 300 English-speaking Reddit users"
   sp: { profiles: 300 },
-  // Table 2 (800 paired prompts; only the profile format changes). intentX: Table 15, cross-lingual intent.
+  // Table 2 (800 paired prompts; only the profile format changes); CIs from Table 16. intentX: Table 16, cross-lingual intent.
   fmt: {
     names: ['No persona', 'PersonaHub form', 'SynthPAI form', 'PersonaFactory'],
     words: [0, 13, 83, 280],
@@ -16,18 +16,25 @@ const CMP = {
     intentX: [99.6, 99.2, 94.0, 89.2],
     pfPref: [94.4, 94.9, 81.3], pfCI: [[92.5, 95.8], [93.1, 96.2], [78.4, 83.9]]
   },
-  // Table 14: % of N = 555 profiles whose attribute survives into the block the rewriter sees; columns PersonaHub form, SynthPAI form, PersonaFactory
+  // Appendix D, "Matched content and length": SynthPAI-style free text with the same facts and length; structured form keeps the
+  // request +5.0 points [2.1, 7.6] (Gemma-4-31B), pairwise style share 50.2 to 51.3% (on par), reads more naturally (+5.6 / +6.0)
+  match: { request: 5.0 },
+  // Appendix D, "Quirk probability and marker cap": cap of 2 realized chat markers per turn; capped rewrites as natural as the
+  // SynthPAI format while adopting 7 to 11 points more style; corpus generated without the explicit cap, 97.3% of user turns
+  // contain at most two of the six markers; cap becomes the default in the released code
+  cap: { gain: [7, 11], corpusAtMost: 97.3 },  // "two" markers and "six" marker kinds are written out in the copy
+  // Table 15: % of N = 555 profiles whose attribute survives into the block the rewriter sees; columns PersonaHub form, SynthPAI form, PersonaFactory
   enc: { n: 555, rows: [['Age', [0, 100, 100]], ['Location', [16, 100, 100]], ['Occupation', [68, 100, 100]], ['Language', [8, 26, 99]], ['Style axes', [0, 55, 100]], ['Quirks', [0, 1, 100]], ['Reference pool', [2, 1, 100]]] },
   // Appendix D, Calibration against real users: 2,140 converted records, 182 English WildChat seeds passing in all three arms
   conv: { records: 2140, seeds: 182 },
-  // Table 13: [real message wins, draw, rewrite wins] per judge, % of seeds
+  // Table 14: [real message wins, draw, rewrite wins] per judge, % of seeds
   arms: {
     judges: ['MiniMax-M2.5', 'Qwen3.6-35B-A3B', 'Muse-Glimmer-30B'],
     A: [[44.1, 27.1, 28.8], [53.3, 36.3, 10.4], [68.7, 22.0, 9.3]],
     B: [[43.4, 22.9, 33.7], [47.8, 34.6, 17.6], [65.4, 20.3, 14.3]],
     C: [[17.6, 14.8, 67.6], [16.5, 41.8, 41.8], [27.5, 21.4, 51.1]]
   },
-  // Appendix (downstream), "Conversations without a user persona" + Table 30. null = n/a or reference.
+  // Appendix G.2, "Conversations without a user persona" + Table 31. null = n/a or reference.
   reply: {
     n: 1000, turns: 2570, fallback: 35,
     rows: [ // [label, long label, sanity pass, style adopted, same content, median words]
@@ -112,7 +119,7 @@ const CMP = {
     grp('Size of one profile');
     txtRow('Words', ['13', '83', '280'], ['one third-person sentence', 'attribute block plus a style paragraph', 'background and style layers']);
     mk('div', 'unit', `Bars: share of ${CMP.enc.n} profiles whose value survives when the same persona is written in each dataset’s format. A dash means the format has no place for it.`, c);
-    cap('Age, location and occupation survive in the SynthPAI and PersonaFactory formats, while the PersonaHub sentence loses most of them. Typing habits get through only when the format has a field for them.');
+    cap('Age, location and occupation survive in the SynthPAI and PersonaFactory formats, while the PersonaHub sentence drops age and most locations. Typing habits get through only when the format has a field for them.');
     fade([c.parentNode, R.lastChild], animate, 240, 400);
   }
 
@@ -151,14 +158,15 @@ const CMP = {
       ['Scope', 'Only the format is tested. Every condition renders our own profiles, so no PersonaHub or SynthPAI content enters the released data.']
     ]);
     const fd = finding('The PersonaHub sentence changes the text about as much as the other formats, yet style adoption only rises from 3.1% to 5.5%. In a separate test, real SynthPAI profiles, hand-written for 300 Reddit users, were the only ones on par with PersonaFactory.');
-    fade([...sp.children, fd], animate);
+    const cv = finding(`Part of the gap to the SynthPAI form is content, since it carries less style information. When the same facts are written as free text of the same length, the structured version is on par in style, keeps the request ${fmt1(CMP.match.request)} points more often and reads more naturally.`, 'Caveat');
+    fade([...sp.children, fd, cv], animate);
     const c = block('Sounds like the persona, keeps the request');
     c.appendChild(legend([{ name: 'Style adopted', color: C_STY, kind: 'dot' }, { name: 'Intent kept', color: C_INT, kind: 'dot' }]));
     const holder = mk('div', null, null, c);
     dumbbell(holder);
     mk('div', 'unit', '% of rewrites, N = 800 paired prompts. Whiskers: 95% Wilson intervals.', c);
     const bg = big(CMP.fmt.pfPref.map((v, i) => [fmt1(v) + '%', 'the judge picks the PersonaFactory rewrite over ' + ['no persona', 'the PersonaHub form', 'the SynthPAI form'][i]]), R);
-    cap(`Style adoption rises with how much a format says about typing. Intent drops by about four points, almost all of it on cross-lingual prompts (${fmt1(CMP.fmt.intentX[3])}% there).`);
+    cap(`Style adoption rises with how much a format says about typing. Intent drops by about four points, almost all of it on cross-lingual prompts (${fmt1(CMP.fmt.intentX[3])}% there). External judges also rate the rewrites somewhat less natural than those without a persona. With a cap of two chat markers per turn, PersonaFactory rewrites read as naturally as SynthPAI-form ones and still adopt ${CMP.cap.gain[0]} to ${CMP.cap.gain[1]} points more style.`);
     fade([c.parentNode, bg, R.lastChild], animate, 240, 400);
     return () => dumbbell(holder);
   }
@@ -301,7 +309,8 @@ const CMP = {
     const route = (title, steps) => { const d = mk('div', 'route', null, routes); mk('b', null, title, d); const ol = mk('ol', null, null, d); steps.forEach(s => mk('li', null, s, ol)); return d; };
     route('A persona dataset (PersonaHub, Nemotron-Personas, …)', ['Convert each record into the background fields.', 'Generate a style layer from that background.', 'Use the personas to rewrite real prompts with the request held fixed.']);
     route('A conversation dataset with no user personas', ['Pick a reply style from the first three user messages.', 'Regenerate the assistant turns in that style.', 'Skip conversations that bring their own system prompt.']);
-    const fd = finding('The style layer still over-produces greetings, slang and emoji compared with real users. The paper lists calibrating those rates as the next step.', 'Still open');
+    const K = CMP.cap;
+    const fd = finding(`Rewrites still use greetings, slang and emoji more often than real users. A cap of two chat markers per turn reduces this and will be the default in the released code. The corpus was generated without that cap, and ${fmt1(K.corpusAtMost)}% of its user turns use at most two of the six markers. Matching real-user rates exactly is left to later versions.`, 'Still open');
     fade([...routes.children, fd], animate, 220);
     const A = CMP.arms, RW = CMP.reply.rows, F = CMP.fmt;
     const ROWS = [

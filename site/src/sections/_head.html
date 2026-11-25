@@ -31,8 +31,8 @@
   <svg class="lg-ogear" viewBox="-10.5 -10.5 21 21" aria-hidden="true" focusable="false"><g class="lg-spin"><path fill-rule="evenodd" d="M-2.02 -7.64 L-1.83 -10.03 L1.83 -10.03 L2.02 -7.64 L3.97 -6.83 L5.8 -8.39 L8.39 -5.8 L6.83 -3.97 L7.64 -2.02 L10.03 -1.83 L10.03 1.83 L7.64 2.02 L6.83 3.97 L8.39 5.8 L5.8 8.39 L3.97 6.83 L2.02 7.64 L1.83 10.03 L-1.83 10.03 L-2.02 7.64 L-3.97 6.83 L-5.8 8.39 L-8.39 5.8 L-6.83 3.97 L-7.64 2.02 L-10.03 1.83 L-10.03 -1.83 L-7.64 -2.02 L-6.83 -3.97 L-8.39 -5.8 L-5.8 -8.39 L-3.97 -6.83ZM-3.5 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0Z"/></g></svg>
   <button class="lg-stamp" type="button" aria-label="Make a persona: drops one onto the belt under the title" hidden></button>
   </div>
-  <p class="authors"><a href="https://ngoccc.github.io/" target="_blank" rel="noopener">Bich Ngoc Doan</a><sup>1</sup>, <a href="https://www.ayukh.com/" target="_blank" rel="noopener">Hanna Yukhymenko</a><sup>2</sup>, <a href="https://ischlag.github.io/" target="_blank" rel="noopener">Imanol Schlag</a><sup>2</sup></p>
-  <p class="affil"><sup>1</sup>EPFL &nbsp; <sup>2</sup>ETH Zurich</p>
+  <p class="authors"><a href="https://ngoccc.github.io/" target="_blank" rel="noopener">Bich Ngoc Doan</a><sup>1*</sup>, <a href="https://www.ayukh.com/" target="_blank" rel="noopener">Hanna Yukhymenko</a><sup>2*</sup>, <a href="https://ischlag.github.io/" target="_blank" rel="noopener">Imanol Schlag</a><sup>2</sup></p>
+  <p class="affil"><sup>1</sup>EPFL &nbsp; <sup>2</sup>ETH Zurich &nbsp; <sup>*</sup>Equal contribution</p>
   <div class="links">
     <a class="lbtn" aria-disabled="true" role="link"><svg class="ic-paper" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>Paper (soon)</a>
     <a class="lbtn" href="https://github.com/swiss-ai/personafactory" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Code</a>
@@ -45,7 +45,7 @@
       <button class="ctl" id="factoryPause" type="button" aria-pressed="false">Pause</button>
     </div>
     <div class="hazard" aria-hidden="true"></div>
-    <div class="factory-scroll"><svg id="factory" viewBox="0 0 1120 668" role="img" aria-labeledby="factoryDesc"><desc id="factoryDesc">Seed grids of countries, sub-regions, occupations and languages feed three generator models. Each persona gets a background layer, then a style layer conditioned on that background, then passes an out-of-family judge. 93.4% of 795,743 candidates become the 743,010-profile bank. A second line takes seed chat logs, matches each to a persona from the bank, rewrites the user turns, regenerates the assistant turns and passes a six-class sanity gate; 78.9% pass and 1,242,761 conversations are released.</desc></svg></div>
+    <div class="factory-scroll"><svg id="factory" viewBox="0 0 1120 668" role="img" aria-labeledby="factoryDesc"><desc id="factoryDesc">Seed grids of countries, sub-regions, occupations and languages feed three generator models. Each persona gets a background layer, then a style layer conditioned on that background, then passes an out-of-family judge. 93.4% of 795,743 candidates become the 743,010-profile bank. A second line takes seed chat logs, matches each to a persona from the bank, rewrites the user turns, regenerates the assistant turns and passes a six-class sanity gate; 78.9% pass and 1,237,976 conversations are released.</desc></svg></div>
     <div class="pspec" id="pspec">
       <div class="pspec-head">
         <svg class="pspec-ico" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="5"/><circle cx="14" cy="10.5" r="4.8"/><path d="M5 26.6c0-5.4 4-8.6 9-8.6s9 3.2 9 8.6z"/></svg>
@@ -63,7 +63,7 @@
     </div>
   </figure>
 
-  <p class="abstract"><b>Abstract.</b>Large language models increasingly replace real people in the AI development pipeline, as they are used to generate training dialogues at scale, control alignment and evaluation. However, out-of-the-box models produce monolingual and stylistically flat texts as synthetic user prompts, failing to replicate the real user-AI communication mechanics. We present PersonaFactory, an end-to-end pipeline to generate detailed user personas, later using them to augment existing user prompts from their point of view. As part of this work, we showcase two major data contributions, facilitating research in LLM-based stylistic chat generation. First, we release a bank of over 740,000 structured, fully synthetic personas, focusing on their background and communication behavior with a chatbot. Second, we release a corpus of roughly 1.24 million persona-styled synthetic conversations spanning 85 languages, produced by using the generated bank of personas to augment existing user prompts and match personas to them based on original prompt intent and profile background. We also provide an ablation study of the assistant persona design for response augmentation and downstream performance after training on such conversations. Finally, we evaluate the effect of personal features on style adoption and intent preservation, using an LLM-judge and heuristic metrics to assess augmentation efficiency. We find that simulating users' unique behavioral features in the conversation greatly benefits from a structured, attribute-based approach, compared to a single free-text description in existing personalization methods. We show that the produced augmented data is hard to distinguish from human-written texts for real people and that PersonaFactory as a training artifact can improve model adaptive behavior purely from data impact without steering.</p>
+  <p class="abstract"><b>Abstract.</b>Large language models increasingly replace real people in the AI development pipeline, as they are used to generate training dialogues at scale and to drive alignment and evaluation. However, out-of-the-box models produce monolingual and stylistically flat texts as synthetic user prompts, failing to replicate the real user-AI communication mechanics. We present PersonaFactory, an end-to-end pipeline that generates detailed user personas and uses them to augment existing user prompts from their point of view, producing a bank of over 740000 structured synthetic personas detailing their background and communication behaviors, and a corpus of roughly 1.24 million persona-styled synthetic conversations spanning 85 languages. We evaluate the effect of personal features on style adoption and intent preservation, using an LLM-judge and heuristic metrics to assess augmentation fidelity together with the downstream impact on assistant persona control through training data. Results show that our structured, attribute-based style representation enables per-axis control and better intent preservation at comparable style fidelity than free-text persona descriptions used in existing methods. A human expert evaluation found the augmented conversations plausible, with favorable ratings for intent preservation, style naturalness, and multilingual authenticity. Finally, PersonaFactory conversations achieve comparable performance to original training data on capability benchmarks, are preferred on real user prompts at equal reply length, and adapt their reply style more closely to users without explicit steering.</p>
   <ul class="hl">
     <li><b>743,010</b><small>structured synthetic personas</small></li>
     <li><b>1.24M</b><small>persona-styled conversations</small></li>
@@ -75,23 +75,27 @@
 <section class="sec alt" id="findings">
   <div class="sec-head"><h2>Findings</h2></div>
   <div class="findings">
+    <!-- Finding 1: Section 5, Table 1 (structured vs flat), Table 13 (external judges), Appendix D (matched content and length).
+         Finding 2: Section 5 + Appendix E.4, Table 18 (pooled ratings), Table 20 (59% judged human), Table 21 (LLM judges);
+         trained classifier: Section 5 and Appendix C (computational Turing test, fine-tuned XLM-R 84.6%).
+         Finding 3: Section 6 + Appendix G.3, Table 32 (capability, A2 vs A0), Table 33 / G.3 text (LC win rate 54.6-57.5% over seeds), Table 34 (reply-style adaptation). -->
     <div class="fkey">
       <span class="fnum">Finding 1</span>
       <h3>Structured style beats a free-text description</h3>
       <div class="big">60% <small>vs 33% preferred</small></div>
-      <p>Rewriter, persona and length budget are held fixed. The judge prefers the rewrite with per-axis style keys nearly twice as often as the free-text one. Intent preservation is 92% for both, and the three external judges agree.</p>
+      <p>Rewriter, persona and length budget are held fixed. The judge prefers the rewrite with per-axis style keys nearly twice as often as the free-text one, at the same 92% intent preservation, and three judges from outside the pipeline agree. When the free text carries the same facts at the same length, the two tie on style, and the structured form keeps the request more often and reads more naturally.</p>
     </div>
     <div class="fkey">
       <span class="fnum">Finding 2</span>
-      <h3>Rewrites read as human-written</h3>
+      <h3>Experts find the rewrites plausible</h3>
       <div class="big">59% <small>judged human by raters</small></div>
-      <p>Raters who work in AI took 59% of verified rewrites for human-written and told rewrites from real messages apart with 55% accuracy. LLM judges took 83–89% of them for human-written and did no better than chance at telling the two apart.</p>
+      <p>In a preliminary study with 11 expert submissions in nine languages, intent, style and plausibility get a median rating of 4 out of 5. Raters took 59% of verified rewrites for human-written and told them from real messages with 55% accuracy. LLM judges took 83–89% for human-written and did no better than chance. A trained classifier can still tell a rewrite from the real message it came from.</p>
     </div>
     <div class="fkey">
       <span class="fnum">Finding 3</span>
-      <h3>Training on it makes models adapt to the user</h3>
-      <div class="big">0.18 → 0.51 <small>formality tracking</small></div>
-      <p>After fine-tuning on persona-styled chats, Llama-3.1-8B follows the user's formality and emoji use much more closely than the instruct release. The judge prefers its replies 79% of the time, or 69% when reply length is controlled.</p>
+      <h3>Models trained on it keep capability and adapt to the user</h3>
+      <div class="big">0.392 vs 0.125 <small>emoji mirroring, released vs original data</small></div>
+      <p>Apertus-v1.5-8B trained on the released conversations is on par with training on the original ones on capability benchmarks. It scores 1.8 points higher on IFEval and 3.1 lower on GSM8K, the one benchmark where it stays behind. Two judges from outside the pipeline prefer its replies to real user prompts in 54.6–57.5% of cases at equal length, and it mirrors the user's emoji use and formality more closely.</p>
     </div>
   </div>
 </section>

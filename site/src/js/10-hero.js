@@ -151,13 +151,14 @@ const CONVS = [
   }
 
   let tracked = null;   // the card the spec sheet follows
-  /* ---- line A: build personas ---- */
+  /* ---- line A: build personas ----
+     Seed grid, judge keep rate (95.5%) and 4.5% rejected: Section 3 and Appendix A, Table 4. */
   label('SEED GRID', 18, 22);
   [['177 countries', '599 sub-regions'], ['575 occupations', '23 sectors'], ['3 generators', 'Gemma · Ministral · GLM']].forEach((h, i) => {
     const y = 32 + i * 58; box(16, y, 180, 48, h[0], h[1]);
     feed(`M196 ${y + 24} C 230 ${y + 24}, 214 212, 246 212`);
   });
-  store(958, 30, 'PERSONA BANK', '743,010', 'profiles released');
+  store(958, 30, 'PERSONA BANK', D.headline.personas.toLocaleString('en-US'), 'profiles released');
   const tickA = line({
     beltY: 252, x0: 214, x1: 1018, dir: 1,
     stations: [
@@ -173,14 +174,16 @@ const CONVS = [
   });
   pipe('M1012 248 V 124');
 
-  /* ---- line B: augment conversations ---- */
+  /* ---- line B: augment conversations ----
+     Sanity pass 78.9% (21.1% fail) of 1,606,837 that reached the gate: Section 6, Table 3 and Appendix G.1, Table 24. */
   label('SEED LOGS', 1000, 330);
   box(998, 338, 110, 48, 'Chat logs', '3 open datasets');
   feed('M1053 386 V 470 C 1053 520, 1060 550, 1058 572');
   // personas leave the bank and drop down to the matcher
   pipe('M1098 124 C 1114 124, 1114 160, 1114 200 V 404 C 1114 420, 1100 420, 1040 420');
   T('personas', { x: 1105, y: 240, transform: 'rotate(90 1105 240)', 'text-anchor': 'middle', style: 'font:600 10.5px var(--f-mono);letter-spacing:.06em;fill:var(--pf)' }, bg);
-  store(14, 380, 'CORPUS', '1,242,761', 'conversations', 152, 21);
+  // released corpus after dedup and final filters (Section 6, Table 3): 1,237,976
+  store(14, 380, 'CORPUS', D.headline.conversations.toLocaleString('en-US'), 'conversations', 152, 21);
   const tickB = line({
     beltY: 602, x0: 108, x1: 1078, dir: -1,
     stations: [

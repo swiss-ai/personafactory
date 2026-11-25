@@ -1,9 +1,9 @@
 /* ======================= ABLATIONS: tuning the machine ======================= */
 // Numbers used here that are not in data.js:
-const AB_T6 = { convs: 400, turns: 960, ci: 3.2 };   // Table 6 caption: 400 conversations per arm, about 960 judged user turns, 95% intervals at most ±3.2 points
-const AB_T7 = { convs: 300, turns: 730, ci: 3.6 };   // Table 7 caption: 300 conversations per variant, about 730 judged user turns, 95% intervals at most ±3.6 points
+const AB_SEL = { convs: 400, turns: 960, ci: 3.2 };  // Table 7 caption: 400 conversations per arm, about 960 judged user turns, 95% intervals at most ±3.2 points
+const AB_XL = { convs: 300, turns: 730, ci: 3.6 };   // Table 8 caption: 300 conversations per variant, about 730 judged user turns, 95% intervals at most ±3.6 points
 const AB_F = { sources: 194, rewrites: 12845, gens: 4 }; // Appendix F setup: up to 194 source messages, 12,845 valid rewrites, 4 generators
-const AB_FAM = [ // Table 22: family means over four generators [family, style, intent, script]
+const AB_FAM = [ // Table 23: family means over four generators [family, style, intent, script]
   ['Digital fluency', 0.801, 0.624, 0.921], ['Sentence length', 0.822, 0.625, 0.920], ['AI stance', 0.800, 0.622, 0.916], ['Age', 0.810, 0.627, 0.924],
   ['Gender', 0.821, 0.631, 0.920], ['Education', 0.808, 0.620, 0.929], ['Occupation', 0.801, 0.622, 0.920], ['Hobbies', 0.814, 0.646, 0.925]
 ];
@@ -13,10 +13,10 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
 
 (function tuning(){
   const lineEl = $('#abLine'), panel = $('#abPanel'), out = $('#abRead');
-  const T6 = D.selectionAblation, X = D.crossLingual, RW = D.rewriters, A = D.attributes;
+  const TS = D.selectionAblation, X = D.crossLingual, RW = D.rewriters, A = D.attributes;
   const SEL = { cons: 'Conservative matching', rand: 'Random, same language' };
   const PR = { tpl: 'Template only', frame: 'Template + system framing' };
-  const t6 = (sel, pr) => T6.find(r => r.sel === SEL[sel] && r.prompt === (pr === 'tpl' ? 'template only' : 'template + framing'));
+  const selRow = (sel, pr) => TS.find(r => r.sel === SEL[sel] && r.prompt === (pr === 'tpl' ? 'template only' : 'template + framing'));
   const other = { cons: 'rand', rand: 'cons', tpl: 'frame', frame: 'tpl' };
   const attrLabel = i => i < 0 ? 'No persona (baseline)' : A.rows[i][0];
   const PIPE = { sel: 'cons', pr: 'tpl', xl: 1, rw: 0, at: 0 };
@@ -29,35 +29,35 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
      opts: [{v, l, d, tag?}]  pipe: value the pipeline ships with
      read(): { cur: label, alt: label, mets: [{name, v, a, altName?, max, fmt, dfmt, ci?}] } */
   const K = [
-    { key: 'sel', name: 'Persona selection', src: 'Table 6', what: 'Which persona re-voices the turn.',
+    { key: 'sel', name: 'Persona selection', src: 'Table 7', what: 'Which persona re-voices the turn.',
       opts: [{ v: 'cons', l: SEL.cons, d: 'Location, then top-1 embedding, then language pool' }, { v: 'rand', l: SEL.rand, d: 'Any persona that shares the prompt’s language' }],
-      held: `Gemma-4-31B rewriter, same judge and sanity gate. ${AB_T6.convs} conversations per arm, about ${AB_T6.turns} judged turns.`,
+      held: `Gemma-4-31B rewriter, MiniMax-M2.5 judge, same sanity gate. ${AB_SEL.convs} conversations per arm, about ${AB_SEL.turns} judged turns.`,
       note: 'Conservative matching adds 22 to 23 points of style and keeps intent slightly better. A plausible persona gives the rewriter something concrete to express.',
       head: 'Style',
-      read(){ const c = t6(st.sel, st.pr), a = t6(other[st.sel], st.pr); return { cur: SEL[st.sel], alt: SEL[other[st.sel]], ctx: 'Rewrite prompt: ' + PR[st.pr].toLowerCase(), mets: t6mets(c, a) }; } },
-    { key: 'pr', name: 'Rewrite prompt', src: 'Table 6', what: 'How the rewrite instruction reaches the model.',
+      read(){ const c = selRow(st.sel, st.pr), a = selRow(other[st.sel], st.pr); return { cur: SEL[st.sel], alt: SEL[other[st.sel]], ctx: 'Rewrite prompt: ' + PR[st.pr].toLowerCase(), mets: selMets(c, a) }; } },
+    { key: 'pr', name: 'Rewrite prompt', src: 'Table 7', what: 'How the rewrite instruction reaches the model.',
       opts: [{ v: 'tpl', l: PR.tpl, d: 'The rewrite template as a single user message' }, { v: 'frame', l: PR.frame, d: 'Same template inside a system prompt that frames the rewriter as a generic text-transformation component' }],
-      held: `Gemma-4-31B rewriter, same judge and sanity gate. ${AB_T6.convs} conversations per arm, about ${AB_T6.turns} judged turns.`,
+      held: `Gemma-4-31B rewriter, MiniMax-M2.5 judge, same sanity gate. ${AB_SEL.convs} conversations per arm, about ${AB_SEL.turns} judged turns.`,
       note: 'The extra framing costs 4 to 5 points of style in both selection settings, so the pipeline uses the template alone.',
       head: 'Style',
-      read(){ const c = t6(st.sel, st.pr), a = t6(st.sel, other[st.pr]); return { cur: PR[st.pr], alt: PR[other[st.pr]], ctx: 'Persona selection: ' + SEL[st.sel].toLowerCase(), mets: t6mets(c, a) }; } },
-    { key: 'xl', name: 'Cross-lingual strategy', src: 'Table 7', what: 'How a turn moves into the persona’s language.',
+      read(){ const c = selRow(st.sel, st.pr), a = selRow(st.sel, other[st.pr]); return { cur: PR[st.pr], alt: PR[other[st.pr]], ctx: 'Persona selection: ' + SEL[st.sel].toLowerCase(), mets: selMets(c, a) }; } },
+    { key: 'xl', name: 'Cross-lingual strategy', src: 'Table 8', what: 'How a turn moves into the persona’s language.',
       opts: [{ v: 1, l: 'Translate, then restyle', d: 'Literal translation first, then the same-language rewrite' }, { v: 0, l: 'Single pass', d: 'Re-voiced directly into the persona’s language' }],
-      held: `same ${AB_T7.convs} conversations, personas and rewriter (Gemma-4-31B). Intent is judged against the literal translation. Target language is checked with fastText.`,
-      note: 'Two steps keep the request and reach the target language more often, at a small cost in style. A rewrite in the wrong language defeats the purpose of the cross-lingual mode, so the pipeline uses two steps.',
+      held: `same ${AB_XL.convs} conversations, personas, rewriter (Gemma-4-31B) and judge (MiniMax-M2.5). Intent is judged against the literal translation. Target language is checked with fastText.`,
+      note: 'Two steps keep the request more often, reach the target language more often and pass the sanity gate slightly more often. The single pass adopts the persona’s style slightly more often. A rewrite that drifts from the request or out of the target language defeats the purpose of the cross-lingual mode, so the pipeline uses two steps.',
       head: 'Target language',
-      read(){ const c = X[st.xl], a = X[1 - st.xl]; const m = (name, k) => ({ name, v: c[k], a: a[k], max: 100, fmt: pctF, dfmt: ptsD, ci: AB_T7.ci });
+      read(){ const c = X[st.xl], a = X[1 - st.xl]; const m = (name, k) => ({ name, v: c[k], a: a[k], max: 100, fmt: pctF, dfmt: ptsD, ci: AB_XL.ci });
         return { cur: c.v, alt: a.v, mets: [m('Target language', 'target'), m('Intent', 'intent'), m('Style', 'style'), m('Sanity pass', 'sanity')] }; } },
     { key: 'rw', name: 'Rewriter', src: 'Fig. 25', approx: true, what: 'Which model rewrites the user turns.',
       opts: RW.names.map((n, i) => ({ v: i, l: n, d: ['Production rewriter, the balanced choice', 'Production rewriter, restyles most', 'Production judge', 'Extra persona generator'][i] })),
       held: `the same 16 single-attribute conditions for every rewriter.`,
-      note: 'Ministral adopts the most style but keeps the least intent and script. Gemma is the balanced choice.',
+      note: 'Ministral adopts the most style but keeps the least intent and script: the most eager restyler is also the least faithful. Gemma is the balanced choice.',
       head: 'Intent',
       read(){ const a = st.rw === 0 ? 1 : 0; const m = (name, k) => ({ name, v: RW[k][st.rw], a: RW[k][a], max: 1, fmt: fmt2, dfmt: scD(2) });
         return { cur: RW.names[st.rw], alt: RW.names[a], mets: [m('Style adoption', 'style'), m('Intent preservation', 'intent'), m('Script stability', 'script')] }; } },
     { key: 'at', name: 'One persona attribute', src: 'Fig. 24', what: 'Vary exactly one attribute of the persona.',
       held: `Up to ${AB_F.sources} source messages, ${AB_F.gens} rewriters, ${fmt0(AB_F.rewrites)} valid rewrites. Scores averaged over the rewriters.`,
-      note: 'Rows barely move. Family means for style stay between 0.80 and 0.82, and every family loses 0.06 to 0.07 of script stability. The paper treats these numbers as a measurement and does not rank the attributes.',
+      note: 'On one 0 to 1 scale the three columns sit at clearly different levels, while the rows within a column barely move. Family means for style stay between 0.80 and 0.82, and every family loses 0.06 to 0.07 of script stability. The paper treats these numbers as a measurement and does not rank the attributes.',
       head: 'Script',
       read(){
         const i = st.at, base = A.baselineScript;
@@ -72,7 +72,7 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
           { name: 'Script stability', v: r[3], a: base, altName: 'no-persona baseline', max: 1, fmt: fmt3, dfmt: scD(3) } ] };
       } }
   ];
-  function t6mets(c, a){ const m = (name, k) => ({ name, v: c[k], a: a[k], max: 100, fmt: pctF, dfmt: ptsD, ci: AB_T6.ci }); return [m('Style', 'style'), m('Intent', 'intent'), m('Sanity pass', 'sanity')]; }
+  function selMets(c, a){ const m = (name, k) => ({ name, v: c[k], a: a[k], max: 100, fmt: pctF, dfmt: ptsD, ci: AB_SEL.ci }); return [m('Style', 'style'), m('Intent', 'intent'), m('Sanity pass', 'sanity')]; }
   const headDelta = k => { const r = K[k].read(); const m = r.mets.find(x => x.name.startsWith(K[k].head)) || r.mets[0]; if (m.v == null || m.a == null) return null; return { name: K[k].head.toLowerCase(), d: m.v - m.a, txt: m.dfmt(m.v - m.a), ns: m.ci != null && Math.abs(m.v - m.a) < m.ci }; };
   const posLabel = k => { const key = K[k].key; if (key === 'at') return attrLabel(st.at); const o = K[k].opts.find(o => o.v === st[key]); return o.l; };
   const atPipe = k => K[k].key === 'at' ? null : st[K[k].key] === PIPE[K[k].key];
@@ -183,7 +183,7 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
     if (s === 3) extra = rwTable(out);
     if (s === 4) extra = attrHeat(out);
     el('p', 'rnote', kn.note, out);
-    $('#abSrc').textContent = 'Source: paper ' + kn.src + (s <= 1 ? ' · ' + AB_T6.convs + ' conversations per arm' : s === 2 ? ' · ' + AB_T7.convs + ' conversations per variant' : s === 4 ? ' · Table 22 · ' + fmt0(AB_F.rewrites) + ' rewrites' : '');
+    $('#abSrc').textContent = 'Source: paper ' + kn.src + (s <= 1 ? ' · ' + AB_SEL.convs + ' conversations per arm' : s === 2 ? ' · ' + AB_XL.convs + ' conversations per variant' : s === 4 ? ' · Table 23 · ' + fmt0(AB_F.rewrites) + ' rewrites' : '');
     if (animate) $$('.rhd, .lgslot, .gauges, .mx, .rwt, .hwrap, .rnote', out).forEach((n, i) => { n.classList.add('in'); n.style.animationDelay = (i * 70) + 'ms'; });
   }
   function update(){
@@ -193,10 +193,10 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
     if (extra) extra();
   }
 
-  /* 2x2 of Table 6 */
+  /* 2x2 of Table 7 */
   function matrix(parent){
     const wrap = el('div', 'mx', null, parent);
-    const hd = el('div', 'mxt', null, wrap); el('span', null, 'All four arms, style adoption', hd); el('span', 'src', 'Table 6', hd);
+    const hd = el('div', 'mxt', null, wrap); el('span', null, 'All four arms, style adoption', hd); el('span', 'src', 'Table 7', hd);
     const g = el('div', 'mxg', null, wrap);
     el('span', 'mxh corner', '', g);
     ['tpl', 'frame'].forEach(p => el('span', 'mxh', PR[p], g));
@@ -204,7 +204,7 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
     ['cons', 'rand'].forEach(sel => {
       el('span', 'mxr', SEL[sel], g);
       ['tpl', 'frame'].forEach(pr => {
-        const row = t6(sel, pr);
+        const row = selRow(sel, pr);
         const b = el('button', 'mxc', null, g); b.type = 'button';
         const big = el('b', null, null, b); if (sel === PIPE.sel && pr === PIPE.pr) el('i', 'pdot', null, big); big.append(pctF(row.style));
         el('small', null, `intent ${fmt1(row.intent)} · sanity ${fmt1(row.sanity)}`, b);
@@ -224,10 +224,10 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
     wrap.appendChild(lg);
     return paint;
   }
-  /* both variants of Table 7 */
+  /* both variants of Table 8 */
   function xlPair(parent){
     const wrap = el('div', 'mx', null, parent);
-    const hd = el('div', 'mxt', null, wrap); el('span', null, 'Both variants, target language', hd); el('span', 'src', 'Table 7', hd);
+    const hd = el('div', 'mxt', null, wrap); el('span', null, 'Both variants, target language', hd); el('span', 'src', 'Table 8', hd);
     const g = el('div', 'mxg two', null, wrap);
     const cells = [1, 0].map(v => {
       const row = X[v];

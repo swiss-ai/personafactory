@@ -871,9 +871,10 @@ svg.viz text { pointer-events: none; }
 
 /* ---- downstream.css ---- */
 /* ---------- Assistant line + training bay ---------- */
-#downstream .stages { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0 12px; }
-#downstream .stage .t { font-size: 14px; }
-@media (max-width: 1000px) { #downstream .stages { grid-template-columns: repeat(4, minmax(0, 1fr)); } #downstream .stage { border-bottom-color: var(--rule); } #downstream .stage[aria-current="step"] { border-bottom-color: var(--ink); } }
+#downstream .stages { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 0 10px; }
+#downstream .stage { gap: 6px; }
+#downstream .stage .t { font-size: 13.5px; }
+@media (max-width: 1000px) { #downstream .stages { grid-template-columns: repeat(5, minmax(0, 1fr)); } #downstream .stage { border-bottom-color: var(--rule); } #downstream .stage[aria-current="step"] { border-bottom-color: var(--ink); } }
 @media (max-width: 520px) { #downstream .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0 14px; } }
 
 /* phase switch in the top bar */
@@ -1061,6 +1062,28 @@ svg.viz text { pointer-events: none; }
 #downstream .find .fh { color: var(--tr); font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; font-size: 12px; }
 #downstream .find p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink); }
 #downstream details.tbl { margin-top: 0; }
+
+/* stages 8-10: released-corpus study */
+#downstream .cgrid { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: stretch; }
+#downstream .cgh { font-size: 12px; font-weight: 600; color: var(--ink-2); align-self: end; padding-bottom: 2px; border-bottom: 2px solid var(--ink); }
+#downstream .cgh:first-child { border-bottom: 0; }
+#downstream .cgr { font-size: 12px; font-weight: 600; color: var(--ink-2); writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; align-self: center; }
+#downstream .cg { display: flex; flex-direction: column; gap: 5px; padding: 9px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--rule); border-left: 5px solid var(--c); min-width: 0; cursor: default; }
+#downstream .cg:hover, #downstream .cg:focus-visible { background: var(--tint); }
+#downstream .cg.rel { box-shadow: inset 0 0 0 1px var(--machine); }
+#downstream .cgt { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+#downstream .cg .ll { width: auto; min-width: 28px; padding: 0 5px; height: 24px; font-size: 13px; background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--c); }
+#downstream .lanes.x .lane:first-child .ll { color: var(--on-strong); }
+#downstream .cg em { font: 600 11px var(--f-mono); font-style: normal; color: var(--machine-ink); padding: 0 5px; border-radius: 3px; box-shadow: inset 0 0 0 1px var(--machine); }
+#downstream .cgn { font-size: 13px; line-height: 1.35; color: var(--ink); }
+#downstream .cgb { height: 6px; border-radius: 3px; background: var(--tint); overflow: hidden; }
+#downstream .cgb b { display: block; height: 100%; background: var(--c); border-radius: 3px; }
+#downstream .cgv { font: 500 11.5px var(--f-mono); color: var(--faint); }
+#downstream .lsub { font-size: 12.5px; line-height: 1.4; color: var(--ink-2); }
+#downstream .prow { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 10px; align-items: baseline; font-size: 13px; }
+#downstream .prh { color: var(--faint); }
+@media (max-width: 520px) { #downstream .prow { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+#downstream svg.viz line.sep { stroke: var(--rule); stroke-width: 1; }
 
 /* entering pieces while the line runs */
 @keyframes ds-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -1373,8 +1396,8 @@ svg.viz text { pointer-events: none; }
   <svg class="lg-ogear" viewBox="-10.5 -10.5 21 21" aria-hidden="true" focusable="false"><g class="lg-spin"><path fill-rule="evenodd" d="M-2.02 -7.64 L-1.83 -10.03 L1.83 -10.03 L2.02 -7.64 L3.97 -6.83 L5.8 -8.39 L8.39 -5.8 L6.83 -3.97 L7.64 -2.02 L10.03 -1.83 L10.03 1.83 L7.64 2.02 L6.83 3.97 L8.39 5.8 L5.8 8.39 L3.97 6.83 L2.02 7.64 L1.83 10.03 L-1.83 10.03 L-2.02 7.64 L-3.97 6.83 L-5.8 8.39 L-8.39 5.8 L-6.83 3.97 L-7.64 2.02 L-10.03 1.83 L-10.03 -1.83 L-7.64 -2.02 L-6.83 -3.97 L-8.39 -5.8 L-5.8 -8.39 L-3.97 -6.83ZM-3.5 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0Z"/></g></svg>
   <button class="lg-stamp" type="button" aria-label="Make a persona: drops one onto the belt under the title" hidden></button>
   </div>
-  <p class="authors"><a href="https://ngoccc.github.io/" target="_blank" rel="noopener">Bich Ngoc Doan</a><sup>1</sup>, <a href="https://www.ayukh.com/" target="_blank" rel="noopener">Hanna Yukhymenko</a><sup>2</sup>, <a href="https://ischlag.github.io/" target="_blank" rel="noopener">Imanol Schlag</a><sup>2</sup></p>
-  <p class="affil"><sup>1</sup>EPFL &nbsp; <sup>2</sup>ETH Zurich</p>
+  <p class="authors"><a href="https://ngoccc.github.io/" target="_blank" rel="noopener">Bich Ngoc Doan</a><sup>1*</sup>, <a href="https://www.ayukh.com/" target="_blank" rel="noopener">Hanna Yukhymenko</a><sup>2*</sup>, <a href="https://ischlag.github.io/" target="_blank" rel="noopener">Imanol Schlag</a><sup>2</sup></p>
+  <p class="affil"><sup>1</sup>EPFL &nbsp; <sup>2</sup>ETH Zurich &nbsp; <sup>*</sup>Equal contribution</p>
   <div class="links">
     <a class="lbtn" aria-disabled="true" role="link"><svg class="ic-paper" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>Paper (soon)</a>
     <a class="lbtn" href="https://github.com/swiss-ai/personafactory" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Code</a>
@@ -1387,7 +1410,7 @@ svg.viz text { pointer-events: none; }
       <button class="ctl" id="factoryPause" type="button" aria-pressed="false">Pause</button>
     </div>
     <div class="hazard" aria-hidden="true"></div>
-    <div class="factory-scroll"><svg id="factory" viewBox="0 0 1120 668" role="img" aria-labeledby="factoryDesc"><desc id="factoryDesc">Seed grids of countries, sub-regions, occupations and languages feed three generator models. Each persona gets a background layer, then a style layer conditioned on that background, then passes an out-of-family judge. 93.4% of 795,743 candidates become the 743,010-profile bank. A second line takes seed chat logs, matches each to a persona from the bank, rewrites the user turns, regenerates the assistant turns and passes a six-class sanity gate; 78.9% pass and 1,242,761 conversations are released.</desc></svg></div>
+    <div class="factory-scroll"><svg id="factory" viewBox="0 0 1120 668" role="img" aria-labeledby="factoryDesc"><desc id="factoryDesc">Seed grids of countries, sub-regions, occupations and languages feed three generator models. Each persona gets a background layer, then a style layer conditioned on that background, then passes an out-of-family judge. 93.4% of 795,743 candidates become the 743,010-profile bank. A second line takes seed chat logs, matches each to a persona from the bank, rewrites the user turns, regenerates the assistant turns and passes a six-class sanity gate; 78.9% pass and 1,237,976 conversations are released.</desc></svg></div>
     <div class="pspec" id="pspec">
       <div class="pspec-head">
         <svg class="pspec-ico" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="5"/><circle cx="14" cy="10.5" r="4.8"/><path d="M5 26.6c0-5.4 4-8.6 9-8.6s9 3.2 9 8.6z"/></svg>
@@ -1405,7 +1428,7 @@ svg.viz text { pointer-events: none; }
     </div>
   </figure>
 
-  <p class="abstract"><b>Abstract.</b>Large language models increasingly replace real people in the AI development pipeline, as they are used to generate training dialogues at scale, control alignment and evaluation. However, out-of-the-box models produce monolingual and stylistically flat texts as synthetic user prompts, failing to replicate the real user-AI communication mechanics. We present PersonaFactory, an end-to-end pipeline to generate detailed user personas, later using them to augment existing user prompts from their point of view. As part of this work, we showcase two major data contributions, facilitating research in LLM-based stylistic chat generation. First, we release a bank of over 740,000 structured, fully synthetic personas, focusing on their background and communication behavior with a chatbot. Second, we release a corpus of roughly 1.24 million persona-styled synthetic conversations spanning 85 languages, produced by using the generated bank of personas to augment existing user prompts and match personas to them based on original prompt intent and profile background. We also provide an ablation study of the assistant persona design for response augmentation and downstream performance after training on such conversations. Finally, we evaluate the effect of personal features on style adoption and intent preservation, using an LLM-judge and heuristic metrics to assess augmentation efficiency. We find that simulating users' unique behavioral features in the conversation greatly benefits from a structured, attribute-based approach, compared to a single free-text description in existing personalization methods. We show that the produced augmented data is hard to distinguish from human-written texts for real people and that PersonaFactory as a training artifact can improve model adaptive behavior purely from data impact without steering.</p>
+  <p class="abstract"><b>Abstract.</b>Large language models increasingly replace real people in the AI development pipeline, as they are used to generate training dialogues at scale and to drive alignment and evaluation. However, out-of-the-box models produce monolingual and stylistically flat texts as synthetic user prompts, failing to replicate the real user-AI communication mechanics. We present PersonaFactory, an end-to-end pipeline that generates detailed user personas and uses them to augment existing user prompts from their point of view, producing a bank of over 740000 structured synthetic personas detailing their background and communication behaviors, and a corpus of roughly 1.24 million persona-styled synthetic conversations spanning 85 languages. We evaluate the effect of personal features on style adoption and intent preservation, using an LLM-judge and heuristic metrics to assess augmentation fidelity together with the downstream impact on assistant persona control through training data. Results show that our structured, attribute-based style representation enables per-axis control and better intent preservation at comparable style fidelity than free-text persona descriptions used in existing methods. A human expert evaluation found the augmented conversations plausible, with favorable ratings for intent preservation, style naturalness, and multilingual authenticity. Finally, PersonaFactory conversations achieve comparable performance to original training data on capability benchmarks, are preferred on real user prompts at equal reply length, and adapt their reply style more closely to users without explicit steering.</p>
   <ul class="hl">
     <li><b>743,010</b><small>structured synthetic personas</small></li>
     <li><b>1.24M</b><small>persona-styled conversations</small></li>
@@ -1417,23 +1440,27 @@ svg.viz text { pointer-events: none; }
 <section class="sec alt" id="findings">
   <div class="sec-head"><h2>Findings</h2></div>
   <div class="findings">
+    <!-- Finding 1: Section 5, Table 1 (structured vs flat), Table 13 (external judges), Appendix D (matched content and length).
+         Finding 2: Section 5 + Appendix E.4, Table 18 (pooled ratings), Table 20 (59% judged human), Table 21 (LLM judges);
+         trained classifier: Section 5 and Appendix C (computational Turing test, fine-tuned XLM-R 84.6%).
+         Finding 3: Section 6 + Appendix G.3, Table 32 (capability, A2 vs A0), Table 33 / G.3 text (LC win rate 54.6-57.5% over seeds), Table 34 (reply-style adaptation). -->
     <div class="fkey">
       <span class="fnum">Finding 1</span>
       <h3>Structured style beats a free-text description</h3>
       <div class="big">60% <small>vs 33% preferred</small></div>
-      <p>Rewriter, persona and length budget are held fixed. The judge prefers the rewrite with per-axis style keys nearly twice as often as the free-text one. Intent preservation is 92% for both, and the three external judges agree.</p>
+      <p>Rewriter, persona and length budget are held fixed. The judge prefers the rewrite with per-axis style keys nearly twice as often as the free-text one, at the same 92% intent preservation, and three judges from outside the pipeline agree. When the free text carries the same facts at the same length, the two tie on style, and the structured form keeps the request more often and reads more naturally.</p>
     </div>
     <div class="fkey">
       <span class="fnum">Finding 2</span>
-      <h3>Rewrites read as human-written</h3>
+      <h3>Experts find the rewrites plausible</h3>
       <div class="big">59% <small>judged human by raters</small></div>
-      <p>Raters who work in AI took 59% of verified rewrites for human-written and told rewrites from real messages apart with 55% accuracy. LLM judges took 83–89% of them for human-written and did no better than chance at telling the two apart.</p>
+      <p>In a preliminary study with 11 expert submissions in nine languages, intent, style and plausibility get a median rating of 4 out of 5. Raters took 59% of verified rewrites for human-written and told them from real messages with 55% accuracy. LLM judges took 83–89% for human-written and did no better than chance. A trained classifier can still tell a rewrite from the real message it came from.</p>
     </div>
     <div class="fkey">
       <span class="fnum">Finding 3</span>
-      <h3>Training on it makes models adapt to the user</h3>
-      <div class="big">0.18 → 0.51 <small>formality tracking</small></div>
-      <p>After fine-tuning on persona-styled chats, Llama-3.1-8B follows the user's formality and emoji use much more closely than the instruct release. The judge prefers its replies 79% of the time, or 69% when reply length is controlled.</p>
+      <h3>Models trained on it keep capability and adapt to the user</h3>
+      <div class="big">0.392 vs 0.125 <small>emoji mirroring, released vs original data</small></div>
+      <p>Apertus-v1.5-8B trained on the released conversations is on par with training on the original ones on capability benchmarks. It scores 1.8 points higher on IFEval and 3.1 lower on GSM8K, the one benchmark where it stays behind. Two judges from outside the pipeline prefer its replies to real user prompts in 54.6–57.5% of cases at equal length, and it mirrors the user's emoji use and formality more closely.</p>
     </div>
   </div>
 </section>
@@ -1512,7 +1539,8 @@ svg.viz text { pointer-events: none; }
 
   <div class="pipe">
     <div><span class="req">R1 · keep the task</span><b>Conservative matching</b><p>Language and script are detected first. The persona must be a native speaker of the prompt's language. Among those, the match comes from location, then top-1 embedding similarity, then the language pool. If nothing matches, the turn is kept verbatim.</p></div>
-    <div><span class="req">R2 · diversify register</span><b>Constrained rewrite</b><p>Quotes, code, URLs and numbers are masked and restored. Quirks fire with p = 0.25 per turn so that personas do not turn into caricatures. Rewrites shorter than 50% of the original are rejected.</p></div>
+    <div><span class="req">R2 · diversify register</span><b>Constrained rewrite</b><!-- R2: Section 4 (p = 0.25, marker cap, 50% length guard) and Appendix D (quirk probability and marker cap; the corpus used p = 0.25 and a prompt instruction, without the explicit cap). -->
+    <p>Quotes, code, URLs and numbers are masked and restored. Quirks fire with p = 0.25 per turn, but p alone does not prevent over-styling. A cap of two chat markers per turn does, and it is the recommended setting; the released corpus was generated without it. Rewrites shorter than 50% of the original are rejected.</p></div>
     <div><span class="req">R3 · stay on trajectory</span><b>Continuity supervision</b><p>The real next user message serves as weak supervision. A judge checks that the regenerated reply still leads to it, and the reply is adapted for up to two rounds.</p></div>
     <div><span class="req">R4 · no hidden shortcut</span><b>Six-class sanity gate</b><p>Language mismatch, format violation, truncation, fabricated experience, hallucination, unaddressed request. Only the conversation turns are stored. The persona is not.</p></div>
   </div>
@@ -1521,7 +1549,7 @@ svg.viz text { pointer-events: none; }
 <section class="sec" id="corpus">
   <div class="sec-head">
     <h2>From seed logs to the released corpus</h2>
-    <p class="lede">We start from three public chat datasets. After seven stations, 1,242,761 conversations in 85 languages remain, with 2,396,834 user turns. Run the line, or pick a station to see what it does and how much gets through.</p>
+    <p class="lede">We start from three public chat datasets. After seven stations, 1,237,976 conversations in 85 languages remain, with 2,387,392 user turns. Run the line, or pick a station to see what it does and how much gets through.</p>
   </div>
 
   <div class="demo line" id="corpusLine">
@@ -1612,12 +1640,12 @@ svg.viz text { pointer-events: none; }
 
   <div class="grid g2" id="abCards">
     <div class="card">
-      <h3>Rewriter versus attribute <span class="src">Table 22 · Fig. 25 <span class="approx">read from figure</span></span></h3>
+      <h3>Rewriter versus attribute <span class="src">Table 23 · Fig. 25 <span class="approx">read from figure</span></span></h3>
       <div class="chart" id="abSpread"></div>
       <p class="cap">On a shared axis, the eight attribute families sit close together while the four rewriters spread out.</p>
     </div>
     <div class="card">
-      <h3>Family means <span class="src">Table 22</span></h3>
+      <h3>Family means <span class="src">Table 23</span></h3>
       <div class="tblwrap" id="abFam"></div>
       <p class="cap">Each family averages its two conditions over four rewriters. Every family scores 0.06 to 0.07 below the no-persona baseline on script stability.</p>
     </div>
@@ -1627,14 +1655,14 @@ svg.viz text { pointer-events: none; }
 <section class="sec alt" id="downstream">
   <div class="sec-head">
     <h2>Assistant line and training bay</h2>
-    <p class="lede">With varied users alone, a model still answers everyone in one default style. The release therefore matches each conversation to one of 12 assistant response styles and regenerates the replies in that style. An ablation then trains Llama-3.1-8B and Apertus-8B on three versions of the corpus.</p>
+    <p class="lede">With varied users alone, a model still answers everyone in one default style. In 234,723 released conversations, a matcher picks one of 12 assistant response styles for the user, and the replies are regenerated in that style. The training bay then fine-tunes models on versions of the corpus: an ablation of the assistant side, and a controlled comparison of the released conversations with the original training data.</p>
   </div>
 
   <div class="demo line" id="dsLine">
     <div class="demo-top">
       <div class="dsphase" id="dsPhase" role="group" aria-label="Jump to part of the line">
         <button type="button" data-p="0"><b>Assistant line</b><span>stages 1 to 3</span></button>
-        <button type="button" data-p="3"><b>Training bay</b><span>stages 4 to 7</span></button>
+        <button type="button" data-p="3"><b>Training bay</b><span>stages 4 to 10</span></button>
       </div>
       <div class="demo-btns">
         <button class="ctl primary" data-play type="button">Run the line</button>
@@ -1645,10 +1673,13 @@ svg.viz text { pointer-events: none; }
       <button class="stage" data-s="0" type="button"><span class="k">1</span><span class="t">User card</span></button>
       <button class="stage" data-s="1" type="button"><span class="k">2</span><span class="t">Style matching</span></button>
       <button class="stage" data-s="2" type="button"><span class="k">3</span><span class="t">Regeneration</span></button>
-      <button class="stage" data-s="3" type="button"><span class="k">4</span><span class="t">Fine-tuning arms</span></button>
+      <button class="stage" data-s="3" type="button"><span class="k">4</span><span class="t">Assistant arms</span></button>
       <button class="stage" data-s="4" type="button"><span class="k">5</span><span class="t">Adaptation</span></button>
       <button class="stage" data-s="5" type="button"><span class="k">6</span><span class="t">Reply features</span></button>
       <button class="stage" data-s="6" type="button"><span class="k">7</span><span class="t">Pairwise judge</span></button>
+      <button class="stage" data-s="7" type="button"><span class="k">8</span><span class="t">Corpus arms</span></button>
+      <button class="stage" data-s="8" type="button"><span class="k">9</span><span class="t">Capability</span></button>
+      <button class="stage" data-s="9" type="button"><span class="k">10</span><span class="t">Head to head</span></button>
     </div>
     <div class="dsbody">
       <div class="dsleft" id="dsLeft"></div>
@@ -1691,16 +1722,18 @@ svg.viz text { pointer-events: none; }
 <section class="sec alt" id="cite">
   <div class="sec-head">
     <h2>Release &amp; citation</h2>
-    <p class="lede">The persona bank, the augmented corpus and the pipeline code will be released under a permissive license that explicitly disallows profiling, targeting, and presenting synthetic output as a real person's voice.</p>
+    <p class="lede">The persona bank, the augmented corpus and the pipeline code are released under a permissive license that explicitly disallows profiling, targeting, and presenting synthetic output as a real person's voice.</p>
   </div>
   <div class="bib">
+    <!-- BibTeX follows the citation in the repository README (@misc, no venue). The PDF of 25 Nov 2026 carries only an
+         arXiv submission number (arXiv:submit/...), which is not a final id. Once the arXiv id is assigned, add
+         eprint = {XXXX.XXXXX}, archivePrefix = {arXiv}, primaryClass = {cs.CL} and enable the Paper button in _head.html. -->
     <button class="ctl" id="copyBib" type="button">Copy BibTeX</button>
-<pre id="bib">@article{doan2026personafactory,
-  title   = {PersonaFactory: Stylistic User Prompt Augmentation
-             with Synthetic Persona Bank},
-  author  = {Doan, Bich Ngoc and Yukhymenko, Hanna and Schlag, Imanol},
-  journal = {arXiv preprint},
-  year    = {2026}
+<pre id="bib">@misc{doan2026personafactory,
+  title  = {PersonaFactory: Stylistic User Prompt Augmentation
+            with Synthetic Persona Bank},
+  author = {Doan, Bich Ngoc and Yukhymenko, Hanna and Schlag, Imanol},
+  year   = {2026}
 }</pre>
   </div>
   <div class="foot-line"><span>Every number on this page comes from the paper. Every persona and conversation is a record from the released dataset.</span><a href="#top">Back to top</a></div>
@@ -1712,7 +1745,7 @@ svg.viz text { pointer-events: none; }
 // PersonaFactory: every number on the site, transcribed from the paper.
 // "src" names the table/figure. Values marked approx:true were read off a figure, not a table.
 window.PF = {
-  headline: { personas: 743010, conversations: 1242761, languages: 85, countries: 177, subregions: 599, occupations: 575, sectors: 23, dialects: 117670, userTurns: 2396834 },
+  headline: { personas: 743010, conversations: 1237976, languages: 85, countries: 177, subregions: 599, occupations: 575, sectors: 23, dialects: 117670, userTurns: 2387392 },
 
   // ---------- Persona bank (Appendix A) ----------
   bankGate: { // Table 4 (right)
@@ -1745,46 +1778,41 @@ window.PF = {
 
   // ---------- Corpus (Section 6, Table 3, Appendix G.1) ----------
   corpus: {
-    seed: [['WildChat',721353,58.0,77.2],['UltraChat',311884,25.1,82.1],['Nemotron',209524,16.9,80.2]],
-    personaSet: [['Language-matched',689030,55.4,82.3],['Cross-lingual',553731,44.6,75.2]],
-    responder: [['Gemma-4-31B',906613,73.0,89.2],['Ministral-3-14B',336148,27.0,68.0]],
-    tier: [['Cross-lingual',551963,44.4],['Embedding',398420,32.1],['Location pool',289290,23.3],['Language pool',3088,0.2]],
-    turns: [['1 turn',574644,46.2],['2 turns',182161,14.7],['3 turns',485956,39.1]],
-    langs: [['English',475722],['Chinese',67920],['Spanish',66132],['Russian',60108],['French',52029],['Arabic',50942],['Indonesian',41123],['Vietnamese',36711],['Portuguese',36578],['German',31917],['Italian',19386]],
-    regions: [['Western Europe',211577],['Southeast Asia',166548],['North America',161200],['Sub-Saharan Africa',103443],['East Asia',100387],['LATAM',80078],['South Asia',74644],['Eastern Europe',72609],['MENA',72393],['Southern Europe',65011]],
-    gate: { reached: 1606837, passed: 1267306, released: 1242761, turnPass: 93.3 },
-    kept: [['Lost protected content',45539,31.0],['Script or language change',42635,29.0],['Truncation',31729,21.6],['Strict-format task',21141,14.4],['No change returned',5470,3.7]],
-    keptTotal: 146805
+    seed: [['WildChat',718365,58.0,77.2],['UltraChat',310798,25.1,82.1],['Nemotron',208813,16.9,80.2]],
+    personaSet: [['Language-matched',685209,55.3,82.3],['Cross-lingual',552767,44.7,75.2]],
+    responder: [['Gemma-4-31B',905661,73.2,89.2],['Ministral-3-14B',332315,26.8,68.0]],
+    tier: [['Cross-lingual',551007,44.5],['Embedding',395698,32.0],['Location pool',288196,23.3],['Language pool',3075,0.2]],
+    turns: [['1 turn',572787,46.3],['2 turns',180962,14.6],['3 turns',484227,39.1]],
+    langs: [['English',472297],['Chinese',67813],['Spanish',65966],['Russian',60060],['French',51828],['Arabic',50877],['Indonesian',41058],['Vietnamese',36651],['Portuguese',36492],['German',31824],['Italian',19348]],
+    regions: [['Western Europe',210591],['Southeast Asia',165953],['North America',160146],['Sub-Saharan Africa',102945],['East Asia',100179],['LATAM',79812],['South Asia',74322],['Eastern Europe',72510],['MENA',72257],['Southern Europe',64891]],
+    gate: { reached: 1606837, passed: 1267306, released: 1237976, turnPass: 93.3 },
+    kept: [['Lost protected content',45453,31.0],['Script or language change',42607,29.1],['Truncation',31716,21.6],['Strict-format task',21116,14.4],['No change returned',5460,3.7]],
+    keptTotal: 146643
   },
 
   // ---------- Evaluation (Section 5, Appendix C/D) ----------
-  corpusJudge: [ // Table 5
-    { group: 'Fully scored', slice: 'All turns', n: 552654, intent: 97.2, style: 68.2, both: 66.4 },
-    { group: 'Fully scored', slice: 'Gemma-4-31B', n: 344980, intent: 98.8, style: 70.7, both: 69.9 },
-    { group: 'Fully scored', slice: 'Ministral-3-14B', n: 207674, intent: 94.5, style: 64.1, both: 60.5 },
-    { group: 'Fully scored', slice: 'UltraChat', n: 293479, intent: 98.0, style: 71.5, both: 70.1 },
-    { group: 'Fully scored', slice: 'Nemotron', n: 259175, intent: 96.2, style: 64.6, both: 62.1 },
-    { group: 'Random sample', slice: 'All turns', n: 44848, intent: 96.4, style: 66.8, both: 64.3 },
-    { group: 'Random sample', slice: 'Gemma-4-31B', n: 26579, intent: 98.5, style: 69.5, both: 68.5 },
-    { group: 'Random sample', slice: 'Ministral-3-14B', n: 18269, intent: 93.4, style: 62.9, both: 58.4 },
-    { group: 'Random sample', slice: 'WildChat', n: 25210, intent: 96.0, style: 60.5, both: 57.9 },
-    { group: 'Random sample', slice: 'UltraChat', n: 14289, intent: 96.9, style: 78.3, both: 76.0 },
-    { group: 'Random sample', slice: 'Nemotron', n: 5349, intent: 97.0, style: 65.9, both: 63.5 }
+  corpusJudge: [ // Table 6: corpus-wide, weighted to the corpus; n = judged user turns
+    { slice: 'All turns', n: 597341, intent: 96.6, style: 67.1, both: 64.9 },
+    { slice: 'Gemma-4-31B', n: 371550, intent: 98.6, style: 69.8, both: 68.8 },
+    { slice: 'Ministral-3-14B', n: 225791, intent: 93.7, style: 63.2, both: 58.9 },
+    { slice: 'WildChat', n: 25088, intent: 96.0, style: 60.5, both: 58.0 },
+    { slice: 'UltraChat', n: 307750, intent: 97.3, style: 76.0, both: 74.0 },
+    { slice: 'Nemotron', n: 264503, intent: 96.6, style: 65.2, both: 62.7 }
   ],
-  judgeFree: [ // Table 8
-    { grp: 'Transformation depth', name: 'Token Jaccard distance (same-lang.)', v: 0.425, scale: 1 },
-    { grp: 'Transformation depth', name: 'Normalized edit distance (same-lang.)', v: 0.358, scale: 1 },
-    { grp: 'Transformation depth', name: 'Core-vocabulary retention', v: 71.0, scale: 100 },
-    { grp: 'Transformation depth', name: 'LaBSE semantic similarity', v: 0.854, scale: 1 },
-    { grp: 'Constraint retention', name: 'Numbers & quantities intact', v: 96.1, scale: 100 },
-    { grp: 'Constraint retention', name: 'Code & identifiers intact', v: 88.6, scale: 100 },
-    { grp: 'Constraint retention', name: 'Quoted literals intact', v: 80.2, scale: 100 },
-    { grp: 'Constraint retention', name: 'All entities preserved', v: 86.9, scale: 100 },
-    { grp: 'Style adherence', name: 'Emoji & emoticon register', v: 98.4, scale: 100 },
-    { grp: 'Style adherence', name: 'Punctuation register', v: 68.1, scale: 100 },
-    { grp: 'Style adherence', name: 'Capitalization register', v: 60.9, scale: 100 }
+  judgeFree: [ // Table 9
+    { grp: 'Transformation depth', name: 'Token Jaccard distance (same-lang.)', v: 0.443, scale: 1 },
+    { grp: 'Transformation depth', name: 'Normalized edit distance (same-lang.)', v: 0.396, scale: 1 },
+    { grp: 'Transformation depth', name: 'Core-vocabulary retention', v: 73.7, scale: 100 },
+    { grp: 'Transformation depth', name: 'LaBSE semantic similarity', v: 0.791, scale: 1 },
+    { grp: 'Constraint retention', name: 'Numbers & quantities intact', v: 98.9, scale: 100 },
+    { grp: 'Constraint retention', name: 'Code & identifiers intact', v: 90.4, scale: 100 },
+    { grp: 'Constraint retention', name: 'Quoted literals intact', v: 95.5, scale: 100 },
+    { grp: 'Constraint retention', name: 'All entities preserved', v: 95.2, scale: 100 },
+    { grp: 'Style adherence', name: 'Emoji & emoticon register', v: 92.2, scale: 100 },
+    { grp: 'Style adherence', name: 'Punctuation register', v: 69.9, scale: 100 },
+    { grp: 'Style adherence', name: 'Capitalization register', v: 54.4, scale: 100 }
   ],
-  structVsFlat: { // Table 1 + Table 12
+  structVsFlat: { // Table 1 + Table 13
     table1: { prefAll: [60, 33], prefDecisive: [64, 35], intent: [92, 92], len: [1586, 1582] },
     judges: [
       { judge: 'MiniMax-M2.5 (original)', n: 433, s: 60.0, f: 33.0, t: 6.0, dec: 64.0, lo: 55.4, hi: 64.6, kind: 'pipeline', ciNote: 'interval over all pairs' },
@@ -1794,7 +1822,7 @@ window.PF = {
       { judge: 'Qwen3.6-35B-A3B', n: 518, s: 61.0, f: 34.0, t: 5.0, dec: 64.2, lo: 59.9, hi: 68.3, kind: 'external' }
     ]
   },
-  representations: { // Table 2, 14, 15
+  representations: { // Tables 2, 15, 16
     names: ['No persona', 'PersonaHub form', 'SynthPAI form', 'PersonaFactory'],
     words: [0, 13, 83, 280],
     style: [3.1, 5.5, 43.5, 69.2], styleCI: [[2.1,4.6],[4.1,7.3],[40.1,47.0],[66.0,72.3]],
@@ -1803,7 +1831,7 @@ window.PF = {
     pfPreferred: [94.4, 94.9, 81.3, null], pfCI: [[92.5,95.8],[93.1,96.2],[78.4,83.9], null], winRatio: ['17.90:1','20.46:1','4.83:1', null],
     adherence: { 'Punctuation': [0.405,0.410,0.645,0.757], 'Emoji': [0.814,0.815,0.939,0.980], 'Capitalization': [0.802,0.808,0.707,0.722] },
     cost: { 'Entities preserved': [0.946,0.936,0.921,0.905], 'Quoted literals intact': [0.967,0.955,0.945,0.938], 'Assistant sanity (%)': [92.8,92.4,91.6,92.4] },
-    encodes: { // Table 14, % of profiles
+    encodes: { // Table 15, % of profiles
       rows: ['Age','Location','Occupation','Language','Style axes','Quirks','Reference pool'],
       vals: [[0,0,100,100],[0,16,100,100],[0,68,100,100],[0,8,26,99],[0,0,55,100],[0,0,1,100],[0,2,1,100]]
     },
@@ -1811,18 +1839,18 @@ window.PF = {
       approx: true, judges: ['MiniMax-M2.5', 'Qwen3.6-35B', 'Muse-Glimmer-30B'],
       vals: { 'PersonaHub form': [51, 38, 15], 'SynthPAI form': [57, 68, 18], 'PersonaFactory': [61, 79, 26] }
     },
-    robust: { // Table 16
+    robust: { // Table 17
       byRewriter: { 'Gemma-4-31B': [94.4, 94.9, 81.3], 'Ministral-3-14B': [92.3, 92.6, 72.3] },
       byJudge: { 'Gemma-4-31B': [99.0, 97.5, 83.5], 'GLM-4.7-Flash': [84.5, 81.5, 71.0], 'MiniMax-M2.5': [93.9, 95.4, 82.5], 'Ministral-3-14B': [91.0, 88.5, 71.5] }
     }
   },
-  calibration: { // Table 13 (MiniMax-M2.5 / Qwen / Muse)
+  calibration: { // Table 14 (MiniMax-M2.5 / Qwen / Muse)
     judges: ['MiniMax-M2.5', 'Qwen3.6-35B-A3B', 'Muse-Glimmer-30B'],
     arms: { 'A: raw source record': [[44.1,27.1,28.8],[53.3,36.3,10.4],[68.7,22.0,9.3]], 'B: background, no style layer': [[43.4,22.9,33.7],[47.8,34.6,17.6],[65.4,20.3,14.3]], 'C: background + style layer': [[17.6,14.8,67.6],[16.5,41.8,41.8],[27.5,21.4,51.1]] },
     // Figure 22b: C exact (labeled in figure); real-user rates approx.
     features: [['starts lowercase',31,32],['no final punctuation',59,61],['chat slang (u, plz, lol, fr)',13,2],['greeting at start',38,3],['thanks / please at end',10,0],['ellipsis',14,3],['emoji or emoticon',21,1],['repeated !! or ??',9,0]]
   },
-  judges: { // Tables 9–11
+  judges: { // Tables 10–12 (AC1 in Table 12)
     names: ['Gemma-4-31B', 'GLM-4.7-Flash', 'Ministral-3-14B', 'MiniMax-M2.5'],
     meanStyle: [0.840, 0.929, 0.920, 0.778], meanIntent: [0.680, 0.830, 0.930, 0.680],
     agreeStyle: [[null,0.899,0.880,0.879],[0.899,null,0.869,0.827],[0.880,0.869,null,0.818],[0.879,0.827,0.818,null]],
@@ -1831,13 +1859,13 @@ window.PF = {
   },
 
   // ---------- Ablations (Appendix C, F) ----------
-  selectionAblation: [ // Table 6
+  selectionAblation: [ // Table 7
     { sel: 'Random, same language', prompt: 'template + framing', intent: 97.2, style: 45.6, sanity: 96.2 },
     { sel: 'Random, same language', prompt: 'template only', intent: 96.2, style: 50.4, sanity: 94.2 },
     { sel: 'Conservative matching', prompt: 'template + framing', intent: 99.2, style: 68.6, sanity: 95.0 },
     { sel: 'Conservative matching', prompt: 'template only', intent: 98.7, style: 72.5, sanity: 95.5 }
   ],
-  crossLingual: [ // Table 7
+  crossLingual: [ // Table 8
     { v: 'Single pass', intent: 96.0, style: 61.1, target: 84.6, sanity: 94.3 },
     { v: 'Translate, then restyle', intent: 99.0, style: 58.2, target: 88.6, sanity: 95.7 }
   ],
@@ -1851,34 +1879,34 @@ window.PF = {
     style: [0.89, 0.96, 0.78, 0.61], intent: [0.77, 0.38, 0.77, 0.58], script: [0.98, 0.85, 0.94, 0.91]
   },
 
-  // ---------- Downstream / assistant personas (Appendix G.2) ----------
-  assistantStyles: [ // Table 24
-    ['Knowledgeable friend: relaxed, contractions, light humour','casual',52750,22.3],
-    ['Answers first, compact expert prose, no preamble','neutral-professional',49118,20.8],
-    ['Explains through analogies and vivid examples','conversational',25106,10.6],
-    ['Maximally compact: bullets, zero filler','neutral',21850,9.3],
-    ['Separates facts from judgement, explicit assumptions','neutral-professional',20779,8.8],
-    ['Formal register with a concluding summary','formal',16883,7.1],
-    ['Headed sections, numbered steps, code first','neutral',16675,7.1],
-    ['Short sentences, everyday words, one example','neutral',8698,3.7],
-    ['Step by step, explains each term once','friendly-neutral',8048,3.4],
-    ['Energetic, tech-savvy, snappy bullets','casual',7683,3.3],
-    ['Supportive, action-oriented, no flattery','friendly',5056,2.1],
-    ['Gentle, steady tone for stressful topics','gentle',3545,1.5]
+  // ---------- Downstream / assistant personas (Appendix G.2, G.3) ----------
+  assistantStyles: [ // Table 25 (n = 234,723 conversations with a model persona)
+    ['Knowledgeable friend: relaxed, contractions, light humour','casual',52450,22.3],
+    ['Answers first, compact expert prose, no preamble','neutral-professional',48802,20.8],
+    ['Explains through analogies and vivid examples','conversational',24872,10.6],
+    ['Maximally compact: bullets, zero filler','neutral',21621,9.2],
+    ['Separates facts from judgement, explicit assumptions','neutral-professional',20731,8.8],
+    ['Formal register with a concluding summary','formal',16795,7.2],
+    ['Headed sections, numbered steps, code first','neutral',16575,7.1],
+    ['Short sentences, everyday words, one example','neutral',8659,3.7],
+    ['Step by step, explains each term once','friendly-neutral',8026,3.4],
+    ['Energetic, tech-savvy, snappy bullets','casual',7628,3.2],
+    ['Supportive, action-oriented, no flattery','friendly',5029,2.1],
+    ['Gentle, steady tone for stressful topics','gentle',3535,1.5]
   ],
-  dataPilot: [ // Table 26
+  dataPilot: [ // Table 27
     { arm: 'None (default)', style: 19.4, content: null, instr: 86.1, words: 521 },
     { arm: 'User persona (paper)', style: 25.4, content: 36.9, instr: 87.6, words: 266 },
     { arm: 'Model persona only', style: 71.1, content: 40.0, instr: 86.4, words: 313 },
     { arm: 'User + model persona', style: 66.8, content: 35.9, instr: 87.3, words: 271 }
   ],
-  designPilot: [ // Table 25
+  designPilot: [ // Table 26
     { arm: 'Regenerated, user persona only', style: 35.1, content: 44.6, instr: 84.0, sanity: 88.2 },
     { arm: 'Matched style, generated', style: 75.7, content: 37.6, instr: 87.2, sanity: 87.7 },
     { arm: 'Random style, generated', style: 53.3, content: 35.8, instr: 89.2, sanity: 87.7 },
     { arm: 'Matched style, restyled afterwards', style: 67.1, content: 96.9, instr: 88.2, sanity: 92.3 }
   ],
-  finetune: { // Table 27 + 28
+  finetune: { // Tables 28 + 29 (assistant-side ablation, Appendix G.2)
     rows: [
       { fam: 'Llama-3.1-8B', stage: 'IT', formality: 0.18, lower: -0.16, length: -0.06, emoji: 0.12, diversity: 0.254, stability: 0.866, words: 426, headers: 6.5, bullets: 67.9, emojiPct: 0.1, formal: 0.71 },
       { fam: 'Llama-3.1-8B', stage: 'SFT A', formality: 0.51, lower: -0.45, length: -0.03, emoji: 0.40, diversity: 0.187, stability: 0.827, words: 497, headers: 71.5, bullets: 71.9, emojiPct: 17.4, formal: 0.64 },
@@ -1888,7 +1916,7 @@ window.PF = {
       { fam: 'Apertus-8B', stage: 'SFT B', formality: 0.45, lower: -0.38, length: 0.04, emoji: 0.29, diversity: 0.380, stability: 0.819, words: 293, headers: 10.2, bullets: 47.5, emojiPct: 0.7, formal: 0.74 },
       { fam: 'Apertus-8B', stage: 'SFT C', formality: 0.45, lower: -0.37, length: 0.05, emoji: 0.38, diversity: 0.275, stability: 0.818, words: 299, headers: 7.4, bullets: 39.7, emojiPct: 1.1, formal: 0.73 }
     ],
-    pairwise: [ // Table 29
+    pairwise: [ // Table 30 / Figure 27
       { cmp: 'Llama B vs. A', raw: 57.0, lo: 55.4, hi: 58.7, lc: 48.8 },
       { cmp: 'Llama C vs. A', raw: 54.9, lo: 53.3, hi: 56.6, lc: 42.4 },
       { cmp: 'Llama C vs. B', raw: 48.1, lo: 46.4, hi: 49.8, lc: 48.6 },
@@ -1898,18 +1926,43 @@ window.PF = {
       { cmp: 'Apertus C vs. B', raw: 42.0, lo: 40.3, hi: 43.6, lc: 42.6 }
     ]
   },
-  noUserPersona: [ // Table 30
+  noUserPersona: [ // Table 31
     { arm: 'Source replies', sanity: null, style: 17.4, content: null, words: 344 },
     { arm: 'Regenerated, no style', sanity: 82.2, style: 25.7, content: 42.4, words: 583 },
     { arm: 'Regenerated with style', sanity: 77.4, style: 79.5, content: 25.4, words: 371 },
     { arm: 'Source replies restyled', sanity: null, style: 57.5, content: 93.0, words: 417 }
   ],
+  corpusFT: { // Appendix G.3: Apertus-v1.5-8B base fine-tuned on versions of the same conversations
+    bench: ['MMLU', 'ARC-C', 'GSM8K', 'IFEval strict', 'IFEval loose', 'MBPP'],
+    arms: [ // Table 32: clean capability (%), mean of three training seeds; chars = median assistant-turn length of the training data
+      { arm: 'A0', chars: 1131, v: [63.7, 71.4, 70.1, 67.9, 69.7, 48.7] },
+      { arm: 'A0r', chars: 2618, v: [61.3, 73.0, 67.7, 65.1, 68.7, 48.5] },
+      { arm: 'A1', chars: 1131, v: [63.1, 72.2, 69.6, 64.1, 65.9, 47.5] },
+      { arm: 'A2', chars: 956, v: [64.4, 72.4, 67.0, 69.7, 72.2, 48.8] }
+    ],
+    paired: [ // Table 33: seed 1234. IFEval strict differences in points [value, lo, hi]; WildChat LC win rate of the first arm (%) [value, lo, hi]
+      { cmp: 'A1 vs. A0', clean: [-4.1, -7.2, -0.9], rule: [-1.0, -3.9, 1.8], persona: [0.0, -3.6, 3.7], qwen: null, muse: null },
+      { cmp: 'A2 vs. A0r', clean: [5.0, 1.1, 8.9], rule: [1.7, -1.4, 4.8], persona: [2.5, -1.9, 6.8], qwen: [46.5, 42.9, 49.7], muse: [53.8, 49.8, 57.5] },
+      { cmp: 'A2 vs. A1', clean: [6.7, 2.8, 10.4], rule: [1.3, -1.5, 4.1], persona: [1.9, -2.0, 5.9], qwen: [57.8, 55.2, 60.6], muse: [59.5, 56.7, 62.3] },
+      { cmp: 'A2 vs. A0', clean: [2.6, -0.9, 6.1], rule: [0.3, -2.4, 3.0], persona: [2.0, -1.8, 5.9], qwen: [54.6, 51.9, 57.3], muse: [55.5, 52.8, 58.3] }
+    ],
+    style: [ // Table 34: [metric, A2, A0]; 300 held-out requests x 12 user personas, three seeds
+      ['Formality correlation', 0.463, 0.378],
+      ['Emoji mirroring', 0.392, 0.125],
+      ['Style diversity across personas', 0.325, 0.227],
+      ['Content stability', 0.826, 0.829]
+    ],
+    cross: [ // Table 35: [benchmark, X1, X2], one seed. X1: translated user turns, regenerated assistant; X2: released
+      ['MMLU', 61.9, 63.2], ['ARC-C', 70.0, 71.5], ['GSM8K', 68.8, 67.3], ['IFEval strict', 69.3, 70.4], ['IFEval loose', 72.8, 74.1],
+      ['MBPP', 48.4, 50.6], ['Multi-IF', 59.7, 67.0], ['MGSM-en', 50.4, 53.3], ['Global-MMLU', 56.6, 56.6], ['INCLUDE', 56.1, 57.1]
+    ]
+  },
 
   // ---------- Human study (Appendix E) ----------
   human: {
     // dimension, n, mean, SD, % rated 1 or 2 (pooled; median 4.0 for all four)
     pooled: [ ['Meaning preservation', 89, 3.94, 1.30, 15.7], ['Style fidelity', 151, 3.63, 1.19, 16.6], ['Linguistic plausibility', 147, 3.64, 1.35, 20.4], ['Human/model confidence', 85, 3.85, 0.88, 8.2] ],
-    turing: [ // Table 20
+    turing: [ // Table 21
       { judge: 'Human raters', human: 59.1, hlo: 44.4, hhi: 72.3, acc: 55.3, alo: 44.7, ahi: 65.4 },
       { judge: 'Claude Sonnet 4.5', human: 83.3, hlo: 74.9, hhi: 89.3, acc: 57.4, alo: 50.5, ahi: 63.9 },
       { judge: 'MiniMax-M2.5', human: 89.2, hlo: 81.7, hhi: 93.9, acc: 50.5, alo: 43.7, ahi: 57.3 },
@@ -2368,13 +2421,14 @@ const CONVS = [
   }
 
   let tracked = null;   // the card the spec sheet follows
-  /* ---- line A: build personas ---- */
+  /* ---- line A: build personas ----
+     Seed grid, judge keep rate (95.5%) and 4.5% rejected: Section 3 and Appendix A, Table 4. */
   label('SEED GRID', 18, 22);
   [['177 countries', '599 sub-regions'], ['575 occupations', '23 sectors'], ['3 generators', 'Gemma · Ministral · GLM']].forEach((h, i) => {
     const y = 32 + i * 58; box(16, y, 180, 48, h[0], h[1]);
     feed(`M196 ${y + 24} C 230 ${y + 24}, 214 212, 246 212`);
   });
-  store(958, 30, 'PERSONA BANK', '743,010', 'profiles released');
+  store(958, 30, 'PERSONA BANK', D.headline.personas.toLocaleString('en-US'), 'profiles released');
   const tickA = line({
     beltY: 252, x0: 214, x1: 1018, dir: 1,
     stations: [
@@ -2390,14 +2444,16 @@ const CONVS = [
   });
   pipe('M1012 248 V 124');
 
-  /* ---- line B: augment conversations ---- */
+  /* ---- line B: augment conversations ----
+     Sanity pass 78.9% (21.1% fail) of 1,606,837 that reached the gate: Section 6, Table 3 and Appendix G.1, Table 24. */
   label('SEED LOGS', 1000, 330);
   box(998, 338, 110, 48, 'Chat logs', '3 open datasets');
   feed('M1053 386 V 470 C 1053 520, 1060 550, 1058 572');
   // personas leave the bank and drop down to the matcher
   pipe('M1098 124 C 1114 124, 1114 160, 1114 200 V 404 C 1114 420, 1100 420, 1040 420');
   T('personas', { x: 1105, y: 240, transform: 'rotate(90 1105 240)', 'text-anchor': 'middle', style: 'font:600 10.5px var(--f-mono);letter-spacing:.06em;fill:var(--pf)' }, bg);
-  store(14, 380, 'CORPUS', '1,242,761', 'conversations', 152, 21);
+  // released corpus after dedup and final filters (Section 6, Table 3): 1,237,976
+  store(14, 380, 'CORPUS', D.headline.conversations.toLocaleString('en-US'), 'conversations', 152, 21);
   const tickB = line({
     beltY: 602, x0: 108, x1: 1078, dir: -1,
     stations: [
@@ -2680,14 +2736,14 @@ if (!reduce){
 /* 20-bank.js */
 (function(){
 /* ======================= PERSONA ASSEMBLY (station 1) ======================= */
-// Numbers not in data.js, with their source:
+// Numbers not in data.js, with their source (paper revision of 25 Nov 2026; Section 3 and Appendix A):
 const BANK_X = {
   macroRegions: 13,                 // Table 4: "Countries (Macro-regions) 177 (13)"
-  languages: 282,                   // Table 4: "Languages (Dialect labels) 282 (117,670)"
-  verdictsStored: 686814,           // Table 4 caption: keep rates computed over 686,814 candidates with stored verdicts
-  verdictsMissing: 108929,          // Table 4 caption: remaining 108,929 candidates (95.5 keep rate)
+  languages: 282,                   // Table 4: "Languages (Dialect labels) 282 (117,670)"; caption: main languages held by >= 50 profiles
+  verdictsStored: 686814,           // Appendix A text: keep and gate rates computed over 686,814 candidates with stored verdicts
+  verdictsMissing: 108929,          // Appendix A text: remaining 108,929 candidates (95.5% keep rate)
   meanAge: 39.6,                    // Table 4: mean age 39.6 yrs (18-80)
-  topCountries: [['Indonesia', 27004], ['China', 26109], ['India', 25947]]  // Figure 3 caption
+  topCountries: [['Indonesia', 27004], ['China', 26109], ['India', 25947]]  // Appendix A text (discussion of Figure 3)
 };
 
 // Seven personas from the released persona_bank subset (swiss-ai/PersonaFactory). Every value below is copied from the
@@ -3816,7 +3872,7 @@ function markLabel(svg, cat){
     if (full === cat) t.classList.add('hlab');
   });
 }
-const UNIT = { 'Age': 'personas per age bin (thousands) · mean ' + BANK_X.meanAge + ' years', 'Main language (top 10)': '% of bank · ' + BANK_X.languages + ' languages in total' };
+const UNIT = { 'Age': 'personas per age bin (thousands) · mean ' + BANK_X.meanAge + ' years', 'Main language (top 10)': '% of bank · ' + BANK_X.languages + ' main languages held by at least 50 profiles' };
 // a readout chart whose labels hbars would cut in a half-width panel spans the full readout (same rule as hbarsCore's label column)
 const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(key).map(r => r[0])) > Math.min(150, 0.42 * (gridW - 22) / 2) - 2;
 
@@ -4021,7 +4077,8 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
     if (opts.cap) el('p', 'cap', opts.cap, c);
     return ch;
   }
-  const CAPS = { 'Age': 'Adults only (18–80), mean 39.6 years. Bin edges approximate.', 'Occupation (top 10 of 575)': 'Students and technology roles lead.', 'Main language (top 10)': '282 languages and 117,670 free-text dialect labels.', 'Emoji use': 'Frequent decorative emoji is capped near 5% because it would otherwise dominate rewrites.', 'Capitalization': 'Almost a quarter type in all lowercase.', 'Punctuation': 'About two fifths drop end punctuation.' };
+  // Age bins and heights are read off the Figure 4 histogram (approximate); the paper states only mean and range.
+  const CAPS = { 'Age': 'Adults only (18–80), mean ' + BANK_X.meanAge + ' years.', 'Occupation (top 10 of 575)': 'Students and technology roles lead.', 'Main language (top 10)': BANK_X.languages + ' main languages held by at least 50 profiles, and ' + fmt0(D.headline.dialects) + ' distinct free-text dialect labels. Whether each dialect shows in the written text has not been verified.', 'Emoji use': 'Frequent decorative emoji is limited to about 5% of profiles, since it would otherwise dominate the rewritten turns.', 'Capitalization': 'Almost a quarter type in all lowercase.', 'Punctuation': 'About two fifths drop end punctuation.' };
   function dist(k){
     const ch = card(k, srcOf(k), { approx: isApprox(k), cap: CAPS[k], wide: k === 'Generator model' });
     const fn = () => { drawDist(ch, k, null, false); el('div', 'unit', k === 'Age' ? 'personas per age bin (thousands)' : '% of bank', ch); };
@@ -4654,7 +4711,7 @@ const CHECKS = ['Language matches', 'Instruction / format kept', 'Not truncated'
 (function(){
 /* ======================= CORPUS: the production line, seed logs to release ======================= */
 // Numbers used here that are not in data.js:
-// Table 23 (App. G.1): conversations that reached the sanity gate and passed it, by slice. [label, reached, passed, pass %]
+// Table 24 (App. G.1): conversations that reached the sanity gate and passed it, by slice. [label, reached, passed, pass %]
 const T23 = {
   responder: [['Gemma-4-31B', 823676, 734927, 89.2], ['Ministral-3-14B', 783161, 532379, 68.0]],
   seed: [['WildChat', 959084, 740485, 77.2], ['UltraChat-200k', 384191, 315508, 82.1], ['Nemotron IF', 263562, 211313, 80.2]],
@@ -4662,19 +4719,22 @@ const T23 = {
   all: ['Overall', 1606837, 1267306, 78.9]
 };
 const BANK_EN = 19.6;     // Section 4: native-English personas are 19.6% of the bank (cross-lingual mode samples from all of it)
-const TIMED_OUT = 0.2;    // App. G.1: share of kept turns that are rewriter time-outs
+const XL_EN = 0.8;        // Section 6: English is 0.8% of the cross-lingual set (all 85 languages occur in it)
+const TIMED_OUT = 0.2;   // App. G.1: share of kept turns that are rewriter time-outs
 const MIN_COS = 0.15;     // App. G.1: embedding tier threshold (all-MiniLM-L6-v2)
-const P_QUIRK = 0.25;     // Section 4: quirks fire with p = 0.25 per turn
+const P_QUIRK = 0.25;     // Section 4 / App. D: quirks fire with p = 0.25 per turn; the corpus prompt asks for at most two stylistic elements (no explicit marker cap)
+const ECHO_RM = 4785;     // App. G.1: conversations removed by the rule-based filter for user turns that restate the rewrite-prompt instructions
 const LEN_GUARD = 50;     // Section 4: rewrites under 50% of the original length are rejected
 const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iterations
 
 (function corpus(){
   const C = D.corpus;
   const root = $('#corpusLine'), flowEl = $('#cFlow'), piece = $('#cPiece'), rd = $('#cRead'), srcEl = $('#cSrc');
-  // seed sets: colour, reached the gate (Table 23), passed (Table 23), released (Table 3)
+  // seed sets: colour, reached the gate (Table 24), passed (Table 24), released (Table 3)
   const SEEDS = T23.seed.map((r, i) => ({ name: ['WildChat', 'UltraChat', 'Nemotron'][i], full: r[0], color: ['var(--s1)', 'var(--s2)', 'var(--s3)'][i], reached: r[1], passed: r[2], rate: r[3], released: C.seed[i][1], share: C.seed[i][2] }));
   const REACHED = T23.all[1], PASSED = T23.all[2], RELEASED = C.gate.released;
-  const TURNS = D.headline.userTurns, KEPT = C.keptTotal;
+  // released user turns, from the Table 3 turn-count rows (1·n1 + 2·n2 + 3·n3 = 2,387,392, as in Section 6)
+  const TURNS = C.turns.reduce((a, r) => a + parseInt(r[0], 10) * r[1], 0), KEPT = C.keptTotal;
   const EN = C.langs.find(r => r[0] === 'English')[1];
   $('#cLegend').appendChild(legend(SEEDS.map(s => ({ name: s.full + ' seeds', color: s.color }))));
 
@@ -4765,10 +4825,10 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
     const notes = ['Zhao et al., 2024', 'Ding et al., 2023; Tunstall et al., 2023', 'NVIDIA, 2025a; Nathawani et al., 2025; NVIDIA, 2025b. Longer prompts, often with multi-step instructions or constraints.'];
     SEEDS.forEach((s, i) => { const li = el('li', null, null, list); const sw = el('i', null, null, li); sw.style.background = s.color; const d = el('div', null, null, li); el('b', null, names[i], d); el('span', null, notes[i], d); });
     fade([...list.children], animate);
-    const c = block('Conversations that reach the sanity gate', 'Table 23', rd);
+    const c = block('Conversations that reach the sanity gate', 'Table 24', rd);
     const draw = () => hbars(c, { rows: SEEDS.map(s => ({ label: s.full, values: [s.reached], colors: [s.color], tip: () => [{ l: fmt1(s.reached / REACHED * 100) + '% of all that reach the gate' }] })), series: [{ name: 'conversations', color: 'var(--s1)' }], fmt: fmt0, ticks: false, barH: 18, unit: 'Conversations, total ' + fmt0(REACHED) });
     el('p', 'cap', 'WildChat supplies ' + fmt1(SEEDS[0].reached / REACHED * 100) + '% of what reaches the gate. Colors match the ribbon.', rd);
-    // Source: paper Section 6, Table 23
+    // Source: paper Section 6, Table 24
     return draw;
   }
 
@@ -4785,7 +4845,7 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
     const c = block(withEn ? 'Top languages of released conversations' : 'Top 10 non-English languages', 'Fig. 26a', rd);
     b.addEventListener('click', () => { withEn = !withEn; b.setAttribute('aria-pressed', withEn); $('.rh span', c.parentNode).textContent = withEn ? 'Top languages of released conversations' : 'Top 10 non-English languages'; draw(); });
     const draw = () => hbars(c, { rows: C.langs.filter(r => withEn || r[0] !== 'English').map(r => ({ label: r[0], values: [r[1]] })), series: [{ name: 'conversations', color: 'var(--s1)' }], fmt: compact, ticks: false, barH: 12, unit: 'Released conversations, by detected language of the first user turn' });
-    el('p', 'cap', 'The other ' + fmt1(100 - EN / RELEASED * 100) + '% span 84 languages. These counts use fastText with a Lingua fallback.', rd);
+    el('p', 'cap', 'The other ' + fmt1(100 - EN / RELEASED * 100) + '% span 84 languages. All 85 occur in the cross-lingual set, where English is only ' + XL_EN + '%. These counts use fastText with a Lingua fallback.', rd);
     // Source: paper Section 4, App. G.1, Fig. 26a
     return draw;
   }
@@ -4864,7 +4924,7 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
   function s4(animate){
     head(4, 'Rewrite & guards', 'Each eligible user turn is re-voiced by the matched persona under guards that protect the request.');
     const steps = el('ol', 'steps', null, piece);
-    [['Mask', 'Quotes, code, URLs and numbers are masked, then restored. A rewrite that loses one is retried.'], ['Rewrite', 'Same intent, subtle persona traits. Quirks fire with p = ' + P_QUIRK + ' per turn.'], ['Cross-lingual', 'Translate the turn literally first, then restyle it in that language.'], ['Length guard', 'A rewrite under ' + LEN_GUARD + '% of the original length is rejected.'], ['Fallback', 'If any guard fails, the original turn ships verbatim.']].forEach(([k, v]) => { const li = el('li', null, null, steps); el('b', null, k, li); el('span', null, v, li); });
+    [['Mask', 'Quotes, code, URLs and numbers are masked, then restored. A rewrite that loses one is retried.'], ['Rewrite', 'Same intent, subtle persona traits. Quirks fire with p = ' + P_QUIRK + ' per turn, and the prompt asks for at most two stylistic elements.'], ['Cross-lingual', 'Translate the turn literally first, then restyle it in that language.'], ['Length guard', 'A rewrite under ' + LEN_GUARD + '% of the original length is rejected.'], ['Fallback', 'If any guard fails, the original turn ships verbatim.']].forEach(([k, v]) => { const li = el('li', null, null, steps); el('b', null, k, li); el('span', null, v, li); });
     fade([...steps.children], animate);
     const sp = block(fmt0(TURNS) + ' released user turns', 'App. G.1', rd).parentNode; sp.classList.add('split'); sp.lastChild.remove();
     const rv = TURNS - KEPT;
@@ -4894,10 +4954,10 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
     ];
     items.forEach(([k, v, back]) => { const li = el('li', back ? 'back' : null, null, loop); el('b', null, k, li); el('span', null, v, li); if (back){ const r = el('span', 'ret', '↺ back to the judge', li); r.setAttribute('aria-hidden', 'true'); } });
     fade([...loop.children], animate, 260);
-    const c = block('Conversations that reach the gate, by responder', 'Table 23', rd);
+    const c = block('Conversations that reach the gate, by responder', 'Table 24', rd);
     const draw = () => hbars(c, { rows: T23.responder.map(r => ({ label: r[0], values: [r[1]], tip: () => [{ l: fmt1(r[1] / REACHED * 100) + '% of all that reach the gate' }] })), series: [{ name: 'conversations', color: 'var(--s1)' }], fmt: fmt0, ticks: false, barH: 18, unit: 'Conversations' });
     el('p', 'cap', 'Gemma-4-31B and Ministral-3-14B each answer about half. The stored example holds only the user and assistant turns.', rd);
-    // Source: paper Section 4, Table 23
+    // Source: paper Section 4, Table 24
     return draw;
   }
 
@@ -4909,7 +4969,7 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
     fade([...ul.children], animate, 120);
     big([[fmt0(PASSED), 'of ' + fmt0(REACHED) + ' pass (' + fmt1(T23.all[3]) + '%)'], ['≈74%', 'of dropped conversations are Ministral-3-14B’s']], piece);
     const groups = [['Responder', T23.responder], ['Seed set', T23.seed], ['Persona set', T23.set]];
-    const c = block('Sanity pass rate by slice', 'Table 23', rd);
+    const c = block('Sanity pass rate by slice', 'Table 24', rd);
     // grouped bars on one shared scale, so the dashed overall line lines up across groups
     const draw = () => {
       const w = W(c), barH = 13, rowH = 22, gh = 22, top = 18, bottom = 22;
@@ -4938,7 +4998,7 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
       const u = document.createElement('div'); u.className = 'unit'; u.textContent = 'Conversation-level sanity pass rate over the ' + fmt0(REACHED) + ' that reach the gate'; c.appendChild(u);
     };
     el('p', 'cap', 'Most drops come down to the responder. The seed set matters much less, and cross-lingual conversations pass slightly less often.', rd);
-    // Source: paper Section 4, App. G.1, Table 23
+    // Source: paper Section 4, App. G.1, Table 24
     return draw;
   }
 
@@ -4947,15 +5007,15 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
     { v: 'seed', l: 'Seed set', src: 'Table 3', cap: 'WildChat supplies 58% of the release. Pass rates are close across seed sets (77–82%).' },
     { v: 'personaSet', l: 'Persona set', src: 'Table 3', cap: 'Cross-lingual conversations pass the gate less often (75.2% vs 82.3%) and are kept anyway.' },
     { v: 'responder', l: 'Responder', src: 'Table 3', cap: 'Ministral answers in high-resource cross-lingual conversations were regenerated with Gemma and ship under Gemma.' },
-    { v: 'tier', l: 'Match tier', src: 'Table 3', cap: 'Location, embedding and language pool are the language-matched cascade. Cross-lingual is the separate mode.' },
+    { v: 'tier', l: 'Match tier', src: 'Table 3', cap: 'Location, embedding and language pool are the language-matched cascade. Cross-lingual is the separate mode. Tier and persona set are recorded separately, so the cross-lingual tier holds ' + fmt0(C.personaSet[1][1] - C.tier[0][1]) + ' fewer conversations than the cross-lingual set.' },
     { v: 'turns', l: 'User turns', src: 'Table 3', cap: fmt0(TURNS) + ' user turns, 1.93 per conversation.' },
     { v: 'regions', l: 'Macro-region', src: 'Fig. 26b', cap: 'Top 10 of 13 persona macro-regions. UltraChat and Nemotron supply most Western European and North American conversations.' }
   ];
   let comp = 'seed';
   function s7(animate){
-    head(7, 'Release', 'Conversations that pass the gate are deduplicated before release.');
+    head(7, 'Release', 'Conversations that pass the gate are deduplicated and filtered once more before release.');
     const steps = el('ol', 'steps', null, piece);
-    [['Deduplicate', 'Repeated conversations are removed.']].forEach(([k, v]) => { const li = el('li', null, null, steps); el('b', null, k, li); el('span', null, v, li); });
+    [['Deduplicate', 'Repeated conversations are removed.'], ['Language filters', 'A final filter on low-resource languages, and a cap on cross-lingual Russian conversations.'],['Prompt echo', 'A rule-based filter removes ' + fmt0(ECHO_RM) + ' conversations in which a user turn restates the rewrite instructions.']].forEach(([k, v]) => { const li = el('li', null, null, steps); el('b', null, k, li); el('span', null, v, li); });
     fade([...steps.children], animate);
     big([[fmt0(RELEASED), 'conversations, ' + fmt0(PASSED - RELEASED) + ' fewer than passed the gate'], [fmt0(TURNS), 'user turns, 1.93 per conversation']], piece);
     const seg = el('div', 'seg', null, rd); seg.id = 'cCompSeg'; seg.setAttribute('role', 'group'); seg.setAttribute('aria-label', 'Breakdown');
@@ -4979,7 +5039,7 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
       table(tw, pass ? ['Slice', 'Released', 'Share %', 'Pass %'] : ['Slice', 'Released', 'Share %'], rows.map(r => pass ? [r[0], fmt0(r[1]), fmt1(r[2]), fmt1(r[3])] : [r[0], fmt0(r[1]), fmt1(r[2])]), pass ? [1, 2, 3] : [1, 2]);
     }
     segCtl('#cCompSeg', v => { comp = v; draw(); });
-    // Source: paper Section 6, App. G.1, Table 3, Table 23
+    // Source: paper Section 6, App. G.1, Table 3, Table 24
     return draw;
   }
 
@@ -5004,14 +5064,28 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
 (function(){
 /* ======================= QUALITY CONTROL: six inspections on the line ======================= */
 // Numbers used here that are not in data.js:
-const T5_CI = [0.2, 1.3];                     // Table 5 caption: 95% Wilson half-widths, fully scored rows / sample rows
-const T5_CONVS = 236051;                      // Table 5 caption: conversations whose user turns were all scored
-const T8_LEN = { rows: [['Short', 0.86], ['Medium', 1.00], ['Long', 1.26]], rho: 0.18 }; // Table 8: length ratio by persona verbosity, per-item Spearman rho
-const T12_INTENT = [[92, 92], [92.3, 92.5], [92.4, 92.6], [92.7, 93.5], [92.4, 92.6]];  // Table 12: intent % [flat, structured], same judge order as D.structVsFlat.judges
-const T15_WORST = [94.0, 94.6, 76.8];         // Table 15: PF preferred, worst case (every unparsed comparison given to the competitor)
-const T16_RATIO = { 'Gemma-4-31B': ['17.90:1', '20.46:1', '4.83:1'], 'Ministral-3-14B': ['12.70:1', '13.55:1', '2.64:1'] }; // Table 16: win ratios
+const T6_CI = 0.6;                            // Table 6 caption: 95% intervals within ±0.6 points
+const T6_DESIGN = { persona: 552654, sample: 44687, sampleConvs: 24570 }; // App. C: every user turn of model-persona conversations + a uniform random sample of the rest
+// App. C, Strict intent label: four-way label on every user turn (MiniMax-M2.5, never sees the persona)
+const STRICT = {
+  n: 2371618, labels: [['Same request', 74.0], ['Added content', 18.5], ['Dropped content', 4.1], ['Scope change', 3.5]],
+  audit: { n: 4903, k4: 0.59, k2: 0.63 },     // second external judge, Qwen3.6-35B-A3B
+  core: 97.2,                                 // both judges: core request preserved, % of turns
+  lenient: 91.5,                              // the Table 6 intent template passes this % of the turns the strict label flags
+  human: { n: 100, kAnn: 0.60, kJudge: [0.60, 0.41], dis: 9, stricter: 8, core: 92 } // two blind annotators (same request vs drift)
+};
+const T9_LEN = { rows: [['Short', 1.00], ['Medium', 1.02], ['Long', 1.56]], rho: 0.22 }; // Table 9: length ratio by persona verbosity, per-item Spearman rho
+// App. C, Reference rows for the judge-free metrics: same 800 seeds as Table 2, Gemma-4-31B, same order as D.representations.names
+// [label, values, scale, dir]: dir -1 = lower means further from the seed
+const C_REF = [['LaBSE similarity', [0.969, 0.948, 0.924, 0.899], 1, -1], ['Core vocabulary', [91.7, 86.7, 85.3, 81.5], 100, -1], ['Normalized edit distance', [0.109, 0.195, 0.221, 0.284], 1, 1], ['Punctuation register', [40.5, 41.0, 64.5, 75.8], 100, 1]];
+const T13_INTENT = [[92, 92], [92.3, 92.5], [92.4, 92.6], [92.7, 93.5], [92.4, 92.6]];  // Table 13: intent % [flat, structured], same judge order as D.structVsFlat.judges
+const CAP_DEC = { off: [62.0, 65.1], on: [54.9, 58.1] };  // App. D, marker cap: structured share of decisive verdicts, three judges, without / with the cap
+const T16_WORST = [94.0, 94.6, 76.8];         // Table 16: PF preferred, worst case (every unparsed comparison given to the competitor)
+const T17_RATIO = { 'Gemma-4-31B': ['17.90:1', '20.46:1', '4.83:1'], 'Ministral-3-14B': ['12.70:1', '13.55:1', '2.64:1'] }; // Table 17: win ratios
 const PH_CUE = 1.4;                           // App. D: share of the 200,000 released PersonaHub personas that mention any writing cue (%)
 const NATURAL = [7, 12];                      // App. D, Naturalness: external judges rate PF rewrites 7–12 points less natural than unconditioned ones
+const MATCHED = [50.2, 51.3];                 // App. D, Matched content and length: structured share of pairwise style verdicts when content and length are equal
+const CAP_STYLE = [7, 11];                    // App. D, marker cap: as natural as SynthPAI-form rewrites with 7–11 points more style
 const AGREE_PRIMARY = [0.81, 0.93];           // App. D: item-level agreement of the four re-judges with the primary judge
 // Fig. 21b, read from the figure (no values printed): PF preferred, % of decisive verdicts [point, lo, hi] per judge (MiniMax, Qwen3.6, Muse)
 const F21B = [
@@ -5029,12 +5103,13 @@ const FIG2 = {
   keys: [['Capitalization', 'first-word-only, no final period'], ['Abbreviations', '‘u’ for ‘you’, ‘r’ for ‘are’, ‘k’ for ‘okay’, sometimes ‘xq’ = ‘porque’'], ['Emoji', 'none'], ['Sign-off', '‘ok’ or ‘no?’ (with no logoff)'], ['Typos', 'occasional uncorrected typos (e.g. ‘supposted’ for ‘supposed’)']],
   marks: ['u', 'ur', 'no?']
 };
-// Human study (App. E). Pooled ratings and Part C rates live in D.human (Tables 17, 20).
-const HS = { forms: 60, items: 40, perPart: 10, subs: 11, langs: 'nine', evals: 476 };  // App. E.1, E.4
-const H_MEDIAN = 4.0;                                             // Table 17: median of every pooled dimension
-const T19_VER = { parts: [26, 18], tot: 44, pct: [59.1, 40.9] };  // Table 19: verified model rewrites [human-like, AI-like]
-const T20_SET = { texts: 68, rewrites: 34, chat: 34, humanJudged: 85 }; // Table 20 caption, App. E.4
-// App. E.5: example items from the English form, verbatim. Part B slashes mark line breaks.
+// Human study (App. E). Pooled ratings and Part C rates live in D.human (Tables 18, 21).
+const HS = { forms: 60, items: 40, perPart: 10, subs: 11, langs: 'nine', scripts: 'three', evals: 476 };  // App. E.1, E.4, E.6
+const H_MEDIAN = 4.0;                                             // Table 18: median of every pooled dimension
+// Table 20: Part C answers [human-like, AI-like]; skips left out. Shares: 59.1 (Table 20) and 71 (App. E.5: 29/41).
+const T20_C = [{ label: 'Verified rewrites', parts: [26, 18], tot: 44, pct: ['59.1', '40.9'] }, { label: 'Real chat messages', parts: [29, 12], tot: 41, pct: ['71', null] }];
+const T21_SET = { texts: 68, rewrites: 34, chat: 34, humanJudged: 85 }; // Table 21 caption, App. E.4
+// App. E.7: example items from the English form, verbatim. Part B slashes mark line breaks.
 const H_EX = {
   A: [
     { o: 'What role can technology play in facilitating Urdu language learning outside of South Asia?', r: 'hep i was wondering what role technology can play in helping people learn Urdu outside south asia' },
@@ -5170,36 +5245,55 @@ const H_EX = {
   }
 
   /* ---------- 1: corpus-scale LLM judge ---------- */
-  let cjGrp = 'Fully scored';
+  let cjView = 'rates';
+  const STRICT_SEGS = [{ color: 'var(--s3)' }, { color: 'var(--s1)' }, { color: 'var(--s2)' }, { color: 'var(--faint)' }];
   function s1(animate){
-    head(1, 'Corpus-scale LLM judge', 'An out-of-family judge gives every rewritten user turn two separate pass/fail verdicts.');
+    head(1, 'Corpus-scale LLM judge', 'An out-of-family judge gives sampled user turns two separate pass/fail verdicts, and every user turn of the release a stricter four-way intent label.');
     const sp = spec([
-      ['Sample', `All ${fmt0(552654)} user turns of ${fmt0(T5_CONVS)} conversations, plus ${fmt0(44848)} turns sampled from the rest`],
+      ['Sample', `All ${fmt0(T6_DESIGN.persona)} user turns of conversations with a model persona, plus ${fmt0(T6_DESIGN.sample)} turns from ${fmt0(T6_DESIGN.sampleConvs)} randomly sampled other conversations. Rates are weighted to the corpus.`],
       ['Inspector', 'MiniMax-M2.5, a reasoning model that is not one of the production rewriters'],
       ['Intent passes', 'Same request, no added task or invented content, same language. Cross-lingual turns are judged against their translation.'],
-      ['Style passes', 'Takes on the persona’s tone, vocabulary, register or typing habits. Only a generic rewrite fails.']
+      ['Style passes', 'Takes on the persona’s tone, vocabulary, register or typing habits. Only a generic rewrite fails.'],
+      ['Strict label', 'The same judge compares each user turn with its seed turn, without seeing the persona, and labels it same request, added content, dropped content or scope change. Translated turns are compared with the English source.']
     ]);
     const all = D.corpusJudge[0];
     const bg = big([[fmt1(all.intent) + '%', 'intent kept', C_INT], [fmt1(all.style) + '%', 'style adopted', C_STY], [fmt1(all.both) + '%', 'pass both', C_BOTH]]);
-    const fd = finding('Gemma-4-31B, the larger rewriter, passes both checks 9.3 points more often than Ministral-3-14B (69.9% vs 60.5%).');
+    const cg = D.corpusJudge.find(r => r.slice === 'Gemma-4-31B'), cm = D.corpusJudge.find(r => r.slice === 'Ministral-3-14B');
+    const fd = finding(`Gemma-4-31B, the larger rewriter, passes both checks ${fmt1(cg.both - cm.both)} points more often than Ministral-3-14B (${fmt1(cg.both)}% vs ${fmt1(cm.both)}%). Under the strict label, ${fmt1(STRICT.labels[0][1])}% of turns keep the exact request and ${fmt1(STRICT.core)}% keep the core request.`);
     fade([...sp.children, bg, fd], animate);
-    const tb = tabs(rd, [['Fully scored', fmt0(552654) + ' fully scored turns'], ['Random sample', fmt0(44848) + ' sampled turns']], cjGrp, v => { cjGrp = v; draw(); }, 'Turn set');
-    const c = block('Pass rates by subset', 'Table 5');
-    const cp = cap('');
-    const det = el('details', 'tbl', null, rd); el('summary', null, 'Data table', det); const tw = el('div', 'tblwrap', null, det);
+    const tb = tabs(rd, [['rates', 'Pass rates'], ['strict', 'Strict intent label']], cjView, v => { cjView = v; draw(); }, 'View');
+    const body = el('div', 'rbody', null, rd);
     const draw = () => {
-      const rows = D.corpusJudge.filter(r => r.group === cjGrp);
-      const row = r => ({ label: r.slice, bold: r.slice === 'All turns', values: [r.intent, r.style, r.both], tip: [{ l: fmt0(r.n) + ' turns' }] });
-      const by = names => rows.filter(r => names.includes(r.slice)).map(row);
-      c.replaceChildren(legend(AXES));
-      const holder = el('div', null, null, c);
-      gbars(holder, { groups: [[null, by(['All turns'])], ['By rewriter', by(['Gemma-4-31B', 'Ministral-3-14B'])], ['By seed set', by(['WildChat', 'UltraChat', 'Nemotron'])]], series: AXES });
-      el('div', 'unit', '% of evaluated turns. 95% Wilson intervals within ±' + (cjGrp === 'Fully scored' ? T5_CI[0] : T5_CI[1]) + ' points.', c);
-      cp.textContent = cjGrp === 'Fully scored' ? 'This set holds UltraChat and Nemotron conversations. Open-ended UltraChat leaves more room for style than Nemotron.' : 'The sample lands within 1.5 points of the fully scored turns. Real WildChat prompts are restyled least often (60.5% style).';
-      table(tw, ['Subset', 'Turns', 'Intent %', 'Style %', 'Both %'], rows.map(r => [r.slice, fmt0(r.n), fmt1(r.intent), fmt1(r.style), fmt1(r.both)]), [1, 2, 3, 4]);
+      body.replaceChildren();
+      if (cjView === 'rates'){
+        const c = block('Pass rates by subset', 'Table 6', body);
+        const rows = D.corpusJudge;
+        const row = r => ({ label: r.slice, bold: r.slice === 'All turns', values: [r.intent, r.style, r.both], tip: [{ l: fmt0(r.n) + ' judged turns' }] });
+        const by = names => rows.filter(r => names.includes(r.slice)).map(row);
+        c.appendChild(legend(AXES));
+        gbars(el('div', null, null, c), { groups: [[null, by(['All turns'])], ['By rewriter', by(['Gemma-4-31B', 'Ministral-3-14B'])], ['By seed set', by(['WildChat', 'UltraChat', 'Nemotron'])]], series: AXES });
+        el('div', 'unit', '% of user turns, weighted to the corpus. 95% intervals within ±' + T6_CI + ' points.', c);
+        cap('Open-ended UltraChat leaves more room for style (76.0%) than Nemotron’s denser, often technical instructions (65.2%). Real WildChat prompts are restyled least often (60.5% style).', body);
+        const det = el('details', 'tbl', null, body); el('summary', null, 'Data table', det); const tw = el('div', 'tblwrap', null, det);
+        table(tw, ['Subset', 'Judged turns', 'Intent %', 'Style %', 'Both %'], rows.map(r => [r.slice, fmt0(r.n), fmt1(r.intent), fmt1(r.style), fmt1(r.both)]), [1, 2, 3, 4]);
+      } else {
+        const H2 = STRICT.human;
+        const c = block('Strict intent label, every user turn', 'App. C', body);
+        hbars(c, { rows: STRICT.labels.map(([l, v], i) => ({ label: l, values: [v], colors: [STRICT_SEGS[i].color], bold: i === 0 })), series: [{ name: '% of user turns', color: STRICT_SEGS[0].color }], max: 100, ticks: [0, 25, 50, 75, 100], barH: 16, unit: `% of ${fmt0(STRICT.n)} labeled user turns. Core request kept in ${fmt1(STRICT.core)}% under both judges.` });
+        const c2 = block('Agreement on the strict label', 'App. C', body);
+        const qTip = () => [{ l: `Qwen3.6-35B-A3B on ${fmt0(STRICT.audit.n)} turns` }], aTip = () => [{ l: `${H2.n} turns, same request vs drift` }];
+        hbars(c2, { rows: [
+          { label: 'Second judge, four-way', values: [STRICT.audit.k4], tip: qTip },
+          { label: 'Second judge, two-way', values: [STRICT.audit.k2], tip: qTip },
+          { label: 'Judge vs one annotator', values: [H2.kJudge[0]], tip: aTip },
+          { label: 'Judge vs the other', values: [H2.kJudge[1]], tip: aTip },
+          { label: 'Annotator vs annotator', values: [H2.kAnn], tip: aTip }
+        ], series: [{ name: 'Cohen’s κ', color: 'var(--s3)' }], max: 1, ticks: [0, 0.25, 0.5, 0.75, 1], fmt: fmt2, barH: 14, unit: `Cohen’s κ. Two-way: same request vs drift. Second judge: ${fmt0(STRICT.audit.n)} turns. Two annotators: ${H2.n} turns, blind to the persona, the rewriter and the judge’s label.` });
+        cap(`In the ${H2.dis} turns where the two annotators agree with each other but not with the judge, the judge is the stricter side ${H2.stricter} times, so the drift rates are, if anything, conservative. The annotators find the core request kept in ${H2.core} of ${H2.n} turns. The lenient intent check passes ${fmt1(STRICT.lenient)}% of the turns this label flags. Every released turn carries the label. We recommend training on the strict subset, the conversations in which every user turn keeps the same request; retraining on it changes no downstream result.`, body);
+      }
     };
-    fade([tb, c.parentNode, cp], animate, 200, 300);
-    // Source: paper Section 5, App. C, Table 5
+    fade([tb, body], animate, 200, 300);
+    // Source: paper Section 5, App. C, Table 6, Strict intent label, Human check of the strict judge
     return draw;
   }
 
@@ -5211,14 +5305,16 @@ const H_EX = {
       ['Inspector', 'None. String, entity and embedding checks.'],
       ['Depth', 'How much of the surface changed, and whether the meaning survived (LaBSE similarity)'],
       ['Retention', 'Numbers, code, identifiers and quoted literals still intact'],
-      ['Adherence', 'Each marker checked against the persona’s tier, e.g. emoji: none, rare, frequent or kaomoji']
+      ['Adherence', 'Each marker checked against the persona’s tier, e.g. emoji: none, rare, frequent or kaomoji'],
+      ['Reference', 'The same metrics on 800 seeds rewritten with no persona, the PersonaHub form, the SynthPAI form and ours']
     ]);
-    const fd = finding('Rewrites change much of the surface (edit distance 0.358) and keep the meaning (LaBSE 0.854). Emoji rules are met in 98.4% of turns, capitalization rules in only 60.9%.');
+    const jf = n => D.judgeFree.find(m => m.name.startsWith(n)).v;
+    const fd = finding(`Rewrites change much of the surface (edit distance ${fmt3(jf('Normalized edit'))}) yet keep most core vocabulary (${fmt1(jf('Core'))}%) and the meaning (LaBSE ${fmt3(jf('LaBSE'))}). Emoji rules are met in ${fmt1(jf('Emoji'))}% of turns, punctuation and capitalization rules only moderately.`);
     fade([...sp.children, fd], animate);
     const grid = el('div', 'qgrid', null, rd);
     const groups = ['Transformation depth', 'Constraint retention', 'Style adherence'];
     const blocks = groups.map(g => {
-      const c = block(g, 'Table 8', grid); c.classList.add('meters');
+      const c = block(g, 'Table 9', grid); c.classList.add('meters');
       D.judgeFree.filter(m => m.grp === g).forEach(m => {
         const d = el('div', 'meter', null, c);
         el('span', null, m.name, d);
@@ -5228,11 +5324,41 @@ const H_EX = {
       el('div', 'unit', g === 'Transformation depth' ? 'Distances and similarity in [0, 1]; retention in %' : g === 'Constraint retention' ? '% of turns with the item intact' : '% of turns meeting the persona’s tier', c.parentNode);
       return c.parentNode;
     });
-    const lc = block('Length ratio by persona verbosity', 'Table 8', grid);
-    const draw = () => hbars(lc, { rows: T8_LEN.rows.map(r => ({ label: r[0], values: [r[1]] })), series: [{ name: 'length ratio', color: 'var(--s1)' }], max: 1.5, fmt: v => v.toFixed(2) + '×', ticks: [0, 0.5, 1, 1.5], barH: 14, unit: 'Rewrite length ÷ original, median. Per-item ρ = ' + T8_LEN.rho + '.' });
-    fade([...blocks, lc.parentNode], animate, 200, 300);
-    // Source: paper Section 5, App. C, Table 8
+    const lc = block('Length ratio by persona verbosity', 'Table 9', grid);
+    const lcap = cap('Messages grow for personas who write long ones but barely shrink for those who write short ones.');
+    const rc = block('Each step up in style information', 'App. C', rd);
+    const rcap = cap('Richer style formats move the text further from the seed and follow the persona’s punctuation more closely. Ours changes the text most and adheres best.');
+    const draw = () => {
+      hbars(lc, { rows: T9_LEN.rows.map(r => ({ label: r[0], values: [r[1]] })), series: [{ name: 'length ratio', color: 'var(--s1)' }], max: 2, fmt: v => v.toFixed(2) + '×', ticks: [0, 0.5, 1, 1.5, 2], barH: 14, unit: 'Rewrite length ÷ original, median. Per-item ρ = ' + T9_LEN.rho + '.' });
+      rowHeat(rc, C_REF);
+    };
+    fade([...blocks, lc.parentNode, lcap, rc.parentNode, rcap], animate, 200, 300);
+    // Source: paper Section 5, App. C, Table 9, Reference rows for the judge-free metrics
     return draw;
+  }
+
+  // Heat table colored within each row (rows have different scales). rows: [[label, values, scale, dir]]
+  function rowHeat(c, rows){
+    const w = W(c), narrow = w < 520;
+    const cols = narrow ? ['No\npersona', 'Persona-\nHub', 'Synth-\nPAI', 'Persona-\nFactory'] : ['No persona', 'PersonaHub\nform', 'SynthPAI\nform', 'PersonaFactory'];
+    const labs = rows.map(r => (narrow ? r[0].replace('Normalized edit distance', 'Edit distance').replace(' register', '') : r[0]) + (r[2] === 100 ? ' (%)' : ''));
+    const lw = Math.min(Math.ceil(measure(labs)) + 12, Math.floor(w * 0.38)), headH = 34, cellH = 28;
+    const cw = (w - lw) / cols.length, h = headH + rows.length * cellH + 2;
+    const svg = svgFor(c, w, h);
+    cols.forEach((t, j) => { const ln = t.split('\n'); ln.forEach((s, k) => T(s, { x: lw + cw * j + cw / 2, y: headH - 8 - (ln.length - 1 - k) * 13, 'text-anchor': 'middle', class: 'muted' }, svg)); });
+    rows.forEach(([lab, vals, scale, dir], i) => {
+      const y = headH + i * cellH, lo = Math.min(...vals), hi = Math.max(...vals);
+      const rl = T(fit(labs[i], lw - 10), { x: lw - 8, y: y + cellH / 2 + 4, 'text-anchor': 'end' }, svg);
+      if (rl.textContent !== labs[i]) S('title', {}, rl).textContent = labs[i];
+      vals.forEach((v, j) => {
+        const p = (dir < 0 ? hi - v : v - lo) / (hi - lo || 1), x = lw + cw * j;
+        const txt = scale === 1 ? fmt3(v) : fmt1(v);
+        const r = S('rect', { x: x + 1, y: y + 1, width: cw - 2, height: cellH - 2, rx: 3, fill: `color-mix(in oklab, var(--seq-hi) ${Math.round(15 + p * 85)}%, var(--seq-lo))` }, svg);
+        T(txt, { x: x + cw / 2, y: y + cellH / 2 + 4, 'text-anchor': 'middle', class: p > 0.5 ? 'on' : 'val' }, svg);
+        bind(r, [{ v: txt + (scale === 1 ? '' : '%'), l: lab + ' · ' + D.representations.names[j] }]);
+      });
+    });
+    el('div', 'unit', 'Same 800 seeds, persona and rewriter (Gemma-4-31B). Stronger color = further from the seed, or closer to the persona’s punctuation; scaled within each row.', c);
   }
 
   /* ---------- 3: structured vs flat ---------- */
@@ -5246,20 +5372,20 @@ const H_EX = {
     const wp = el('div', 'wp', null, piece);
     const wh = el('div', 'wph', null, wp); el('span', null, 'The two style formats', wh); el('span', 'src', 'Figure 2 persona', wh);
     const fl = el('div', 'rep flat', null, wp);
-    const fh = el('div', 'reph', null, fl); el('b', null, 'Flat', fh); el('span', null, 'one free-text style sentence', fh);
+    const fh = el('div', 'reph', null, fl); el('b', null, 'Flat', fh); el('span', null, 'one or two free-text style sentences', fh);
     el('p', 'flattxt', FIG2.flat, fl);
     const st = el('div', 'rep struct', null, wp);
     const sh = el('div', 'reph', null, st); el('b', null, 'Structured', sh); el('span', null, 'per-axis style keys', sh);
     const kv = el('dl', 'keys', null, st); FIG2.keys.forEach(([k, v]) => { el('dt', null, k, kv); el('dd', null, v, kv); });
     const mk = el('p', 'marks', 'Keyed markers in the Florida rewrite: ', wp); FIG2.marks.forEach((m, i) => { if (i) mk.appendChild(document.createTextNode(' · ')); el('mark', null, m, mk); });
-    const fd = finding('Every judge prefers the structured keys. The pipeline judge picks them in 60% of pairs and the flat sentence in 33%. Intent and length do not change.');
+    const fd = finding('Every judge prefers the structured keys. The pipeline judge picks them in 60% of pairs and the flat description in 33%. Intent and length do not change.');
     fade([...sp.children, fl, st, mk, fd], animate, 190);
     const SV = D.structVsFlat;
     const short0 = j => j.replace('MiniMax-M2.5 (original)', 'MiniMax-M2.5, original').replace('MiniMax-M2.5 (larger budget)', 'MiniMax-M2.5, larger budget');
-    const c1 = block('Which rewrite matches the persona better?', 'Tables 1, 12');
+    const c1 = block('Which rewrite matches the persona better?', 'Tables 1, 13');
     const c2 = block('Structured share of decisive verdicts', 'Fig. 20');
-    const c3 = block('Intent kept, measured per rewrite', 'Table 12');
-    const cp = cap('Mean rewrite length: ' + fmt0(SV.table1.len[0]) + ' characters structured, ' + fmt0(SV.table1.len[1]) + ' flat.');
+    const c3 = block('Intent kept, measured per rewrite', 'Table 13');
+    const cp = cap('Mean rewrite length: ' + fmt0(SV.table1.len[0]) + ' characters structured, ' + fmt0(SV.table1.len[1]) + ' flat. The external judges agree on direction: clearly for both Qwen models, narrowly for DeepSeek-V4-Flash, whose interval touches parity. With at most two chat markers per turn, three judges still prefer the structured layer, by a smaller margin (' + CAP_DEC.on[0] + '–' + CAP_DEC.on[1] + '% of decisive verdicts, against ' + fmt1(CAP_DEC.off[0]) + '–' + CAP_DEC.off[1] + '% without the cap).');
     const draw = () => {
       const nar = W(c1) < 480;
       const short = j => nar ? j.replace('MiniMax-M2.5 (original)', 'MiniMax, original').replace('MiniMax-M2.5 (larger budget)', 'MiniMax, rerun').replace(/^(Qwen3\.\d-\d+B).*/, '$1') : short0(j);
@@ -5270,11 +5396,11 @@ const H_EX = {
       dots(el('div', null, null, c2), { rows: SV.judges.map(j => ({ label: nar ? short(j.judge) : `${short(j.judge)} (n=${j.n})`, pts: [j.n === 433 ? { v: j.dec, hollow: true, s: 0, tip: [{ l: j.judge + ', ' + j.n + ' parsed verdicts. No interval reported.' }] } : { v: j.dec, lo: j.lo, hi: j.hi, s: j.kind === 'pipeline' ? 0 : 1, tip: [{ l: j.judge + ', ' + j.n + ' parsed verdicts' }] }] })), series: [{ name: 'Pipeline judge', color: 'var(--s1)' }, { name: 'External judge', color: 'var(--s3)' }], min: 40, max: 80, ticks: [40, 50, 60, 70, 80], ref: 50, refLabel: 'parity' });
       el('div', 'unit', '% of decisive verdicts (ties excluded), 95% Wilson intervals. Open dot: original pass, no interval reported.', c2);
       const lg3 = legend([{ name: 'Flat', color: 'transparent', kind: 'dot' }, { name: 'Structured', color: 'var(--s1)', kind: 'dot' }]); lg3.querySelector('i').style.boxShadow = 'inset 0 0 0 2px var(--s2)'; c3.replaceChildren(lg3);
-      dots(el('div', null, null, c3), { rows: SV.judges.map((j, i) => ({ label: short(j.judge), pts: [{ v: T12_INTENT[i][0], s: 0 }, { v: T12_INTENT[i][1], s: 1 }] })), series: [{ name: 'Flat', color: 'var(--s2)', ring: true }, { name: 'Structured', color: 'var(--s1)' }], min: 80, max: 100, ticks: [80, 85, 90, 95, 100], mode: 'pair', fmt: v => (Number.isInteger(v) ? String(v) : fmt1(v)) + '%' });
+      dots(el('div', null, null, c3), { rows: SV.judges.map((j, i) => ({ label: short(j.judge), pts: [{ v: T13_INTENT[i][0], s: 0 }, { v: T13_INTENT[i][1], s: 1 }] })), series: [{ name: 'Flat', color: 'var(--s2)', ring: true }, { name: 'Structured', color: 'var(--s1)' }], min: 80, max: 100, ticks: [80, 85, 90, 95, 100], mode: 'pair', fmt: v => (Number.isInteger(v) ? String(v) : fmt1(v)) + '%' });
       el('div', 'unit', '% of rewrites that keep the request. Ring: flat. Dot: structured.', c3);
     };
     fade([c1.parentNode, c2.parentNode, c3.parentNode, cp], animate, 220, 400);
-    // Source: paper Section 5, App. C, Tables 1, 12, Fig. 20
+    // Source: paper Section 5, App. C, D (marker cap), Tables 1, 13, Fig. 20
     return draw;
   }
 
@@ -5309,7 +5435,7 @@ const H_EX = {
         drawDose(c);
         cap(repSub === 'x' ? 'On cross-lingual prompts, intent falls to 89.2% with the richest format. Most of the intent cost is here.' : repSub === 'en' ? 'In English, intent barely moves: 99.3% with PersonaFactory.' : 'Style rises at every step. The PersonaHub form changes the text about as much as the others, yet lifts style only from 3.1% to 5.5%.', body);
       } else if (repTab === 'enc'){
-        const c = block('Share of profiles whose attribute reaches the rewriter', 'Table 14', body);
+        const c = block('Share of profiles whose attribute reaches the rewriter', 'Table 15', body);
         const narrow = W(c) < 520;
         heat(c, { rows: R.encodes.rows, cols: narrow ? ['No\npersona', 'Persona-\nHub', 'Synth-\nPAI', 'Persona-\nFactory'] : ['No persona', 'PersonaHub\nform', 'SynthPAI\nform', 'PersonaFactory'], m: R.encodes.vals, min: 0, max: 100, fmt: v => String(v), cellH: 28, labelMax: 120 });
         el('div', 'unit', '% of N = 555 profiles. Stronger color = more profiles carry it.', c);
@@ -5318,18 +5444,18 @@ const H_EX = {
         const sub = tabs(body, [['main', 'Main (95% CI)'], ['rewriter', 'By rewriter'], ['judge', 'By judge']], pfView, v => { pfView = v; draw(); }, 'Robustness view'); sub.classList.add('sub');
         const opp = ['No persona', 'PersonaHub form', 'SynthPAI form'];
         if (pfView === 'main'){
-          const c = block('PersonaFactory rewrite preferred, by opponent', 'Tables 2, 15', body);
+          const c = block('PersonaFactory rewrite preferred, by opponent', 'Tables 2, 16', body);
           c.appendChild(legend([{ name: 'PF preferred, 95% CI', color: 'var(--s1)', kind: 'dot' }, { name: 'Worst case', color: 'var(--faint)', kind: 'dot' }]));
-          dots(el('div', null, null, c), { rows: opp.map((o, i) => ({ label: 'vs. ' + o, pts: [{ v: R.pfPreferred[i], lo: R.pfCI[i][0], hi: R.pfCI[i][1], s: 0, tip: [{ l: 'win ratio ' + R.winRatio[i] }] }, { v: T15_WORST[i], s: 1, tip: [{ l: 'every unparsed comparison given to the competitor' }] }] })), series: [{ name: 'PF preferred', color: 'var(--s1)' }, { name: 'Worst case', color: 'var(--faint)' }], min: 50, max: 100, ticks: [50, 60, 70, 80, 90, 100], ref: 50, refLabel: 'parity', sub: 15 });
+          dots(el('div', null, null, c), { rows: opp.map((o, i) => ({ label: 'vs. ' + o, pts: [{ v: R.pfPreferred[i], lo: R.pfCI[i][0], hi: R.pfCI[i][1], s: 0, tip: [{ l: 'win ratio ' + R.winRatio[i] }] }, { v: T16_WORST[i], s: 1, tip: [{ l: 'every unparsed comparison given to the competitor' }] }] })), series: [{ name: 'PF preferred', color: 'var(--s1)' }, { name: 'Worst case', color: 'var(--faint)' }], min: 50, max: 100, ticks: [50, 60, 70, 80, 90, 100], ref: 50, refLabel: 'parity', sub: 15 });
           el('div', 'unit', '% of pairs where the judge prefers the PersonaFactory rewrite', c);
-          cap('Win ratios 17.90:1, 20.46:1 and 4.83:1. Worst case: every unparsed comparison counted for the competitor.', body);
+          cap('Win ratios 17.90:1, 20.46:1 and 4.83:1. Worst case: every unparsed comparison counted for the competitor. The SynthPAI form also carries less style information. Rendered with the same content and length, the structured form ties on style (' + MATCHED[0] + '–' + MATCHED[1] + '% of pairs) but keeps the request more often and reads more naturally.', body);
         } else if (pfView === 'rewriter'){
-          const c = block('PF preferred with each rewriter', 'Table 16', body);
+          const c = block('PF preferred with each rewriter', 'Table 17', body);
           const keys = Object.keys(R.robust.byRewriter);
-          hbars(c, { rows: opp.map((o, i) => ({ label: 'vs. ' + o, values: keys.map(k => R.robust.byRewriter[k][i]), tip: j => [{ l: 'win ratio ' + T16_RATIO[keys[j]][i] }] })), series: keys.map((k, i) => ({ name: k + ' rewriter', color: ['var(--s1)', 'var(--s2)'][i] })), max: 100, ticks: [0, 25, 50, 75, 100], ref: { v: 50 }, barH: 12, gapIn: 3, unit: '% of pairs, MiniMax-M2.5 judge' });
+          hbars(c, { rows: opp.map((o, i) => ({ label: 'vs. ' + o, values: keys.map(k => R.robust.byRewriter[k][i]), tip: j => [{ l: 'win ratio ' + T17_RATIO[keys[j]][i] }] })), series: keys.map((k, i) => ({ name: k + ' rewriter', color: ['var(--s1)', 'var(--s2)'][i] })), max: 100, ticks: [0, 25, 50, 75, 100], ref: { v: 50 }, barH: 12, gapIn: 3, unit: '% of pairs, MiniMax-M2.5 judge' });
           cap('The ranking holds with Ministral-3-14B. Against the SynthPAI form the margin narrows from 4.83:1 to 2.64:1.', body);
         } else {
-          const c = block('PF preferred under four judges', 'Table 16', body);
+          const c = block('PF preferred under four judges', 'Table 17', body);
           const keys = Object.keys(R.robust.byJudge);
           heat(c, { rows: keys, cols: W(c) < 520 ? ['vs. no\npersona', 'vs. Persona-\nHub', 'vs. Synth-\nPAI'] : ['vs. no persona', 'vs. PersonaHub form', 'vs. SynthPAI form'], m: keys.map(k => R.robust.byJudge[k]), min: 50, max: 100, fmt: v => fmt1(v), cellH: 32, labelMax: 130, tipLabel: (r, col) => r + ' judge · ' + col.replace('\n', ' ') });
           el('div', 'unit', '% of pairs, 200-item subset, Gemma-4-31B rewriter. Stronger color = stronger preference.', c);
@@ -5346,18 +5472,18 @@ const H_EX = {
         el('div', 'unit', '% of decisive verdicts, 95% Wilson intervals. Real-persona pairs are judged reference-free.', c2);
         cap('PersonaFactory still leads when judges see only the style attribute values. Real SynthPAI profiles, hand-written for 300 English Reddit users, do about as well.', body);
       } else {
-        const c = block('Style adherence, judge-free', 'Table 15', body);
+        const c = block('Style adherence, judge-free', 'Table 16', body);
         const cols = W(c) < 520 ? ['No\npersona', 'Persona-\nHub', 'Synth-\nPAI', 'Persona-\nFactory'] : ['No persona', 'PersonaHub\nform', 'SynthPAI\nform', 'PersonaFactory'];
         const A = R.adherence;
         heat(c, { rows: Object.keys(A), cols, m: Object.values(A), min: 0.3, max: 1, fmt: fmt3, cellH: 28, labelMax: 130 });
         el('div', 'unit', 'Share of rewrites matching the persona’s tier, in [0, 1]. Color scale 0.3 to 1.', c);
-        const c2 = block('Cost: content kept intact', 'Table 15', body);
+        const c2 = block('Cost: content kept intact', 'Table 16', body);
         const K = R.cost; const rows = Object.keys(K);
         const kept = rows.filter(r => !/sanity/.test(r));
         heat(c2, { rows: kept.map(r => r.replace('Quoted literals intact', 'Quoted literals')), cols, m: kept.map(r => K[r]), min: 0.85, max: 1, fmt: fmt3, cellH: 28, labelMax: 130 });
         const san = K['Assistant sanity (%)'];
         el('div', 'unit', `Share of rewrites with the item intact, in [0, 1]. Color scale 0.85 to 1. Assistant sanity stays at ${fmt1(Math.min(...san))}–${fmt1(Math.max(...san))}%.`, c2);
-        cap(`Punctuation adherence rises from 0.405 to 0.757; entity retention falls by four points. External judges rate PersonaFactory rewrites ${NATURAL[0]} to ${NATURAL[1]} points less natural.`, body);
+        cap(`Punctuation adherence rises from 0.405 to 0.757; entity retention falls by four points. External judges rate PersonaFactory rewrites ${NATURAL[0]} to ${NATURAL[1]} points less natural. With at most two chat markers per turn, they read as naturally as SynthPAI-form rewrites and keep ${CAP_STYLE[0]} to ${CAP_STYLE[1]} points more style.`, body);
       }
     };
     function drawDose(c){
@@ -5391,7 +5517,7 @@ const H_EX = {
       el('div', 'unit', '% of rewrites, N = 800 paired items' + (repSub === 'all' ? ', 95% Wilson intervals' : ''), c);
     }
     fade([tb, body], animate, 220, 500);
-    // Source: paper Section 5, App. D, Tables 2, 14–16, Figs. 21, 23
+    // Source: paper Section 5, App. D, Tables 2, 15–17, Figs. 21, 23
     return draw;
   }
 
@@ -5409,9 +5535,9 @@ const H_EX = {
     const fd = finding('With the style layer, every judge prefers the rewrite to the real message. The rewrites overuse greetings, slang and emoji, so a win mostly means more casual typing.');
     fade([...sp.children, fd], animate);
     const tb = tabs(rd, CAL.judges.map((j, i) => [String(i), j]), String(calJ), v => { calJ = +v; draw(); }, 'Judge');
-    const c1 = block('“Which reads more like a real person?”', 'Table 13');
+    const c1 = block('“Which reads more like a real person?”', 'Table 14');
     const c2 = block('Typing features vs real users', 'Fig. 22b', rd, true);
-    const cp = cap('Lowercase starts and dropped final punctuation match real-user rates. The other markers still need calibration.');
+    const cp = cap('Lowercase starts and dropped final punctuation match real-user rates. Greetings, chat slang, emoji, ellipses and repeated punctuation appear several times more often than real users type them. A cap of two chat markers per turn addresses this; exact calibration is future work.');
     const ARM = { 'A: raw source record': 'Real vs A, raw record', 'B: background, no style layer': 'Real vs B, no style', 'C: background + style layer': 'Real vs C, + style' };
     const draw = () => {
       c1.replaceChildren(legend([{ name: 'Real message wins', color: 'var(--faint)' }, { name: 'Draw (flips with order)', color: 'var(--rule-2)' }, { name: 'Rewrite wins', color: 'var(--s1)' }]));
@@ -5423,7 +5549,7 @@ const H_EX = {
       el('div', 'unit', '% of first user turns, same 182 English seeds. Ring: real users. Dot: rewrite with the style layer.', c2);
     };
     fade([tb, c1.parentNode, c2.parentNode, cp], animate, 220, 400);
-    // Source: paper App. D, Table 13, Fig. 22
+    // Source: paper App. D, Table 14, Fig. 22
     return draw;
   }
 
@@ -5439,11 +5565,11 @@ const H_EX = {
     ]);
     const fd = finding('Judges differ in how strict they are but agree on direction. MiniMax-M2.5 is the strictest on style and is not a production rewriter, so it serves as the pipeline judge. Every pair that includes it reaches κ\u00a0≥\u00a00.32 on style.');
     fade([...sp.children, fd], animate);
-    const c1 = block('Judge severity', 'Table 9');
+    const c1 = block('Judge severity', 'Table 10');
     const ctl = el('div', 'rtools', null, rd);
     tabs(ctl, [['style', 'Style verdict'], ['intent', 'Intent verdict']], agV, v => { agV = v; drawAg(); }, 'Verdict');
     tabs(ctl, [['raw', 'Raw'], ['kappa', 'Cohen’s κ'], ['ac1', 'Gwet’s AC1']], agM, v => { agM = v; drawAg(); }, 'Measure');
-    const c2 = block('Pairwise agreement', 'Tables 10, 11');
+    const c2 = block('Pairwise agreement', 'Tables 11, 12');
     const cp = cap('');
     const drawAg = () => {
       let m;
@@ -5451,7 +5577,7 @@ const H_EX = {
       else { m = JS4.map(() => JS4.map(() => null)); J.kappa.forEach(k => { const a = JS4.indexOf(k[0]), b = JS4.indexOf(k[1]); const v = agM === 'kappa' ? (agV === 'style' ? k[2] : k[4]) : (agV === 'style' ? k[3] : k[5]); m[a][b] = v; m[b][a] = v; }); }
       const nm = agM === 'raw' ? 'raw agreement' : agM === 'kappa' ? 'Cohen’s κ' : 'Gwet’s AC1';
       heat(c2, { rows: JS4, cols: JS4, m, min: agM === 'kappa' ? 0 : 0.5, max: 1, fmt: v => agM === 'raw' ? v.toFixed(3) : v.toFixed(2), cellH: 32, labelMax: 90, tipLabel: (r, c) => `${r} – ${c} · ${nm} (${agV})` });
-      el('div', 'unit', nm[0].toUpperCase() + nm.slice(1) + ' on the ' + agV + ' verdict. Stronger color = more agreement.', c2);
+      el('div', 'unit', nm[0].toUpperCase() + nm.slice(1) + ' on the ' + agV + ' verdict, ' + (agV === 'style' ? 99 : 100) + ' items. Stronger color = more agreement.', c2);
       $$('text', c2).forEach(t => { if (t.textContent === 'n/a') t.textContent = '–'; });
       cp.textContent = agM === 'raw' ? 'Share of identical verdicts. High pass rates inflate raw agreement.' : agM === 'kappa' ? 'Every pair with MiniMax reaches κ ≥ 0.32 on style and ≥ 0.22 on intent. GLM–Ministral style κ is 0.06 because both pass over 92% of items.' : 'AC1 corrects for the prevalence effect of lenient judges. With it, GLM–Ministral rises to 0.85 on style.';
     };
@@ -5460,7 +5586,7 @@ const H_EX = {
       drawAg();
     };
     fade([c1.parentNode, ctl, c2.parentNode, cp], animate, 220, 400);
-    // Source: paper Section 5, App. C, Tables 9–11
+    // Source: paper Section 5, App. C, Tables 10–12
     return draw;
   }
 
@@ -5472,19 +5598,19 @@ const H_EX = {
       ['External judges', 'DeepSeek-V4-Flash, Qwen3.5-397B-A17B, Qwen3.6-35B-A3B, Muse-Glimmer-30B'],
       ['Cross-check', 'Gemma-4-31B, GLM-4.7-Flash, Ministral-3-14B'],
       ['No judge', 'Deterministic surface, entity and marker checks'],
-      ['People', 'AI experts reading samples in languages they know well']
+      ['People', 'AI experts rating samples in languages they know well; two blind annotators checking the strict intent label']
     ]);
-    const fd = finding('All judges and the human raters agree that rewrites keep the request and sound like the persona. Calibration is still open: rewrites use style markers more often than real users do.');
+    const fd = finding('Judges and human raters agree that rewrites keep the request and sound like the persona. A strict label finds the exact request in about three of four turns and the core request in nearly all. Calibration is still open: rewrites use chat markers more often than real users do.');
     fade([...sp.children, fd], animate);
-    const all = D.corpusJudge[0], SV = D.structVsFlat.table1;
+    const all = D.corpusJudge[0], SV = D.structVsFlat.table1, JF = n => D.judgeFree.find(m => m.name.startsWith(n)).v;
     const ROWS = [
-      ['LLM judge', fmt1(all.intent) + '% · ' + fmt1(all.style) + '%', 'intent kept · style adopted over ' + fmt0(all.n) + ' turns', 'Table 5'],
-      ['Judge-free', '96.1%', 'numbers intact; emoji rules met in 98.4% of turns', 'Table 8'],
-      ['Structured vs flat', SV.prefAll[0] + ' : ' + SV.prefAll[1], '% of pairs preferring structured vs flat; intent equal at ' + SV.intent[0] + '%', 'Tables 1, 12'],
-      ['Other formats', fmt1(R.pfPreferred[2]) + '%', 'PersonaFactory preferred over the SynthPAI form; ' + fmt1(R.pfPreferred[0]) + '–' + fmt1(R.pfPreferred[1]) + '% over the others', 'Tables 2, 16'],
-      ['Real users', fmt1(CAL.arms['C: background + style layer'][0][2]) + '%', 'rewrite with the style layer judged more real than the real message (MiniMax-M2.5)', 'Table 13'],
-      ['Judge robustness', 'κ ≥ 0.32', 'style agreement of every judge with the pipeline judge', 'Table 11'],
-      ['Human raters', fmt1(D.human.turing[0].human) + '%', 'of rewrites taken for human-written in a blind test; meaning, style and plausibility get a median of 4 out of 5', 'Tables 17, 20']
+      ['LLM judge', fmt1(all.intent) + '% · ' + fmt1(all.style) + '%', 'intent kept · style adopted, weighted to the corpus; ' + fmt1(STRICT.labels[0][1]) + '% keep the exact request under the strict label', 'Table 6'],
+      ['Judge-free', fmt1(JF('Numbers')) + '%', 'numbers intact; all entities kept in ' + fmt1(JF('All entities')) + '% of turns', 'Table 9'],
+      ['Structured vs flat', SV.prefAll[0] + ' : ' + SV.prefAll[1], '% of pairs preferring structured vs flat; intent equal at ' + SV.intent[0] + '%', 'Tables 1, 13'],
+      ['Other formats', fmt1(R.pfPreferred[2]) + '%', 'PersonaFactory preferred over the SynthPAI form; ' + fmt1(R.pfPreferred[0]) + '–' + fmt1(R.pfPreferred[1]) + '% over the others', 'Tables 2, 17'],
+      ['Real users', fmt1(CAL.arms['C: background + style layer'][0][2]) + '%', 'rewrite with the style layer judged more real than the real message (MiniMax-M2.5)', 'Table 14'],
+      ['Judge robustness', 'κ ≥ 0.32', 'style agreement of every judge with the pipeline judge', 'Table 12'],
+      ['Human raters', fmt1(D.human.turing[0].human) + '%', 'of rewrites taken for human-written in a blind test; meaning, style and plausibility get a median of 4 out of 5', 'Tables 18, 21']
     ];
     const ul = el('ol', 'sheet', null, rd);
     ROWS.forEach((r, i) => {
@@ -5567,20 +5693,25 @@ const H_EX = {
   }
   function countChart(c){
     const segs = [{ name: 'Human-like', color: C_HUM }, { name: 'AI-like', color: C_AI }];
-    const w = W(c), barH = 26, top = 4, h = barH + 8;
+    const w = W(c), barH = 26, rowH = 36, top = 4, h = top + T20_C.length * rowH;
+    const lw = Math.min(Math.ceil(measure(T20_C.map(r => r.label))) + 10, Math.floor(w * 0.38));
     const svg = svgFor(c, w, h);
-    const sx = v => (w - 2) * v / T19_VER.tot;
-    let x = 0;
-    T19_VER.parts.forEach((v, j) => {
-      const len = sx(v);
-      const rect = S('rect', { x: x + (j ? 1 : 0), y: top, width: Math.max(0, len - 1), height: barH, rx: 3, fill: segs[j].color }, svg);
-      const lab = `${v} · ${fmt1(T19_VER.pct[j])}%`;
-      if (len > measure([lab]) + 14) T(lab, { x: x + len / 2, y: top + barH / 2 + 4, 'text-anchor': 'middle', class: 'on' }, svg);
-      bind(rect, [{ c: segs[j].color, v: String(v), l: `${segs[j].name} (${fmt1(T19_VER.pct[j])}%)` }, { l: `of ${T19_VER.tot} judgments on verified rewrites` }]);
-      x += len;
+    T20_C.forEach((r, i) => {
+      const y = top + i * rowH + (rowH - barH) / 2;
+      T(fit(r.label, lw - 8), { x: lw - 8, y: y + barH / 2 + 4, 'text-anchor': 'end' }, svg);
+      const sx = v => (w - lw - 2) * v / r.tot;
+      let x = lw;
+      r.parts.forEach((v, j) => {
+        const len = sx(v), p = r.pct[j];
+        const rect = S('rect', { x: x + (j ? 1 : 0), y, width: Math.max(0, len - 1), height: barH, rx: 3, fill: segs[j].color }, svg);
+        const lab = p ? `${v} · ${p}%` : String(v);
+        if (len > measure([lab]) + 14) T(lab, { x: x + len / 2, y: y + barH / 2 + 4, 'text-anchor': 'middle', class: 'on' }, svg);
+        bind(rect, [{ c: segs[j].color, v: String(v), l: segs[j].name + (p ? ` (${p}%)` : '') }, { l: `of ${r.tot} answered judgments · ${r.label.toLowerCase()}` }]);
+        x += len;
+      });
     });
     c.insertBefore(legend(segs.map(s => ({ name: s.name, color: s.color }))), svg);
-    unit(c, `Rater answers on texts verified as corpus rewrites (${T19_VER.tot} in total).`);
+    unit(c, `Rater answers, skips left out: ${T20_C[0].tot} on texts verified as corpus rewrites, ${T20_C[1].tot} on WildChat user messages.`);
   }
   function judgeChart(c){
     const rows = H.turing, w = W(c);
@@ -5605,13 +5736,13 @@ const H_EX = {
         T(fmt1(v), { x: w - 2, y: cy + dy + 4, 'text-anchor': 'end', class: 'val', style: 'font-size:11.5px' }, svg);
       });
       bind(S('rect', { class: 'hit', x: 0, y: y0, width: w, height: rowH }, svg), [
-        { l: r.judge + (i ? ' · 3 answers per text' : ` · ${T20_SET.humanJudged} answered judgments`) },
+        { l: r.judge + (i ? ' · 3 answers per text' : ` · ${T21_SET.humanJudged} answered judgments`) },
         { c: C_HUM, v: fmt1(r.human) + '%', l: `rewrites taken for human-written [${fmt1(r.hlo)}, ${fmt1(r.hhi)}]` },
         { c: C_ACC, v: fmt1(r.acc) + '%', l: `accuracy [${fmt1(r.alo)}, ${fmt1(r.ahi)}]` }]);
     });
     const lg = legend([{ name: 'Rewrites taken for human', color: C_HUM, kind: 'dot' }, { name: 'Accuracy', color: C_ACC, kind: 'dot' }, { name: 'Chance, 50%', color: 'var(--faint)', kind: 'line' }]);
     lg.lastChild.firstChild.classList.add('dash'); c.insertBefore(lg, svg);
-    unit(c, `${T20_SET.texts} texts: ${T20_SET.rewrites} verified rewrites, ${T20_SET.chat} chat-log messages. Lines: 95% intervals.`);
+    unit(c, `${T21_SET.texts} texts: ${T21_SET.rewrites} verified rewrites, ${T21_SET.chat} chat-log messages. Lines: 95% intervals.`);
   }
 
   // one pane per sub-tab: fills the left box and the readout, returns the chart draw
@@ -5622,7 +5753,7 @@ const H_EX = {
       [['Forms', `${HS.forms} languages, one form each, up to ${HS.items} items (${HS.perPart} per part)`],
        ['Raters', 'AI experts who volunteer, unpaid, and rate only languages they know well'],
        ['Scales', '1 to 5 for meaning, style and plausibility, plus a confidence rating in Part C'],
-       ['So far', `${HS.subs} submissions in ${HS.langs} languages, ${HS.evals} item ratings. Collection is still running.`]].forEach(([k, v]) => { const r = el('div', null, null, sp); el('dt', null, k, r); el('dd', null, v, r); });
+       ['So far', `${HS.subs} submissions in ${HS.langs} languages and ${HS.scripts} scripts, ${HS.evals} item evaluations. Collection is still running.`]].forEach(([k, v]) => { const r = el('div', null, null, sp); el('dt', null, k, r); el('dd', null, v, r); });
       const fd = pfind(`Raters give meaning, style and plausibility a median of 4 out of 5. In the blind test they thought a person wrote ${Math.round(H.turing[0].human)}% of the rewrites.`, box);
       fade([...sp.children, fd], animate);
       const bg = hbigs([['4 of 5', 'median for meaning, style and plausibility', C_MEAN], [fmt1(H.turing[0].human) + '%', 'of rewrites taken for human-written by raters', C_HUM], [Math.round(Math.min(...llm())) + '–' + Math.round(Math.max(...llm())) + '%', 'taken for human-written by four LLM judges']]);
@@ -5665,10 +5796,10 @@ const H_EX = {
       [['Yes', 'this text appears as authentic and readable as typical messages written by real users.'], ['No', 'parts of this text seem unusual, such as odd wording or synthetic text patterns, suggesting it might be AI-generated.'], ['Skip this item.', '']].forEach(([a, b]) => { const li = el('li', null, null, ol); el('b', null, a + (b ? ': ' : ''), li); if (b) li.append(b); });
       el('p', 'hq sm', 'Follow-up: How confident are you?', fb);
       hscale(fb, 'guessing', 'very confident', P.C[2], animate, 'mean confidence');
-      const fd = pfind(`Raters took ${fmt1(H.turing[0].human)}% of the rewrites for human-written and identified the source correctly ${fmt1(H.turing[0].acc)}% of the time, close to chance. The LLM judges took even more rewrites for human-written.`, box);
+      const fd = pfind(`Raters took ${fmt1(H.turing[0].human)}% of the rewrites for human-written and identified the source correctly ${fmt1(H.turing[0].acc)}% of the time, only slightly better than chance. Real chat messages were taken for human-written in ${T20_C[1].pct[0]}% of answers. The LLM judges took even more rewrites for human-written.`, box);
       fade([fb.parentNode, fd], animate);
       const bg = hbigs([[fmt1(H.turing[0].human) + '%', 'of rewrites taken for human-written', C_HUM], [fmt1(H.turing[0].acc) + '%', 'rater accuracy (chance is 50%)', C_ACC], [fmt1(Math.min(...llm())) + '–' + fmt1(Math.max(...llm())) + '%', 'taken for human-written by LLM judges']]);
-      const c1 = block('Rater answers on verified rewrites');
+      const c1 = block('Rater answers: rewrites and real messages');
       const c2 = block('People vs four LLM judges');
       fade([bg, c1.parentNode, c2.parentNode], animate, 200, 300);
       return () => { countChart(c1); judgeChart(c2); };
@@ -5702,7 +5833,7 @@ const H_EX = {
     let drawPane = () => {};
     const pane = anim => { box.replaceChildren(); rd.replaceChildren(); drawPane = HPANE[hSub](box, anim); };
     pane(animate);
-    // Source: paper Section 5, App. E, Tables 17, 19, 20
+    // Source: paper Section 5, App. E, Tables 18, 20, 21, E.5, E.6
     return () => drawPane();
   }
 
@@ -5731,10 +5862,10 @@ const H_EX = {
 (function(){
 /* ======================= ABLATIONS: tuning the machine ======================= */
 // Numbers used here that are not in data.js:
-const AB_T6 = { convs: 400, turns: 960, ci: 3.2 };   // Table 6 caption: 400 conversations per arm, about 960 judged user turns, 95% intervals at most ±3.2 points
-const AB_T7 = { convs: 300, turns: 730, ci: 3.6 };   // Table 7 caption: 300 conversations per variant, about 730 judged user turns, 95% intervals at most ±3.6 points
+const AB_SEL = { convs: 400, turns: 960, ci: 3.2 };  // Table 7 caption: 400 conversations per arm, about 960 judged user turns, 95% intervals at most ±3.2 points
+const AB_XL = { convs: 300, turns: 730, ci: 3.6 };   // Table 8 caption: 300 conversations per variant, about 730 judged user turns, 95% intervals at most ±3.6 points
 const AB_F = { sources: 194, rewrites: 12845, gens: 4 }; // Appendix F setup: up to 194 source messages, 12,845 valid rewrites, 4 generators
-const AB_FAM = [ // Table 22: family means over four generators [family, style, intent, script]
+const AB_FAM = [ // Table 23: family means over four generators [family, style, intent, script]
   ['Digital fluency', 0.801, 0.624, 0.921], ['Sentence length', 0.822, 0.625, 0.920], ['AI stance', 0.800, 0.622, 0.916], ['Age', 0.810, 0.627, 0.924],
   ['Gender', 0.821, 0.631, 0.920], ['Education', 0.808, 0.620, 0.929], ['Occupation', 0.801, 0.622, 0.920], ['Hobbies', 0.814, 0.646, 0.925]
 ];
@@ -5744,10 +5875,10 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
 
 (function tuning(){
   const lineEl = $('#abLine'), panel = $('#abPanel'), out = $('#abRead');
-  const T6 = D.selectionAblation, X = D.crossLingual, RW = D.rewriters, A = D.attributes;
+  const TS = D.selectionAblation, X = D.crossLingual, RW = D.rewriters, A = D.attributes;
   const SEL = { cons: 'Conservative matching', rand: 'Random, same language' };
   const PR = { tpl: 'Template only', frame: 'Template + system framing' };
-  const t6 = (sel, pr) => T6.find(r => r.sel === SEL[sel] && r.prompt === (pr === 'tpl' ? 'template only' : 'template + framing'));
+  const selRow = (sel, pr) => TS.find(r => r.sel === SEL[sel] && r.prompt === (pr === 'tpl' ? 'template only' : 'template + framing'));
   const other = { cons: 'rand', rand: 'cons', tpl: 'frame', frame: 'tpl' };
   const attrLabel = i => i < 0 ? 'No persona (baseline)' : A.rows[i][0];
   const PIPE = { sel: 'cons', pr: 'tpl', xl: 1, rw: 0, at: 0 };
@@ -5760,35 +5891,35 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
      opts: [{v, l, d, tag?}]  pipe: value the pipeline ships with
      read(): { cur: label, alt: label, mets: [{name, v, a, altName?, max, fmt, dfmt, ci?}] } */
   const K = [
-    { key: 'sel', name: 'Persona selection', src: 'Table 6', what: 'Which persona re-voices the turn.',
+    { key: 'sel', name: 'Persona selection', src: 'Table 7', what: 'Which persona re-voices the turn.',
       opts: [{ v: 'cons', l: SEL.cons, d: 'Location, then top-1 embedding, then language pool' }, { v: 'rand', l: SEL.rand, d: 'Any persona that shares the prompt’s language' }],
-      held: `Gemma-4-31B rewriter, same judge and sanity gate. ${AB_T6.convs} conversations per arm, about ${AB_T6.turns} judged turns.`,
+      held: `Gemma-4-31B rewriter, MiniMax-M2.5 judge, same sanity gate. ${AB_SEL.convs} conversations per arm, about ${AB_SEL.turns} judged turns.`,
       note: 'Conservative matching adds 22 to 23 points of style and keeps intent slightly better. A plausible persona gives the rewriter something concrete to express.',
       head: 'Style',
-      read(){ const c = t6(st.sel, st.pr), a = t6(other[st.sel], st.pr); return { cur: SEL[st.sel], alt: SEL[other[st.sel]], ctx: 'Rewrite prompt: ' + PR[st.pr].toLowerCase(), mets: t6mets(c, a) }; } },
-    { key: 'pr', name: 'Rewrite prompt', src: 'Table 6', what: 'How the rewrite instruction reaches the model.',
+      read(){ const c = selRow(st.sel, st.pr), a = selRow(other[st.sel], st.pr); return { cur: SEL[st.sel], alt: SEL[other[st.sel]], ctx: 'Rewrite prompt: ' + PR[st.pr].toLowerCase(), mets: selMets(c, a) }; } },
+    { key: 'pr', name: 'Rewrite prompt', src: 'Table 7', what: 'How the rewrite instruction reaches the model.',
       opts: [{ v: 'tpl', l: PR.tpl, d: 'The rewrite template as a single user message' }, { v: 'frame', l: PR.frame, d: 'Same template inside a system prompt that frames the rewriter as a generic text-transformation component' }],
-      held: `Gemma-4-31B rewriter, same judge and sanity gate. ${AB_T6.convs} conversations per arm, about ${AB_T6.turns} judged turns.`,
+      held: `Gemma-4-31B rewriter, MiniMax-M2.5 judge, same sanity gate. ${AB_SEL.convs} conversations per arm, about ${AB_SEL.turns} judged turns.`,
       note: 'The extra framing costs 4 to 5 points of style in both selection settings, so the pipeline uses the template alone.',
       head: 'Style',
-      read(){ const c = t6(st.sel, st.pr), a = t6(st.sel, other[st.pr]); return { cur: PR[st.pr], alt: PR[other[st.pr]], ctx: 'Persona selection: ' + SEL[st.sel].toLowerCase(), mets: t6mets(c, a) }; } },
-    { key: 'xl', name: 'Cross-lingual strategy', src: 'Table 7', what: 'How a turn moves into the persona’s language.',
+      read(){ const c = selRow(st.sel, st.pr), a = selRow(st.sel, other[st.pr]); return { cur: PR[st.pr], alt: PR[other[st.pr]], ctx: 'Persona selection: ' + SEL[st.sel].toLowerCase(), mets: selMets(c, a) }; } },
+    { key: 'xl', name: 'Cross-lingual strategy', src: 'Table 8', what: 'How a turn moves into the persona’s language.',
       opts: [{ v: 1, l: 'Translate, then restyle', d: 'Literal translation first, then the same-language rewrite' }, { v: 0, l: 'Single pass', d: 'Re-voiced directly into the persona’s language' }],
-      held: `same ${AB_T7.convs} conversations, personas and rewriter (Gemma-4-31B). Intent is judged against the literal translation. Target language is checked with fastText.`,
-      note: 'Two steps keep the request and reach the target language more often, at a small cost in style. A rewrite in the wrong language defeats the purpose of the cross-lingual mode, so the pipeline uses two steps.',
+      held: `same ${AB_XL.convs} conversations, personas, rewriter (Gemma-4-31B) and judge (MiniMax-M2.5). Intent is judged against the literal translation. Target language is checked with fastText.`,
+      note: 'Two steps keep the request more often, reach the target language more often and pass the sanity gate slightly more often. The single pass adopts the persona’s style slightly more often. A rewrite that drifts from the request or out of the target language defeats the purpose of the cross-lingual mode, so the pipeline uses two steps.',
       head: 'Target language',
-      read(){ const c = X[st.xl], a = X[1 - st.xl]; const m = (name, k) => ({ name, v: c[k], a: a[k], max: 100, fmt: pctF, dfmt: ptsD, ci: AB_T7.ci });
+      read(){ const c = X[st.xl], a = X[1 - st.xl]; const m = (name, k) => ({ name, v: c[k], a: a[k], max: 100, fmt: pctF, dfmt: ptsD, ci: AB_XL.ci });
         return { cur: c.v, alt: a.v, mets: [m('Target language', 'target'), m('Intent', 'intent'), m('Style', 'style'), m('Sanity pass', 'sanity')] }; } },
     { key: 'rw', name: 'Rewriter', src: 'Fig. 25', approx: true, what: 'Which model rewrites the user turns.',
       opts: RW.names.map((n, i) => ({ v: i, l: n, d: ['Production rewriter, the balanced choice', 'Production rewriter, restyles most', 'Production judge', 'Extra persona generator'][i] })),
       held: `the same 16 single-attribute conditions for every rewriter.`,
-      note: 'Ministral adopts the most style but keeps the least intent and script. Gemma is the balanced choice.',
+      note: 'Ministral adopts the most style but keeps the least intent and script: the most eager restyler is also the least faithful. Gemma is the balanced choice.',
       head: 'Intent',
       read(){ const a = st.rw === 0 ? 1 : 0; const m = (name, k) => ({ name, v: RW[k][st.rw], a: RW[k][a], max: 1, fmt: fmt2, dfmt: scD(2) });
         return { cur: RW.names[st.rw], alt: RW.names[a], mets: [m('Style adoption', 'style'), m('Intent preservation', 'intent'), m('Script stability', 'script')] }; } },
     { key: 'at', name: 'One persona attribute', src: 'Fig. 24', what: 'Vary exactly one attribute of the persona.',
       held: `Up to ${AB_F.sources} source messages, ${AB_F.gens} rewriters, ${fmt0(AB_F.rewrites)} valid rewrites. Scores averaged over the rewriters.`,
-      note: 'Rows barely move. Family means for style stay between 0.80 and 0.82, and every family loses 0.06 to 0.07 of script stability. The paper treats these numbers as a measurement and does not rank the attributes.',
+      note: 'On one 0 to 1 scale the three columns sit at clearly different levels, while the rows within a column barely move. Family means for style stay between 0.80 and 0.82, and every family loses 0.06 to 0.07 of script stability. The paper treats these numbers as a measurement and does not rank the attributes.',
       head: 'Script',
       read(){
         const i = st.at, base = A.baselineScript;
@@ -5803,7 +5934,7 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
           { name: 'Script stability', v: r[3], a: base, altName: 'no-persona baseline', max: 1, fmt: fmt3, dfmt: scD(3) } ] };
       } }
   ];
-  function t6mets(c, a){ const m = (name, k) => ({ name, v: c[k], a: a[k], max: 100, fmt: pctF, dfmt: ptsD, ci: AB_T6.ci }); return [m('Style', 'style'), m('Intent', 'intent'), m('Sanity pass', 'sanity')]; }
+  function selMets(c, a){ const m = (name, k) => ({ name, v: c[k], a: a[k], max: 100, fmt: pctF, dfmt: ptsD, ci: AB_SEL.ci }); return [m('Style', 'style'), m('Intent', 'intent'), m('Sanity pass', 'sanity')]; }
   const headDelta = k => { const r = K[k].read(); const m = r.mets.find(x => x.name.startsWith(K[k].head)) || r.mets[0]; if (m.v == null || m.a == null) return null; return { name: K[k].head.toLowerCase(), d: m.v - m.a, txt: m.dfmt(m.v - m.a), ns: m.ci != null && Math.abs(m.v - m.a) < m.ci }; };
   const posLabel = k => { const key = K[k].key; if (key === 'at') return attrLabel(st.at); const o = K[k].opts.find(o => o.v === st[key]); return o.l; };
   const atPipe = k => K[k].key === 'at' ? null : st[K[k].key] === PIPE[K[k].key];
@@ -5914,7 +6045,7 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
     if (s === 3) extra = rwTable(out);
     if (s === 4) extra = attrHeat(out);
     el('p', 'rnote', kn.note, out);
-    $('#abSrc').textContent = 'Source: paper ' + kn.src + (s <= 1 ? ' · ' + AB_T6.convs + ' conversations per arm' : s === 2 ? ' · ' + AB_T7.convs + ' conversations per variant' : s === 4 ? ' · Table 22 · ' + fmt0(AB_F.rewrites) + ' rewrites' : '');
+    $('#abSrc').textContent = 'Source: paper ' + kn.src + (s <= 1 ? ' · ' + AB_SEL.convs + ' conversations per arm' : s === 2 ? ' · ' + AB_XL.convs + ' conversations per variant' : s === 4 ? ' · Table 23 · ' + fmt0(AB_F.rewrites) + ' rewrites' : '');
     if (animate) $$('.rhd, .lgslot, .gauges, .mx, .rwt, .hwrap, .rnote', out).forEach((n, i) => { n.classList.add('in'); n.style.animationDelay = (i * 70) + 'ms'; });
   }
   function update(){
@@ -5924,10 +6055,10 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
     if (extra) extra();
   }
 
-  /* 2x2 of Table 6 */
+  /* 2x2 of Table 7 */
   function matrix(parent){
     const wrap = el('div', 'mx', null, parent);
-    const hd = el('div', 'mxt', null, wrap); el('span', null, 'All four arms, style adoption', hd); el('span', 'src', 'Table 6', hd);
+    const hd = el('div', 'mxt', null, wrap); el('span', null, 'All four arms, style adoption', hd); el('span', 'src', 'Table 7', hd);
     const g = el('div', 'mxg', null, wrap);
     el('span', 'mxh corner', '', g);
     ['tpl', 'frame'].forEach(p => el('span', 'mxh', PR[p], g));
@@ -5935,7 +6066,7 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
     ['cons', 'rand'].forEach(sel => {
       el('span', 'mxr', SEL[sel], g);
       ['tpl', 'frame'].forEach(pr => {
-        const row = t6(sel, pr);
+        const row = selRow(sel, pr);
         const b = el('button', 'mxc', null, g); b.type = 'button';
         const big = el('b', null, null, b); if (sel === PIPE.sel && pr === PIPE.pr) el('i', 'pdot', null, big); big.append(pctF(row.style));
         el('small', null, `intent ${fmt1(row.intent)} · sanity ${fmt1(row.sanity)}`, b);
@@ -5955,10 +6086,10 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
     wrap.appendChild(lg);
     return paint;
   }
-  /* both variants of Table 7 */
+  /* both variants of Table 8 */
   function xlPair(parent){
     const wrap = el('div', 'mx', null, parent);
-    const hd = el('div', 'mxt', null, wrap); el('span', null, 'Both variants, target language', hd); el('span', 'src', 'Table 7', hd);
+    const hd = el('div', 'mxt', null, wrap); el('span', null, 'Both variants, target language', hd); el('span', 'src', 'Table 8', hd);
     const g = el('div', 'mxg two', null, wrap);
     const cells = [1, 0].map(v => {
       const row = X[v];
@@ -6098,8 +6229,8 @@ function approxTag(parent){ el('span', 'approx', 'read from figure', parent); }
 /* ======================= ASSISTANT LINE + TRAINING BAY ======================= */
 // Paper numbers and prompt text used here that are not in data.js (all from Appendix G.2 unless noted).
 const DSX = {
-  styleN: 236191,                       // Table 24 caption: released corpus, n = 236,191 conversations
-  structure: [                          // Table 24 "Structure" column, same order as D.assistantStyles
+  styleN: 234723,                       // Table 25 caption: released corpus with a model persona, n = 234,723 conversations
+  structure: [                          // Table 25 "Structure" column, same order as D.assistantStyles
     'conversational prose', 'prose', 'flowing prose', 'tight bullets or one short paragraph',
     'labeled parts (established, assumptions, how to check)', 'paragraphs with topic sentences',
     'short headers, numbered steps, tables where comparisons appear', 'short paragraphs, occasional simple bullets',
@@ -6111,13 +6242,18 @@ const DSX = {
   names: { without: 68.8, with: 66.4, fitLo: 47.6, fitHi: 50.8, redone: 52 }, // G.2 "Style set": names removed from prompts
   matchVsRandom: [60.0, 39.9],          // G.2 design pilots: pairwise fit, matched vs random style
   matchVsUser: [49.7, 50.1],            // G.2 design pilots: matched style vs user-persona-only reply
-  design: { convs: 604, turns: 1489, instr: 94 },          // Table 25 caption / text
-  pilot: { convs: 1000, noise: 59.6, pair: [['the default', 61, 39], ['model persona only', 58, 41], ['user persona only', 49, 51]] }, // Table 26 caption / text
-  noUser: { convs: 1000, turns: 2570, fallback: 35 },      // Table 30 text
-  sysPrompt: { n: 200, rows: [['No style', 86], ['Style placed below the system prompt', 58], ['System prompt placed last, as an override', 66]] }, // G.2 text after Table 30
+  design: { convs: 604, turns: 1489, instr: 94 },          // Table 26 caption / text
+  pilot: { convs: 1000, noise: 59.6, pair: [['the default', 61, 39], ['model persona only', 58, 41], ['user persona only', 49, 51]] }, // Table 27 caption / text
+  noUser: { convs: 1000, turns: 2570, fallback: 35 },      // Table 31 text
+  sysPrompt: { n: 200, rows: [['No style', 86], ['Style placed below the system prompt', 58], ['System prompt placed last, as an override', 66]] }, // G.2 text after Table 31
   train: { perArm: '100k', lr: '1e-5', batch: 128, requests: 300, voices: 12 }, // G.2 downstream ablation
-  pairN: 'about 3,500',                 // Table 29 caption: decisive comparisons per pair
-  contractions: [1.75, 0.92, 0.47, 0.95, 0.71, 0.52, 0.96] // Table 28 "Contractions / 100 words", row order of D.finetune.rows
+  pairN: 'about 3,500',                 // Table 30 caption: decisive comparisons per pair
+  contractions: [1.75, 0.92, 0.47, 0.95, 0.71, 0.52, 0.96], // Table 29 "Contractions / 100 words", row order of D.finetune.rows
+  // Appendix G.3, downstream fine-tuning on the released corpus (tables are D.corpusFT)
+  corpus: { convs: 79817, xConvs: 40528, heldOut: 5, maxTok: 3800, seq: 4096, wild: 1000, keep: 99.6, sd: 1.6, requests: 300, voices: 12 }, // G.3 Setup / Evaluation, Table 32-34 captions
+  seeds: { a2a1: [5.7, 1.9, 9.6], a2a0r: [4.6, 1.1, 8.2], a1a0: [-3.8, -6.7, -0.9], a2a1Judge: [57.3, 60.0], a2a0Judge: [54.6, 57.5] }, // G.3 Results: over three training seeds
+  strict: { ifeval: [0.3, -2.2, 2.8], judge: [53.8, 57.4] },  // G.3 "Strict subset"
+  crossLC: { muse: [52.1, 48.0, 55.9], qwen: [44.3, 40.7, 47.9] } // G.3 "Cross-lingual conversations": WildChat LC win rate of X2
 };
 // The Florida persona from Assembly, used to show what the matcher keeps.
 const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) and its released conversation chats 74e8c8fd
@@ -6203,11 +6339,11 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
       wrap.appendChild(step(f));
     });
     if (finding) wrap.appendChild(step(put(E('div', 'find'), E('span', 'fh', 'Finding'), E('p', null, finding))));
-    wrap.appendChild(step(E('p', 'caveat', 'One seed per arm, a single judge (MiniMax-M2.5), no capability benchmarks. The arms share the user side, so they compare assistant conditioning only.')));
+    wrap.appendChild(step(E('p', 'caveat', 'One seed per arm, a single judge (MiniMax-M2.5), no capability benchmarks in this ablation. The arms share the user side, so they compare assistant conditioning only.')));
     return wrap;
   }
 
-  /* ---------- per-column bar matrix for the pilots (Tables 25, 26, 30) ---------- */
+  /* ---------- per-column bar matrix for the pilots (Tables 26, 27, 31) ---------- */
   function mtx({ cols, rows, best = [] }){
     const m = E('div', 'mtx'); m.style.setProperty('--n', cols.length);
     const hd = put(E('div', 'mrow head'), E('span', 'mlab', ''));
@@ -6280,8 +6416,8 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
 
   // 2 · style matching
   ST[1] = {
-    how: 'Bar length is each style’s share of the 236,191 released conversations. Hover a row for its structure.',
-    src: 'Source: paper Table 24 · App. G.2',
+    how: `Bar length is each style’s share of the ${fmt0(DSX.styleN)} released conversations with a model persona. Hover a row for its structure.`,
+    src: 'Source: paper Table 25 · App. G.2',
     left(){
       put(left, ph('Matcher · MiniMax-M2.5'));
       left.appendChild(step(put(E('blockquote', 'quote'), 'You choose the response style an AI assistant should use for a user, so that its answers are easy and pleasant for this particular user to read. Adapt to the user’s needs; do not mirror their typing (no copying typos or slang).', E('span', 'src', 'App. B.1, verbatim'))));
@@ -6292,7 +6428,7 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
       left.appendChild(step(put(E('div', 'fact'), E('b', null, 'Style names never reach a prompt. '), `Removing them left adoption unchanged within noise (${fmt1(n.without)}% without, ${fmt1(n.with)}% with, 1,000-conversation pilot). ${n.redone} released conversations in which a reply named its own style were regenerated.`)));
     },
     right(){
-      put(right, head('How often each style was matched', 'Table 24'));
+      put(right, head('How often each style was matched', 'Table 25'));
       const list = E('div', 'slist');
       const mx = D.assistantStyles[0][3];
       D.assistantStyles.forEach((s, i) => {
@@ -6303,7 +6439,7 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
         list.appendChild(step(r, 45));
       });
       right.appendChild(list);
-      right.appendChild(E('div', 'unit', '% of 236,191 conversations. The top two styles cover 43%, the rarest 1.5%.'));
+      right.appendChild(E('div', 'unit', `% of ${fmt0(DSX.styleN)} conversations. The top two styles cover 43%, the rarest 1.5%.`));
       const pil = E('div', 'pilot');
       put(pil, put(E('div', 'mxt'), E('span', null, 'Does matching carry signal?'), srcTag('App. G.2 design pilot')));
       pil.appendChild(legend([{ name: 'Matched style', color: 'var(--s1)' }, { name: 'Random style', color: 'var(--s2)' }]));
@@ -6319,7 +6455,7 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
   // 3 · regeneration with style
   ST[2] = {
     how: 'Each column has its own bar scale. Bold marks the best value per column where the paper bolds it.',
-    src: 'Source: paper App. B.1 · Tables 25, 26, 30',
+    src: 'Source: paper App. B.1 · Tables 26, 27, 31',
     left(){
       put(left, ph('Responder system prompt, every turn'));
       const stack = E('div', 'stack');
@@ -6348,13 +6484,13 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
         const pc = { k: 'style', l: 'Style adoption', max: 100, fmt: P };
         if (pilotTab === 'design'){
           const best = ['style', 'content', 'instr', 'sanity'];
-          put(body, put(E('div', 'mxt'), E('span', null, 'Four ways to produce the assistant side, %'), srcTag('Table 25')));
+          put(body, put(E('div', 'mxt'), E('span', null, 'Four ways to produce the assistant side, %'), srcTag('Table 26')));
           body.appendChild(mtx({ best, cols: [pc, { k: 'content', l: 'Same content', max: 100, fmt: P }, { k: 'instr', l: 'Instruction compliance', max: 100, fmt: P }, { k: 'sanity', l: 'Sanity pass', max: 100, fmt: P }],
             rows: D.designPilot.map(r => ({ label: r.arm, rel: r.arm === 'Matched style, generated' ? 'release' : null, v: r })) }));
           body.appendChild(step(E('p', 'rnote', 'Generating with the matched style gives the highest adoption. Restyling a finished reply keeps its content (96.9%), which suits data whose answers must not change.')));
           body.appendChild(E('div', 'unit', `${DSX.design.convs} conversations, ${fmt0(DSX.design.turns)} assistant turns, earlier style set without signature touches. Instruction compliance on ${DSX.design.instr} later turns (±10 pts). Same content is measured against the user-persona-only reply.`));
         } else if (pilotTab === 'data'){
-          put(body, put(E('div', 'mxt'), E('span', null, 'Assistant conditioning, user turns fixed'), srcTag('Table 26')));
+          put(body, put(E('div', 'mxt'), E('span', null, 'Assistant conditioning, user turns fixed'), srcTag('Table 27')));
           body.appendChild(mtx({ cols: [pc, { k: 'content', l: 'Same content', max: 100, fmt: P, nul: 'ref.' }, { k: 'instr', l: 'Instruction compliance', max: 100, fmt: P }, { k: 'words', l: 'Median words', max: 600, fmt: fmt0 }],
             rows: D.dataPilot.map(r => ({ label: r.arm, rel: r.arm === 'User + model persona' ? 'release' : null, v: r })) }));
           const pw = put(E('div', 'pw'), E('span', 'pwh', 'User + model persona, judged better fit vs'));
@@ -6363,7 +6499,7 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
           body.appendChild(step(E('p', 'rnote', 'The model persona makes the intended style recognizable without lowering instruction compliance. The user persona halves reply length.')));
           body.appendChild(E('div', 'unit', `${fmt0(DSX.pilot.convs)} conversations, about 2,500 assistant turns. Same content is against the default reply; two default samples agree ${fmt1(DSX.pilot.noise)}% of the time.`));
         } else {
-          put(body, put(E('div', 'mxt'), E('span', null, 'Restyling an existing dataset, no user persona'), srcTag('Table 30')));
+          put(body, put(E('div', 'mxt'), E('span', null, 'Restyling an existing dataset, no user persona'), srcTag('Table 31')));
           body.appendChild(mtx({ best: ['sanity', 'style', 'content'], cols: [{ k: 'sanity', l: 'Sanity pass', max: 100, fmt: P }, pc, { k: 'content', l: 'Same content', max: 100, fmt: P, nul: 'ref.' }, { k: 'words', l: 'Median words', max: 600, fmt: fmt0 }],
             rows: D.noUserPersona.map(r => ({ label: r.arm, v: r })) }));
           body.appendChild(step(E('p', 'rnote', `Here the style section is the only system prompt. Adoption rises from 25.7% to 79.5% at a cost of about five points of sanity pass. Restyling falls back to the source reply on ${DSX.noUser.fallback}% of turns.`)));
@@ -6401,7 +6537,7 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
     right(){
       put(right, head('Training and evaluation', 'App. G.2'));
       const dl = E('dl', 'spec');
-      [['Llama-3.1-8B', 'full fine-tuning · 1 epoch · learning rate 1e-5 · global batch 128'], ['Apertus-8B', 'same budget · packed multi-turn sequences · loss on every assistant turn'], ['Data', `${DSX.train.perArm} conversations per arm`], ['Probes', `${DSX.train.requests} held-out requests × ${DSX.train.voices} user personas`], ['Decoding', 'greedy']].forEach(([k, v]) => put(dl, E('dt', null, k), E('dd', null, v)));
+      [['Llama-3.1-8B', 'full fine-tuning · 1 epoch · learning rate 1e-5 · global batch 128'], ['Apertus-8B', 'base model (2509 release) · same budget · packed multi-turn sequences · loss on every assistant turn'], ['Data', `${DSX.train.perArm} conversations per arm`], ['Probes', `${DSX.train.requests} held-out requests × ${DSX.train.voices} user personas`], ['Decoding', 'greedy']].forEach(([k, v]) => put(dl, E('dt', null, k), E('dd', null, v)));
       right.appendChild(step(dl));
       const fl = E('div', 'evflow');
       const dots = (n, cls) => { const d = E('span', 'dots ' + cls); for (let i = 0; i < n; i++) d.appendChild(E('i')); return d; };
@@ -6417,7 +6553,7 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
     }
   };
 
-  // 5 · adaptation (Table 27)
+  // 5 · adaptation (Table 28)
   const FT = [
     ['formality', 'Formality', 'Formality → formality', [0, 0.6], [0, 0.2, 0.4, 0.6], 'Correlation between user and reply formality within one request. Every fine-tuned model follows the user far more than Instruct.'],
     ['lower', 'Lowercase', 'Lowercase → formality', [-0.5, 0], [-0.4, -0.2, 0], 'Lowercase users should get less formal replies, so further left is stronger adaptation.'],
@@ -6428,10 +6564,10 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
   ];
   ST[4] = {
     how: 'Pick a measure above the chart. Hover or focus a bar for the exact value.',
-    src: 'Source: paper Table 27',
+    src: 'Source: paper Table 28',
     left(){ left.appendChild(bench('Every model fine-tuned on persona-styled conversations tracks the user’s formality and emoji use far more than Llama-3.1-8B-Instruct, in both families.')); },
     right(){
-      put(right, head('Does the reply follow the user?', 'Table 27'));
+      put(right, head('Does the reply follow the user?', 'Table 28'));
       right.appendChild(tabs(FT.map(f => [f[0], f[1]]), ftTab, v => { ftTab = v; drawFT(); }, 'Measure'));
       right.appendChild(benchLegend());
       const ch = E('div', 'chart'); right.appendChild(step(ch));
@@ -6441,7 +6577,7 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
     }
   };
 
-  // 6 · reply features (Table 28)
+  // 6 · reply features (Table 29)
   const contr = new Map(D.finetune.rows.map((r, i) => [r, DSX.contractions[i]]));
   const RF = [
     ['words', 'Median words', r => r.words, fmt0, [0, 700], [0, 200, 400, 600], String, 'Median reply length in words. SFT A writes the longest replies in both families.'],
@@ -6453,10 +6589,10 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
   ];
   ST[5] = {
     how: 'Judge-free counts over the replies to the style probes. Hover or focus a bar for the exact value.',
-    src: 'Source: paper Table 28',
+    src: 'Source: paper Table 29',
     left(){ left.appendChild(bench('Without assistant conditioning (A), the models inherit the teacher’s defaults: replies two to two and a half times longer, headers in about three quarters of them.')); },
     right(){
-      put(right, head('What the replies look like', 'Table 28'));
+      put(right, head('What the replies look like', 'Table 29'));
       right.appendChild(tabs(RF.map(f => [f[0], f[1]]), rfTab, v => { rfTab = v; drawRF(); }, 'Reply feature'));
       right.appendChild(benchLegend());
       const ch = E('div', 'chart'); right.appendChild(step(ch));
@@ -6466,23 +6602,236 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
     }
   };
 
-  // 7 · pairwise judge (Table 29)
+  // 7 · pairwise judge (Table 30)
   const shortCmp = c => c.replace('Llama-3.1-8B-Instruct', 'Instruct');
   ST[6] = {
     how: 'Win rate of the first model in each pair. 50% is parity. Hover or focus a row for the values.',
-    src: 'Source: paper Table 29 · Fig. 27',
-    left(){ left.appendChild(bench('Controlling for reply length removes or reverses most preferences for B and C over A. Llama C still beats Llama-3.1-8B-Instruct at equal length (68.6%).', false)); },
+    src: 'Source: paper Table 30 · Fig. 27',
+    left(){ left.appendChild(bench('The judge prefers the shorter B and C replies over A, but the preference disappears or reverses once reply length is controlled. Llama C still beats Llama-3.1-8B-Instruct at equal length (68.6%).', false)); },
     right(){
-      put(right, head('Which reply does the judge prefer?', 'Table 29 · Fig. 27'));
+      put(right, head('Which reply does the judge prefer?', 'Table 30 · Fig. 27'));
       right.appendChild(legend([{ name: 'Raw win rate', color: 'var(--s1)', kind: 'dot' }, { name: '95% interval', color: 'var(--s1)', kind: 'line' }, { name: 'Length-controlled', color: 'var(--s2)', kind: 'dot' }]));
       const ch = E('div', 'chart'); right.appendChild(step(ch));
       draw(() => forest(ch, { rows: D.finetune.pairwise.map(p => ({ label: shortCmp(p.cmp), v: p.raw, lo: p.lo, hi: p.hi, color: 'var(--s1)', v2: p.lc, color2: 'var(--s2)', tip: [{ l: p.cmp }, { c: 'var(--s1)', v: fmt1(p.raw) + '%', l: `raw (95% CI ${fmt1(p.lo)}–${fmt1(p.hi)})` }, { c: 'var(--s2)', v: fmt1(p.lc) + '%', l: 'length-controlled' }] })), min: 35, max: 85, ref: 50, refLabel: 'parity', ticks: [40, 50, 60, 70, 80], rowH: 30, labelMax: 200 }));
       right.appendChild(E('p', 'cap', `A: no system prompt. B: user persona. C: user + model persona. Instruct is Llama-3.1-8B-Instruct. ${DSX.pairN[0].toUpperCase() + DSX.pairN.slice(1)} decisive comparisons per pair.`));
       right.appendChild(E('p', 'cap', 'B and C replies are about half as long as A, so the equal-length estimate is an extrapolation.'));
+      right.appendChild(E('p', 'rnote', 'The comparison with Llama-3.1-8B-Instruct is context only. The controlled comparison with the original training data follows in stages 8 to 10.'));
       const det = put(E('details', 'tbl'), E('summary', null, 'Show values'));
       const tw = E('div', 'tblwrap'); det.appendChild(tw);
       table(tw, ['Comparison', 'Raw win', '95% CI', 'LC win'], D.finetune.pairwise.map(p => [p.cmp, fmt1(p.raw), `${fmt1(p.lo)}–${fmt1(p.hi)}`, fmt1(p.lc)]), [1, 2, 3]);
       right.appendChild(det);
+    }
+  };
+
+  /* ---------- released-corpus study (Appendix G.3): Apertus-v1.5-8B base on versions of the same conversations ---------- */
+  const C = D.corpusFT, CX = DSX.corpus;
+  // A0 is the reference (original data), so it takes the neutral ink; the released arms take the station violet.
+  const CARM = {
+    A0: { c: 'var(--ink-2)', n: 'original', d: 'the original seed conversation' },
+    A0r: { c: 'var(--s3)', n: 'regenerated, no persona', d: 'original user turns, assistant regenerated with no persona' },
+    A1: { c: 'var(--s2)', n: 'styled user, original assistant', d: 'persona-styled user turns, original assistant turns' },
+    A2: { c: 'var(--s1)', n: 'released', d: 'styled user turns, assistant regenerated for that user' },
+    X1: { c: 'var(--s3)', n: 'translated', d: 'user turns translated persona-blind, assistant regenerated with no persona' },
+    X2: { c: 'var(--s1)', n: 'released cross-lingual', d: 'styled user turns, assistant regenerated for that user' }
+  };
+  const JUDGE = [['qwen', 'Qwen3.6-35B-A3B', 'var(--s1)'], ['muse', 'Muse-Glimmer-30B', 'var(--s2)']];
+  const sgn = v => (v > 0 ? '+' : v < 0 ? '−' : '') + fmt1(Math.abs(v));
+  const ivl = (lo, hi) => `${sgn(lo)} to ${sgn(hi)}`;
+  const tsg = t => (t > 0 ? '+' : t < 0 ? '−' : '') + Math.abs(t);
+  const armLab = k => `${k} · ${CARM[k].n}`;
+  const armLegend = keys => legend(keys.map(k => ({ name: armLab(k), color: CARM[k].c })));
+
+  function cbench(finding, caveat, swatch = true){
+    const wrap = E('div', 'bench' + (swatch ? '' : ' nosw'));
+    put(wrap, ph('Arms under test'));
+    [['Language-matched', ['A0', 'A0r', 'A1', 'A2']], ['Cross-lingual', ['X1', 'X2']]].forEach(([t, ks]) => {
+      const f = put(E('div', 'bfam'), E('b', null, t));
+      ks.forEach(k => { const sw = E('i'); if (swatch) sw.style.background = CARM[k].c; f.appendChild(put(E('div', 'bm'), sw, E('span', 'bk', k), E('span', 'bv', CARM[k].n))); });
+      wrap.appendChild(step(f));
+    });
+    if (finding) wrap.appendChild(step(put(E('div', 'find'), E('span', 'fh', 'Finding'), E('p', null, finding))));
+    if (caveat) wrap.appendChild(step(E('p', 'caveat', caveat)));
+    return wrap;
+  }
+
+  // Interval plot with one or more estimates per row: rows [{ label, pts: [{ name, color, v, lo, hi }] }]
+  function ciChart(el, { rows, min, max, ref, refLabel, ticks, fmt = sgn, tfmt = String, unit = '' }){
+    const w = W(el);
+    const lw = Math.min(150, Math.ceil(measure(rows.map(r => r.label))) + 8, w * 0.36);
+    const top = refLabel ? 18 : 6, bottom = 24, gap = 15;
+    const hs = rows.map(r => Math.max(30, r.pts.length * gap + 14));
+    const h = top + hs.reduce((a, b) => a + b, 0) + bottom;
+    const x0 = lw + 12, x1 = w - 12;
+    const sx = v => x0 + (x1 - x0) * (v - min) / (max - min);
+    const svg = svgFor(el, w, h);
+    const g = S('g', { class: 'grid' }, svg);
+    ticks.forEach(t => { S('line', { x1: sx(t), x2: sx(t), y1: top - 2, y2: h - bottom }, g); T(tfmt(t), { x: sx(t), y: h - 6, 'text-anchor': 'middle', class: 'muted' }, svg); });
+    if (ref != null){ S('line', { class: 'ref', x1: sx(ref), x2: sx(ref), y1: top - 6, y2: h - bottom }, svg); if (refLabel) T(refLabel, { x: sx(ref), y: 11, 'text-anchor': 'middle', class: 'muted' }, svg); }
+    let y = top;
+    rows.forEach((r, i) => {
+      const rh = hs[i], n = r.pts.length, y0 = y + rh / 2 - (n - 1) * gap / 2;
+      if (i) S('line', { class: 'sep', x1: 0, x2: w, y1: y, y2: y }, svg);
+      T(fit(r.label, lw - 2), { x: lw, y: y + rh / 2 + 4, 'text-anchor': 'end' }, svg);
+      r.pts.forEach((p, j) => {
+        const cy = y0 + j * gap;
+        S('line', { x1: sx(p.lo), x2: sx(p.hi), y1: cy, y2: cy, stroke: p.color, 'stroke-width': 2, 'stroke-linecap': 'round' }, svg);
+        S('circle', { cx: sx(p.v), cy, r: 5.5, fill: p.color, stroke: 'var(--surface)', 'stroke-width': 2 }, svg);
+      });
+      const hit = S('rect', { class: 'hit', x: 0, y, width: w, height: rh }, svg);
+      bind(hit, [{ l: r.label }, ...r.pts.map(p => ({ c: p.color, v: fmt(p.v) + unit, l: `${p.name} (95% interval ${fmt(p.lo)} to ${fmt(p.hi)})` }))]);
+      y += rh;
+    });
+    return svg;
+  }
+
+  // 8 · corpus arms (G.3 setup)
+  ST[7] = {
+    how: 'The arms hold the same conversations and differ only in which side was restyled or regenerated. Hover a cell for its reply length.',
+    src: 'Source: paper App. G.3 · Table 32',
+    left(){
+      put(left, ph('Four arms, same conversations'));
+      const mx = Math.max(...C.arms.map(a => a.chars));
+      const grid = E('div', 'cgrid');
+      put(grid, E('span', 'cgh'), E('span', 'cgh', 'Original assistant'), E('span', 'cgh', 'Regenerated assistant'));
+      const cell = k => {
+        const a = C.arms.find(x => x.arm === k), ar = CARM[k];
+        const c = E('div', 'cg' + (k === 'A2' ? ' rel' : '')); c.style.setProperty('--c', ar.c);
+        const bar = E('span', 'cgb'); const b = E('b'); b.style.width = (100 * a.chars / mx) + '%'; bar.appendChild(b);
+        put(c, put(E('div', 'cgt'), E('span', 'll', k), k === 'A2' ? E('em', null, 'as released') : null), E('span', 'cgn', ar.n), bar, E('span', 'cgv', fmt0(a.chars) + ' chars'));
+        bind(c, [{ c: ar.c, v: fmt0(a.chars) + ' characters', l: `${k} · median assistant turn in the training data` }, { l: ar.d }]);
+        return step(c, 140);
+      };
+      put(grid, E('span', 'cgr', 'Original user'), cell('A0'), cell('A0r'), E('span', 'cgr', 'Styled user'), cell('A1'), cell('A2'));
+      left.appendChild(grid);
+      left.appendChild(step(E('p', 'caveat', `Each arm: the same ${fmt0(CX.convs)} language-matched conversations from the training split, with ${CX.heldOut}% of personas held out for evaluation. Conversations whose A0r regeneration failed the sanity gate, or that exceed ${fmt0(CX.maxTok)} tokens in any arm, are removed from all arms.`)));
+      put(left, ph('Cross-lingual pair'));
+      const lanes = E('div', 'lanes x');
+      ['X1', 'X2'].forEach(k => {
+        const ln = E('div', 'lane'); ln.style.setProperty('--c', CARM[k].c);
+        put(ln, E('span', 'll', k), put(E('div', 'lt'), put(E('div', 'lth'), E('b', null, k === 'X1' ? 'Translated user turns' : 'Released cross-lingual conversation'), k === 'X2' ? E('em', null, 'as released') : null), E('span', 'lsub', CARM[k].d)), null);
+        lanes.appendChild(step(ln, 140));
+      });
+      left.appendChild(lanes);
+      left.appendChild(step(E('p', 'caveat', `${fmt0(CX.xConvs)} conversations built from the same English seeds and target personas, one training seed.`)));
+    },
+    right(){
+      put(right, head('Training and evaluation', 'App. G.3'));
+      const dl = E('dl', 'spec');
+      [['Base model', 'Apertus-v1.5-8B base'], ['Training', `Megatron-LM · 1 epoch · packed ${fmt0(CX.seq)}-token sequences · loss on every assistant turn`], ['Optimizer', 'global batch 128 · learning rate 1e-5 decayed to 1e-6, cosine after 3% warmup'], ['Seeds', 'three per language-matched arm, one per cross-lingual arm']].forEach(([k, v]) => put(dl, E('dt', null, k), E('dd', null, v)));
+      right.appendChild(step(dl));
+      const pt = E('div', 'pilot');
+      put(pt, put(E('div', 'mxt'), E('span', null, 'How benchmark prompts are made messy')));
+      const rowOf = (t, items) => { const r = put(E('div', 'prow'), E('span', 'prh', t)); const s = E('div', 'slots'); items.forEach(x => s.appendChild(E('span', 'slot', x))); r.appendChild(s); return r; };
+      pt.appendChild(rowOf('Rule-based', ['lowercasing', 'punctuation removal', 'light typos', 'heavy typos', 'abbreviations', 'terse', 'combined']));
+      pt.appendChild(rowOf('Persona rewrite', ['three held-out personas', 'Gemma-4-31B rewriter', `kept if the task is unchanged (${fmt1(CX.keep)}%)`]));
+      right.appendChild(step(pt));
+      const ms = E('ul', 'measures');
+      [['Clean capability', 'lm-evaluation-harness, thinking disabled', 'Stage 9'],
+       ['Robustness', 'drop from the clean to a perturbed prompt on IFEval, GSM8K and MBPP', 'Stage 10'],
+       ['Real prompts', `${fmt0(CX.wild)} WildChat first turns no arm was trained on (half English), two external judges, both reply orders, length-controlled`, 'Stage 10'],
+       ['Reply style', `${CX.requests} held-out requests × ${CX.voices} user personas, A2 against A0`, 'Stage 10']].forEach(([a, b, s]) => ms.appendChild(step(put(E('li'), E('b', null, a), E('span', null, b), E('em', null, s)), 70)));
+      right.appendChild(ms);
+    }
+  };
+
+  // 9 · capability (Tables 32, 35)
+  let capTab = 'lm', h2hTab = 'wild';
+  ST[8] = {
+    how: 'Pick the language-matched or cross-lingual arms above the chart. Hover or focus a bar for the exact value.',
+    src: 'Source: paper Tables 32, 35',
+    left(){ left.appendChild(cbench('Trained on the released conversations (A2), the model is on par with training on the original data (A0) on every benchmark except GSM8K, where it is 3.1 points behind, and it scores highest on IFEval.', `One base model. Language-matched arms: mean of three training seeds, standard deviation at most ${fmt1(CX.sd)} points. Cross-lingual arms: one seed.`)); },
+    right(){
+      put(right, head('Capability after fine-tuning', 'Tables 32, 35'));
+      right.appendChild(tabs([['lm', 'Language-matched'], ['x', 'Cross-lingual']], capTab, v => { capTab = v; fill(); }, 'Arm set'));
+      const body = E('div', 'pbody'); right.appendChild(body);
+      const fill = () => {
+        body.replaceChildren(); draws = draws.filter(f => !f.cap);
+        const ch = E('div', 'chart'); body.appendChild(ch);
+        if (capTab === 'lm'){
+          const ks = C.arms.map(a => a.arm), a0 = C.arms[0];
+          const f = () => hbars(ch, { series: ks.map(k => ({ name: armLab(k), color: CARM[k].c })), max: 80, ticks: [0, 20, 40, 60, 80], barH: 9, gapIn: 2, labelMax: 110,
+            rows: C.bench.map((b, i) => ({ label: b, values: C.arms.map(a => a.v[i]), tip: j => j ? [{ l: `${sgn(C.arms[j].v[i] - a0.v[i])} points vs. A0` }] : [{ l: 'reference: the original data' }] })) });
+          f.cap = 1; draw(f);
+          body.appendChild(E('p', 'cap', 'Accuracy in %, lm-evaluation-harness with thinking disabled.'));
+          body.appendChild(step(E('p', 'rnote', 'Against the original data, A2 gains 1.8 points of IFEval strict accuracy and loses 3.1 on GSM8K. Styled user turns with the original replies (A1) score lowest on IFEval.')));
+        } else {
+          const f = () => hbars(ch, { series: ['X1', 'X2'].map(k => ({ name: armLab(k), color: CARM[k].c })), max: 80, ticks: [0, 20, 40, 60, 80], barH: 10, gapIn: 2, labelMax: 110,
+            rows: C.cross.map(([b, x1, x2]) => ({ label: b, values: [x1, x2], tip: j => j ? [{ l: `${sgn(x2 - x1)} points vs. X1` }] : [] })) });
+          f.cap = 1; draw(f);
+          body.appendChild(E('p', 'cap', 'Accuracy in %, one training seed. Multi-IF: prompt-level strict accuracy. INCLUDE covers 44 languages.'));
+          body.appendChild(step(E('p', 'rnote', 'X2 is ahead on most benchmarks, with the largest gain on multilingual instruction following (Multi-IF, 7.3 points), and behind on GSM8K.')));
+          const m = DSX.crossLC.muse, q = DSX.crossLC.qwen;
+          body.appendChild(step(E('p', 'unit', `On WildChat prompts, X2 replies are half as long as X1 replies. Both judges prefer X2 on raw votes, but at equal length Muse is at parity (${fmt1(m[0])}%, interval ${fmt1(m[1])} to ${fmt1(m[2])}) and Qwen3.6 prefers X1 (${fmt1(q[0])}%, interval ${fmt1(q[1])} to ${fmt1(q[2])}), so this comparison is inconclusive.`)));
+        }
+      };
+      fill();
+    }
+  };
+
+  // 10 · head to head (Tables 33, 34)
+  const H2H = {
+    wild: { l: 'Real prompts', h: 'Which reply do external judges prefer?' },
+    ifeval: { l: 'IFEval', h: 'Instruction following, arm against arm' },
+    robust: { l: 'Robustness', h: 'Does an arm lose more on messy prompts?' },
+    style: { l: 'Reply style', h: 'Does the reply follow the user?' }
+  };
+  ST[9] = {
+    how: 'Pick a comparison above the chart. On the interval charts, dots are estimates and lines 95% intervals. Hover or focus a row for the values.',
+    src: 'Source: paper Tables 33, 34 · App. G.3',
+    left(){
+      const s = DSX.seeds;
+      left.appendChild(cbench('Styled user turns help only together with assistant turns written for them. A1 loses IFEval accuracy against the original data, A2 clearly beats A1, and on real prompts both external judges prefer A2 over A1 and over A0 at equal reply length.',
+        `Charts show training seed 1234 with intervals over items. Over three seeds, both judges prefer A2 over A1 (${fmt1(s.a2a1Judge[0])} to ${fmt1(s.a2a1Judge[1])}%) and over A0 (${fmt1(s.a2a0Judge[0])} to ${fmt1(s.a2a0Judge[1])}%) at equal length for every seed. One base model.`, false));
+      const st = DSX.strict;
+      left.appendChild(step(put(E('div', 'fact'), E('b', null, 'Strict subset. '), `Retraining A2 only on conversations in which every user turn is labelled as the same request, at equal size and with three seeds, leaves every benchmark unchanged (IFEval ${sgn(st.ifeval[0])}, interval ${ivl(st.ifeval[1], st.ifeval[2])}), and the preference over the original data remains (${fmt1(st.judge[0])} to ${fmt1(st.judge[1])}%).`)));
+    },
+    right(){
+      const hd = E('h4', 'rh', H2H[h2hTab].h);
+      put(right, put(E('div', 'rhd'), hd, srcTag('Tables 33, 34')));
+      right.appendChild(tabs(Object.keys(H2H).map(k => [k, H2H[k].l]), h2hTab, v => { h2hTab = v; hd.textContent = H2H[v].h; fill(); }, 'Comparison'));
+      const body = E('div', 'pbody'); right.appendChild(body);
+      const fill = () => {
+        body.replaceChildren(); draws = draws.filter(f => !f.h2h);
+        const ch = E('div', 'chart');
+        const reg2 = f => { f.h2h = 1; draw(f); };
+        const pt = (name, color, a) => ({ name, color, v: a[0], lo: a[1], hi: a[2] });
+        if (h2hTab === 'wild'){
+          body.appendChild(legend([...JUDGE.map(([, n, c]) => ({ name: n, color: c, kind: 'dot' })), { name: '95% interval', color: 'var(--ink-2)', kind: 'line' }]));
+          body.appendChild(ch);
+          reg2(() => ciChart(ch, { rows: C.paired.filter(p => p.qwen).map(p => ({ label: p.cmp, pts: JUDGE.map(([k, n, c]) => pt(n, c, p[k])) })), min: 40, max: 65, ref: 50, refLabel: 'parity', ticks: [40, 45, 50, 55, 60, 65], fmt: fmt1, unit: '%' }));
+          body.appendChild(E('p', 'cap', `Length-controlled win rate of the first arm, in %, on ${fmt0(CX.wild)} WildChat first turns, each pair judged in both orders. 50% is parity. No judge result is reported for A1 against A0.`));
+          body.appendChild(step(E('p', 'rnote', 'A0r replies are more than twice as long, so the comparison with A0r rests on the length correction, and the two judges disagree on it.')));
+        } else if (h2hTab === 'ifeval'){
+          body.appendChild(legend([{ name: 'Difference, first arm minus second', color: 'var(--s1)', kind: 'dot' }, { name: '95% interval', color: 'var(--s1)', kind: 'line' }]));
+          body.appendChild(ch);
+          reg2(() => ciChart(ch, { rows: C.paired.map(p => ({ label: p.cmp, pts: [pt('IFEval strict, clean prompts', 'var(--s1)', p.clean)] })), min: -8, max: 12, ref: 0, refLabel: 'no difference', ticks: [-8, -4, 0, 4, 8, 12], tfmt: tsg, unit: ' points' }));
+          body.appendChild(E('p', 'cap', 'IFEval strict accuracy on clean prompts, difference in points, scored with the authors’ own IFEval checker.'));
+          const s = DSX.seeds;
+          body.appendChild(step(E('p', 'rnote', `Over three training seeds (lm-evaluation-harness, intervals over items and seeds): A2 against A1 ${sgn(s.a2a1[0])} (${ivl(s.a2a1[1], s.a2a1[2])}), A2 against A0r ${sgn(s.a2a0r[0])} (${ivl(s.a2a0r[1], s.a2a0r[2])}), A1 against A0 ${sgn(s.a1a0[0])} (${ivl(s.a1a0[1], s.a1a0[2])}).`)));
+        } else if (h2hTab === 'robust'){
+          const RB = [['rule', 'Rule-based noise', 'var(--s1)'], ['persona', 'Persona rewrites', 'var(--s2)']];
+          body.appendChild(legend([...RB.map(([, n, c]) => ({ name: n, color: c, kind: 'dot' })), { name: '95% interval', color: 'var(--ink-2)', kind: 'line' }]));
+          body.appendChild(ch);
+          reg2(() => ciChart(ch, { rows: C.paired.map(p => ({ label: p.cmp, pts: RB.map(([k, n, c]) => pt(n, c, p[k])) })), min: -8, max: 8, ref: 0, refLabel: 'no difference', ticks: [-8, -4, 0, 4, 8], tfmt: tsg, unit: ' points' }));
+          body.appendChild(E('p', 'cap', 'Difference in the IFEval robustness gap (clean minus perturbed accuracy), in points. Positive: the first arm loses more.'));
+          body.appendChild(step(E('p', 'rnote', 'No gap difference between arms excludes zero, so none of the arms measurably changes robustness to messy prompts. Persona rewrites cost every arm more than rule-based noise.')));
+        } else {
+          body.appendChild(ch);
+          reg2(() => hbars(ch, { series: ['A2', 'A0'].map(k => ({ name: armLab(k), color: CARM[k].c })), max: 1, ticks: [0, 0.25, 0.5, 0.75, 1], fmt: fmt3, barH: 12, gapIn: 3, labelMax: 150,
+            rows: C.style.map(([m, a2, a0]) => ({ label: m.replace(' across personas', ''), values: [a2, a0], tip: () => [{ l: m }] })) }));
+          body.appendChild(E('p', 'cap', `${CX.requests} held-out requests from ${CX.voices} user personas, three training seeds. Style diversity is measured across the personas.`));
+          const [f, e, d, c] = C.style;
+          body.appendChild(step(E('p', 'rnote', `Without explicit steering, A2 adapts its reply style to the user more closely: emoji mirroring rises from ${fmt3(e[2])} to ${fmt3(e[1])}, formality correlation from ${fmt3(f[2])} to ${fmt3(f[1])}, and style diversity across personas from ${fmt3(d[2])} to ${fmt3(d[1])}. Content stays as stable (${fmt3(c[1])} against ${fmt3(c[2])}).`)));
+        }
+        const det = put(E('details', 'tbl'), E('summary', null, 'Show values'));
+        const tw = E('div', 'tblwrap'); det.appendChild(tw);
+        const iv = a => a ? `${sgn(a[0])} (${ivl(a[1], a[2])})` : '–';
+        const wr = a => a ? `${fmt1(a[0])} (${fmt1(a[1])}–${fmt1(a[2])})` : '–';
+        if (h2hTab === 'style') table(tw, ['Metric', 'A2', 'A0'], C.style.map(([m, a2, a0]) => [m, fmt3(a2), fmt3(a0)]), [1, 2]);
+        else table(tw, ['Comparison', 'IFEval clean', 'Rule-based gap', 'Persona gap', 'Qwen3.6 LC win', 'Muse LC win'], C.paired.map(p => [p.cmp, iv(p.clean), iv(p.rule), iv(p.persona), wr(p.qwen), wr(p.muse)]), [1, 2, 3, 4, 5]);
+        body.appendChild(det);
+      };
+      fill();
     }
   };
 
@@ -6497,7 +6846,7 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
     $('#dsSrc').textContent = ST[s].src;
     phaseBtns.forEach(b => b.setAttribute('aria-pressed', (s >= 3) === (b.dataset.p === '3') ? 'true' : 'false'));
   }
-  const ctl = lineCtl(line, { count: 7, render, dur: s => [3000, 2600, 2800, 2400, 2200, 2200, 2400][s] });
+  const ctl = lineCtl(line, { count: 10, render, dur: s => [3000, 2600, 2800, 2400, 2200, 2200, 2400, 2600, 2400, 2600][s] });
   phaseBtns.forEach(b => b.addEventListener('click', () => { ctl.stop(); ctl.show(+b.dataset.p, false); }));
 })();
 
@@ -6509,13 +6858,13 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
 /* ======================= COMPARE: other persona datasets, and the style extension ======================= */
 // Every number on this station. Paper sources are kept here only; the page does not show them.
 const CMP = {
-  // Section 3 (743,010 personas; 177 countries), Section 4 / Table 3 (1,242,761 conversations), Abstract (85 languages)
-  pf: { personas: 743010, countries: 177, convs: 1242761, langs: 85 },
+  // Section 3 (743,010 personas; 177 countries), Section 6 / Table 3 (1,237,976 conversations), Abstract (85 languages)
+  pf: { personas: 743010, countries: 177, convs: 1237976, langs: 85 },
   // Appendix D, Design: "across all 200,000 released PersonaHub personas, only 1.4% mention any writing cue at all"
   ph: { released: 200000, cue: 1.4 },
   // Appendix D, format-neutral paragraph: "Real SynthPAI profiles, whose hand-written style descriptions cover 300 English-speaking Reddit users"
   sp: { profiles: 300 },
-  // Table 2 (800 paired prompts; only the profile format changes). intentX: Table 15, cross-lingual intent.
+  // Table 2 (800 paired prompts; only the profile format changes); CIs from Table 16. intentX: Table 16, cross-lingual intent.
   fmt: {
     names: ['No persona', 'PersonaHub form', 'SynthPAI form', 'PersonaFactory'],
     words: [0, 13, 83, 280],
@@ -6524,18 +6873,25 @@ const CMP = {
     intentX: [99.6, 99.2, 94.0, 89.2],
     pfPref: [94.4, 94.9, 81.3], pfCI: [[92.5, 95.8], [93.1, 96.2], [78.4, 83.9]]
   },
-  // Table 14: % of N = 555 profiles whose attribute survives into the block the rewriter sees; columns PersonaHub form, SynthPAI form, PersonaFactory
+  // Appendix D, "Matched content and length": SynthPAI-style free text with the same facts and length; structured form keeps the
+  // request +5.0 points [2.1, 7.6] (Gemma-4-31B), pairwise style share 50.2 to 51.3% (on par), reads more naturally (+5.6 / +6.0)
+  match: { request: 5.0 },
+  // Appendix D, "Quirk probability and marker cap": cap of 2 realized chat markers per turn; capped rewrites as natural as the
+  // SynthPAI format while adopting 7 to 11 points more style; corpus generated without the explicit cap, 97.3% of user turns
+  // contain at most two of the six markers; cap becomes the default in the released code
+  cap: { gain: [7, 11], corpusAtMost: 97.3 },  // "two" markers and "six" marker kinds are written out in the copy
+  // Table 15: % of N = 555 profiles whose attribute survives into the block the rewriter sees; columns PersonaHub form, SynthPAI form, PersonaFactory
   enc: { n: 555, rows: [['Age', [0, 100, 100]], ['Location', [16, 100, 100]], ['Occupation', [68, 100, 100]], ['Language', [8, 26, 99]], ['Style axes', [0, 55, 100]], ['Quirks', [0, 1, 100]], ['Reference pool', [2, 1, 100]]] },
   // Appendix D, Calibration against real users: 2,140 converted records, 182 English WildChat seeds passing in all three arms
   conv: { records: 2140, seeds: 182 },
-  // Table 13: [real message wins, draw, rewrite wins] per judge, % of seeds
+  // Table 14: [real message wins, draw, rewrite wins] per judge, % of seeds
   arms: {
     judges: ['MiniMax-M2.5', 'Qwen3.6-35B-A3B', 'Muse-Glimmer-30B'],
     A: [[44.1, 27.1, 28.8], [53.3, 36.3, 10.4], [68.7, 22.0, 9.3]],
     B: [[43.4, 22.9, 33.7], [47.8, 34.6, 17.6], [65.4, 20.3, 14.3]],
     C: [[17.6, 14.8, 67.6], [16.5, 41.8, 41.8], [27.5, 21.4, 51.1]]
   },
-  // Appendix (downstream), "Conversations without a user persona" + Table 30. null = n/a or reference.
+  // Appendix G.2, "Conversations without a user persona" + Table 31. null = n/a or reference.
   reply: {
     n: 1000, turns: 2570, fallback: 35,
     rows: [ // [label, long label, sanity pass, style adopted, same content, median words]
@@ -6620,7 +6976,7 @@ const CMP = {
     grp('Size of one profile');
     txtRow('Words', ['13', '83', '280'], ['one third-person sentence', 'attribute block plus a style paragraph', 'background and style layers']);
     mk('div', 'unit', `Bars: share of ${CMP.enc.n} profiles whose value survives when the same persona is written in each dataset’s format. A dash means the format has no place for it.`, c);
-    cap('Age, location and occupation survive in the SynthPAI and PersonaFactory formats, while the PersonaHub sentence loses most of them. Typing habits get through only when the format has a field for them.');
+    cap('Age, location and occupation survive in the SynthPAI and PersonaFactory formats, while the PersonaHub sentence drops age and most locations. Typing habits get through only when the format has a field for them.');
     fade([c.parentNode, R.lastChild], animate, 240, 400);
   }
 
@@ -6659,14 +7015,15 @@ const CMP = {
       ['Scope', 'Only the format is tested. Every condition renders our own profiles, so no PersonaHub or SynthPAI content enters the released data.']
     ]);
     const fd = finding('The PersonaHub sentence changes the text about as much as the other formats, yet style adoption only rises from 3.1% to 5.5%. In a separate test, real SynthPAI profiles, hand-written for 300 Reddit users, were the only ones on par with PersonaFactory.');
-    fade([...sp.children, fd], animate);
+    const cv = finding(`Part of the gap to the SynthPAI form is content, since it carries less style information. When the same facts are written as free text of the same length, the structured version is on par in style, keeps the request ${fmt1(CMP.match.request)} points more often and reads more naturally.`, 'Caveat');
+    fade([...sp.children, fd, cv], animate);
     const c = block('Sounds like the persona, keeps the request');
     c.appendChild(legend([{ name: 'Style adopted', color: C_STY, kind: 'dot' }, { name: 'Intent kept', color: C_INT, kind: 'dot' }]));
     const holder = mk('div', null, null, c);
     dumbbell(holder);
     mk('div', 'unit', '% of rewrites, N = 800 paired prompts. Whiskers: 95% Wilson intervals.', c);
     const bg = big(CMP.fmt.pfPref.map((v, i) => [fmt1(v) + '%', 'the judge picks the PersonaFactory rewrite over ' + ['no persona', 'the PersonaHub form', 'the SynthPAI form'][i]]), R);
-    cap(`Style adoption rises with how much a format says about typing. Intent drops by about four points, almost all of it on cross-lingual prompts (${fmt1(CMP.fmt.intentX[3])}% there).`);
+    cap(`Style adoption rises with how much a format says about typing. Intent drops by about four points, almost all of it on cross-lingual prompts (${fmt1(CMP.fmt.intentX[3])}% there). External judges also rate the rewrites somewhat less natural than those without a persona. With a cap of two chat markers per turn, PersonaFactory rewrites read as naturally as SynthPAI-form ones and still adopt ${CMP.cap.gain[0]} to ${CMP.cap.gain[1]} points more style.`);
     fade([c.parentNode, bg, R.lastChild], animate, 240, 400);
     return () => dumbbell(holder);
   }
@@ -6809,7 +7166,8 @@ const CMP = {
     const route = (title, steps) => { const d = mk('div', 'route', null, routes); mk('b', null, title, d); const ol = mk('ol', null, null, d); steps.forEach(s => mk('li', null, s, ol)); return d; };
     route('A persona dataset (PersonaHub, Nemotron-Personas, …)', ['Convert each record into the background fields.', 'Generate a style layer from that background.', 'Use the personas to rewrite real prompts with the request held fixed.']);
     route('A conversation dataset with no user personas', ['Pick a reply style from the first three user messages.', 'Regenerate the assistant turns in that style.', 'Skip conversations that bring their own system prompt.']);
-    const fd = finding('The style layer still over-produces greetings, slang and emoji compared with real users. The paper lists calibrating those rates as the next step.', 'Still open');
+    const K = CMP.cap;
+    const fd = finding(`Rewrites still use greetings, slang and emoji more often than real users. A cap of two chat markers per turn reduces this and will be the default in the released code. The corpus was generated without that cap, and ${fmt1(K.corpusAtMost)}% of its user turns use at most two of the six markers. Matching real-user rates exactly is left to later versions.`, 'Still open');
     fade([...routes.children, fd], animate, 220);
     const A = CMP.arms, RW = CMP.reply.rows, F = CMP.fmt;
     const ROWS = [

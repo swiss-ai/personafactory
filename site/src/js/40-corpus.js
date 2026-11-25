@@ -1,6 +1,6 @@
 /* ======================= CORPUS: the production line, seed logs to release ======================= */
 // Numbers used here that are not in data.js:
-// Table 23 (App. G.1): conversations that reached the sanity gate and passed it, by slice. [label, reached, passed, pass %]
+// Table 24 (App. G.1): conversations that reached the sanity gate and passed it, by slice. [label, reached, passed, pass %]
 const T23 = {
   responder: [['Gemma-4-31B', 823676, 734927, 89.2], ['Ministral-3-14B', 783161, 532379, 68.0]],
   seed: [['WildChat', 959084, 740485, 77.2], ['UltraChat-200k', 384191, 315508, 82.1], ['Nemotron IF', 263562, 211313, 80.2]],
@@ -8,19 +8,22 @@ const T23 = {
   all: ['Overall', 1606837, 1267306, 78.9]
 };
 const BANK_EN = 19.6;     // Section 4: native-English personas are 19.6% of the bank (cross-lingual mode samples from all of it)
-const TIMED_OUT = 0.2;    // App. G.1: share of kept turns that are rewriter time-outs
+const XL_EN = 0.8;        // Section 6: English is 0.8% of the cross-lingual set (all 85 languages occur in it)
+const TIMED_OUT = 0.2;   // App. G.1: share of kept turns that are rewriter time-outs
 const MIN_COS = 0.15;     // App. G.1: embedding tier threshold (all-MiniLM-L6-v2)
-const P_QUIRK = 0.25;     // Section 4: quirks fire with p = 0.25 per turn
+const P_QUIRK = 0.25;     // Section 4 / App. D: quirks fire with p = 0.25 per turn; the corpus prompt asks for at most two stylistic elements (no explicit marker cap)
+const ECHO_RM = 4785;     // App. G.1: conversations removed by the rule-based filter for user turns that restate the rewrite-prompt instructions
 const LEN_GUARD = 50;     // Section 4: rewrites under 50% of the original length are rejected
 const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iterations
 
 (function corpus(){
   const C = D.corpus;
   const root = $('#corpusLine'), flowEl = $('#cFlow'), piece = $('#cPiece'), rd = $('#cRead'), srcEl = $('#cSrc');
-  // seed sets: colour, reached the gate (Table 23), passed (Table 23), released (Table 3)
+  // seed sets: colour, reached the gate (Table 24), passed (Table 24), released (Table 3)
   const SEEDS = T23.seed.map((r, i) => ({ name: ['WildChat', 'UltraChat', 'Nemotron'][i], full: r[0], color: ['var(--s1)', 'var(--s2)', 'var(--s3)'][i], reached: r[1], passed: r[2], rate: r[3], released: C.seed[i][1], share: C.seed[i][2] }));
   const REACHED = T23.all[1], PASSED = T23.all[2], RELEASED = C.gate.released;
-  const TURNS = D.headline.userTurns, KEPT = C.keptTotal;
+  // released user turns, from the Table 3 turn-count rows (1·n1 + 2·n2 + 3·n3 = 2,387,392, as in Section 6)
+  const TURNS = C.turns.reduce((a, r) => a + parseInt(r[0], 10) * r[1], 0), KEPT = C.keptTotal;
   const EN = C.langs.find(r => r[0] === 'English')[1];
   $('#cLegend').appendChild(legend(SEEDS.map(s => ({ name: s.full + ' seeds', color: s.color }))));
 
@@ -111,10 +114,10 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
     const notes = ['Zhao et al., 2024', 'Ding et al., 2023; Tunstall et al., 2023', 'NVIDIA, 2025a; Nathawani et al., 2025; NVIDIA, 2025b. Longer prompts, often with multi-step instructions or constraints.'];
     SEEDS.forEach((s, i) => { const li = el('li', null, null, list); const sw = el('i', null, null, li); sw.style.background = s.color; const d = el('div', null, null, li); el('b', null, names[i], d); el('span', null, notes[i], d); });
     fade([...list.children], animate);
-    const c = block('Conversations that reach the sanity gate', 'Table 23', rd);
+    const c = block('Conversations that reach the sanity gate', 'Table 24', rd);
     const draw = () => hbars(c, { rows: SEEDS.map(s => ({ label: s.full, values: [s.reached], colors: [s.color], tip: () => [{ l: fmt1(s.reached / REACHED * 100) + '% of all that reach the gate' }] })), series: [{ name: 'conversations', color: 'var(--s1)' }], fmt: fmt0, ticks: false, barH: 18, unit: 'Conversations, total ' + fmt0(REACHED) });
     el('p', 'cap', 'WildChat supplies ' + fmt1(SEEDS[0].reached / REACHED * 100) + '% of what reaches the gate. Colors match the ribbon.', rd);
-    // Source: paper Section 6, Table 23
+    // Source: paper Section 6, Table 24
     return draw;
   }
 
@@ -131,7 +134,7 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
     const c = block(withEn ? 'Top languages of released conversations' : 'Top 10 non-English languages', 'Fig. 26a', rd);
     b.addEventListener('click', () => { withEn = !withEn; b.setAttribute('aria-pressed', withEn); $('.rh span', c.parentNode).textContent = withEn ? 'Top languages of released conversations' : 'Top 10 non-English languages'; draw(); });
     const draw = () => hbars(c, { rows: C.langs.filter(r => withEn || r[0] !== 'English').map(r => ({ label: r[0], values: [r[1]] })), series: [{ name: 'conversations', color: 'var(--s1)' }], fmt: compact, ticks: false, barH: 12, unit: 'Released conversations, by detected language of the first user turn' });
-    el('p', 'cap', 'The other ' + fmt1(100 - EN / RELEASED * 100) + '% span 84 languages. These counts use fastText with a Lingua fallback.', rd);
+    el('p', 'cap', 'The other ' + fmt1(100 - EN / RELEASED * 100) + '% span 84 languages. All 85 occur in the cross-lingual set, where English is only ' + XL_EN + '%. These counts use fastText with a Lingua fallback.', rd);
     // Source: paper Section 4, App. G.1, Fig. 26a
     return draw;
   }
@@ -210,7 +213,7 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
   function s4(animate){
     head(4, 'Rewrite & guards', 'Each eligible user turn is re-voiced by the matched persona under guards that protect the request.');
     const steps = el('ol', 'steps', null, piece);
-    [['Mask', 'Quotes, code, URLs and numbers are masked, then restored. A rewrite that loses one is retried.'], ['Rewrite', 'Same intent, subtle persona traits. Quirks fire with p = ' + P_QUIRK + ' per turn.'], ['Cross-lingual', 'Translate the turn literally first, then restyle it in that language.'], ['Length guard', 'A rewrite under ' + LEN_GUARD + '% of the original length is rejected.'], ['Fallback', 'If any guard fails, the original turn ships verbatim.']].forEach(([k, v]) => { const li = el('li', null, null, steps); el('b', null, k, li); el('span', null, v, li); });
+    [['Mask', 'Quotes, code, URLs and numbers are masked, then restored. A rewrite that loses one is retried.'], ['Rewrite', 'Same intent, subtle persona traits. Quirks fire with p = ' + P_QUIRK + ' per turn, and the prompt asks for at most two stylistic elements.'], ['Cross-lingual', 'Translate the turn literally first, then restyle it in that language.'], ['Length guard', 'A rewrite under ' + LEN_GUARD + '% of the original length is rejected.'], ['Fallback', 'If any guard fails, the original turn ships verbatim.']].forEach(([k, v]) => { const li = el('li', null, null, steps); el('b', null, k, li); el('span', null, v, li); });
     fade([...steps.children], animate);
     const sp = block(fmt0(TURNS) + ' released user turns', 'App. G.1', rd).parentNode; sp.classList.add('split'); sp.lastChild.remove();
     const rv = TURNS - KEPT;
@@ -240,10 +243,10 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
     ];
     items.forEach(([k, v, back]) => { const li = el('li', back ? 'back' : null, null, loop); el('b', null, k, li); el('span', null, v, li); if (back){ const r = el('span', 'ret', '↺ back to the judge', li); r.setAttribute('aria-hidden', 'true'); } });
     fade([...loop.children], animate, 260);
-    const c = block('Conversations that reach the gate, by responder', 'Table 23', rd);
+    const c = block('Conversations that reach the gate, by responder', 'Table 24', rd);
     const draw = () => hbars(c, { rows: T23.responder.map(r => ({ label: r[0], values: [r[1]], tip: () => [{ l: fmt1(r[1] / REACHED * 100) + '% of all that reach the gate' }] })), series: [{ name: 'conversations', color: 'var(--s1)' }], fmt: fmt0, ticks: false, barH: 18, unit: 'Conversations' });
     el('p', 'cap', 'Gemma-4-31B and Ministral-3-14B each answer about half. The stored example holds only the user and assistant turns.', rd);
-    // Source: paper Section 4, Table 23
+    // Source: paper Section 4, Table 24
     return draw;
   }
 
@@ -255,7 +258,7 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
     fade([...ul.children], animate, 120);
     big([[fmt0(PASSED), 'of ' + fmt0(REACHED) + ' pass (' + fmt1(T23.all[3]) + '%)'], ['≈74%', 'of dropped conversations are Ministral-3-14B’s']], piece);
     const groups = [['Responder', T23.responder], ['Seed set', T23.seed], ['Persona set', T23.set]];
-    const c = block('Sanity pass rate by slice', 'Table 23', rd);
+    const c = block('Sanity pass rate by slice', 'Table 24', rd);
     // grouped bars on one shared scale, so the dashed overall line lines up across groups
     const draw = () => {
       const w = W(c), barH = 13, rowH = 22, gh = 22, top = 18, bottom = 22;
@@ -284,7 +287,7 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
       const u = document.createElement('div'); u.className = 'unit'; u.textContent = 'Conversation-level sanity pass rate over the ' + fmt0(REACHED) + ' that reach the gate'; c.appendChild(u);
     };
     el('p', 'cap', 'Most drops come down to the responder. The seed set matters much less, and cross-lingual conversations pass slightly less often.', rd);
-    // Source: paper Section 4, App. G.1, Table 23
+    // Source: paper Section 4, App. G.1, Table 24
     return draw;
   }
 
@@ -293,15 +296,15 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
     { v: 'seed', l: 'Seed set', src: 'Table 3', cap: 'WildChat supplies 58% of the release. Pass rates are close across seed sets (77–82%).' },
     { v: 'personaSet', l: 'Persona set', src: 'Table 3', cap: 'Cross-lingual conversations pass the gate less often (75.2% vs 82.3%) and are kept anyway.' },
     { v: 'responder', l: 'Responder', src: 'Table 3', cap: 'Ministral answers in high-resource cross-lingual conversations were regenerated with Gemma and ship under Gemma.' },
-    { v: 'tier', l: 'Match tier', src: 'Table 3', cap: 'Location, embedding and language pool are the language-matched cascade. Cross-lingual is the separate mode.' },
+    { v: 'tier', l: 'Match tier', src: 'Table 3', cap: 'Location, embedding and language pool are the language-matched cascade. Cross-lingual is the separate mode. Tier and persona set are recorded separately, so the cross-lingual tier holds ' + fmt0(C.personaSet[1][1] - C.tier[0][1]) + ' fewer conversations than the cross-lingual set.' },
     { v: 'turns', l: 'User turns', src: 'Table 3', cap: fmt0(TURNS) + ' user turns, 1.93 per conversation.' },
     { v: 'regions', l: 'Macro-region', src: 'Fig. 26b', cap: 'Top 10 of 13 persona macro-regions. UltraChat and Nemotron supply most Western European and North American conversations.' }
   ];
   let comp = 'seed';
   function s7(animate){
-    head(7, 'Release', 'Conversations that pass the gate are deduplicated before release.');
+    head(7, 'Release', 'Conversations that pass the gate are deduplicated and filtered once more before release.');
     const steps = el('ol', 'steps', null, piece);
-    [['Deduplicate', 'Repeated conversations are removed.']].forEach(([k, v]) => { const li = el('li', null, null, steps); el('b', null, k, li); el('span', null, v, li); });
+    [['Deduplicate', 'Repeated conversations are removed.'], ['Language filters', 'A final filter on low-resource languages, and a cap on cross-lingual Russian conversations.'],['Prompt echo', 'A rule-based filter removes ' + fmt0(ECHO_RM) + ' conversations in which a user turn restates the rewrite instructions.']].forEach(([k, v]) => { const li = el('li', null, null, steps); el('b', null, k, li); el('span', null, v, li); });
     fade([...steps.children], animate);
     big([[fmt0(RELEASED), 'conversations, ' + fmt0(PASSED - RELEASED) + ' fewer than passed the gate'], [fmt0(TURNS), 'user turns, 1.93 per conversation']], piece);
     const seg = el('div', 'seg', null, rd); seg.id = 'cCompSeg'; seg.setAttribute('role', 'group'); seg.setAttribute('aria-label', 'Breakdown');
@@ -325,7 +328,7 @@ const ADAPT = 2;          // Section 4: continuity adaptation loop, up to 2 iter
       table(tw, pass ? ['Slice', 'Released', 'Share %', 'Pass %'] : ['Slice', 'Released', 'Share %'], rows.map(r => pass ? [r[0], fmt0(r[1]), fmt1(r[2]), fmt1(r[3])] : [r[0], fmt0(r[1]), fmt1(r[2])]), pass ? [1, 2, 3] : [1, 2]);
     }
     segCtl('#cCompSeg', v => { comp = v; draw(); });
-    // Source: paper Section 6, App. G.1, Table 3, Table 23
+    // Source: paper Section 6, App. G.1, Table 3, Table 24
     return draw;
   }
 

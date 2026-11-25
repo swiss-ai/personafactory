@@ -27,7 +27,8 @@
 
   <div class="pipe">
     <div><span class="req">R1 · keep the task</span><b>Conservative matching</b><p>Language and script are detected first. The persona must be a native speaker of the prompt's language. Among those, the match comes from location, then top-1 embedding similarity, then the language pool. If nothing matches, the turn is kept verbatim.</p></div>
-    <div><span class="req">R2 · diversify register</span><b>Constrained rewrite</b><p>Quotes, code, URLs and numbers are masked and restored. Quirks fire with p = 0.25 per turn so that personas do not turn into caricatures. Rewrites shorter than 50% of the original are rejected.</p></div>
+    <div><span class="req">R2 · diversify register</span><b>Constrained rewrite</b><!-- R2: Section 4 (p = 0.25, marker cap, 50% length guard) and Appendix D (quirk probability and marker cap; the corpus used p = 0.25 and a prompt instruction, without the explicit cap). -->
+    <p>Quotes, code, URLs and numbers are masked and restored. Quirks fire with p = 0.25 per turn, but p alone does not prevent over-styling. A cap of two chat markers per turn does, and it is the recommended setting; the released corpus was generated without it. Rewrites shorter than 50% of the original are rejected.</p></div>
     <div><span class="req">R3 · stay on trajectory</span><b>Continuity supervision</b><p>The real next user message serves as weak supervision. A judge checks that the regenerated reply still leads to it, and the reply is adapted for up to two rounds.</p></div>
     <div><span class="req">R4 · no hidden shortcut</span><b>Six-class sanity gate</b><p>Language mismatch, format violation, truncation, fabricated experience, hallucination, unaddressed request. Only the conversation turns are stored. The persona is not.</p></div>
   </div>

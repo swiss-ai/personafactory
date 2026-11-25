@@ -1,13 +1,27 @@
 /* ======================= QUALITY CONTROL: six inspections on the line ======================= */
 // Numbers used here that are not in data.js:
-const T5_CI = [0.2, 1.3];                     // Table 5 caption: 95% Wilson half-widths, fully scored rows / sample rows
-const T5_CONVS = 236051;                      // Table 5 caption: conversations whose user turns were all scored
-const T8_LEN = { rows: [['Short', 0.86], ['Medium', 1.00], ['Long', 1.26]], rho: 0.18 }; // Table 8: length ratio by persona verbosity, per-item Spearman rho
-const T12_INTENT = [[92, 92], [92.3, 92.5], [92.4, 92.6], [92.7, 93.5], [92.4, 92.6]];  // Table 12: intent % [flat, structured], same judge order as D.structVsFlat.judges
-const T15_WORST = [94.0, 94.6, 76.8];         // Table 15: PF preferred, worst case (every unparsed comparison given to the competitor)
-const T16_RATIO = { 'Gemma-4-31B': ['17.90:1', '20.46:1', '4.83:1'], 'Ministral-3-14B': ['12.70:1', '13.55:1', '2.64:1'] }; // Table 16: win ratios
+const T6_CI = 0.6;                            // Table 6 caption: 95% intervals within ±0.6 points
+const T6_DESIGN = { persona: 552654, sample: 44687, sampleConvs: 24570 }; // App. C: every user turn of model-persona conversations + a uniform random sample of the rest
+// App. C, Strict intent label: four-way label on every user turn (MiniMax-M2.5, never sees the persona)
+const STRICT = {
+  n: 2371618, labels: [['Same request', 74.0], ['Added content', 18.5], ['Dropped content', 4.1], ['Scope change', 3.5]],
+  audit: { n: 4903, k4: 0.59, k2: 0.63 },     // second external judge, Qwen3.6-35B-A3B
+  core: 97.2,                                 // both judges: core request preserved, % of turns
+  lenient: 91.5,                              // the Table 6 intent template passes this % of the turns the strict label flags
+  human: { n: 100, kAnn: 0.60, kJudge: [0.60, 0.41], dis: 9, stricter: 8, core: 92 } // two blind annotators (same request vs drift)
+};
+const T9_LEN = { rows: [['Short', 1.00], ['Medium', 1.02], ['Long', 1.56]], rho: 0.22 }; // Table 9: length ratio by persona verbosity, per-item Spearman rho
+// App. C, Reference rows for the judge-free metrics: same 800 seeds as Table 2, Gemma-4-31B, same order as D.representations.names
+// [label, values, scale, dir]: dir -1 = lower means further from the seed
+const C_REF = [['LaBSE similarity', [0.969, 0.948, 0.924, 0.899], 1, -1], ['Core vocabulary', [91.7, 86.7, 85.3, 81.5], 100, -1], ['Normalized edit distance', [0.109, 0.195, 0.221, 0.284], 1, 1], ['Punctuation register', [40.5, 41.0, 64.5, 75.8], 100, 1]];
+const T13_INTENT = [[92, 92], [92.3, 92.5], [92.4, 92.6], [92.7, 93.5], [92.4, 92.6]];  // Table 13: intent % [flat, structured], same judge order as D.structVsFlat.judges
+const CAP_DEC = { off: [62.0, 65.1], on: [54.9, 58.1] };  // App. D, marker cap: structured share of decisive verdicts, three judges, without / with the cap
+const T16_WORST = [94.0, 94.6, 76.8];         // Table 16: PF preferred, worst case (every unparsed comparison given to the competitor)
+const T17_RATIO = { 'Gemma-4-31B': ['17.90:1', '20.46:1', '4.83:1'], 'Ministral-3-14B': ['12.70:1', '13.55:1', '2.64:1'] }; // Table 17: win ratios
 const PH_CUE = 1.4;                           // App. D: share of the 200,000 released PersonaHub personas that mention any writing cue (%)
 const NATURAL = [7, 12];                      // App. D, Naturalness: external judges rate PF rewrites 7–12 points less natural than unconditioned ones
+const MATCHED = [50.2, 51.3];                 // App. D, Matched content and length: structured share of pairwise style verdicts when content and length are equal
+const CAP_STYLE = [7, 11];                    // App. D, marker cap: as natural as SynthPAI-form rewrites with 7–11 points more style
 const AGREE_PRIMARY = [0.81, 0.93];           // App. D: item-level agreement of the four re-judges with the primary judge
 // Fig. 21b, read from the figure (no values printed): PF preferred, % of decisive verdicts [point, lo, hi] per judge (MiniMax, Qwen3.6, Muse)
 const F21B = [
@@ -25,12 +39,13 @@ const FIG2 = {
   keys: [['Capitalization', 'first-word-only, no final period'], ['Abbreviations', '‘u’ for ‘you’, ‘r’ for ‘are’, ‘k’ for ‘okay’, sometimes ‘xq’ = ‘porque’'], ['Emoji', 'none'], ['Sign-off', '‘ok’ or ‘no?’ (with no logoff)'], ['Typos', 'occasional uncorrected typos (e.g. ‘supposted’ for ‘supposed’)']],
   marks: ['u', 'ur', 'no?']
 };
-// Human study (App. E). Pooled ratings and Part C rates live in D.human (Tables 17, 20).
-const HS = { forms: 60, items: 40, perPart: 10, subs: 11, langs: 'nine', evals: 476 };  // App. E.1, E.4
-const H_MEDIAN = 4.0;                                             // Table 17: median of every pooled dimension
-const T19_VER = { parts: [26, 18], tot: 44, pct: [59.1, 40.9] };  // Table 19: verified model rewrites [human-like, AI-like]
-const T20_SET = { texts: 68, rewrites: 34, chat: 34, humanJudged: 85 }; // Table 20 caption, App. E.4
-// App. E.5: example items from the English form, verbatim. Part B slashes mark line breaks.
+// Human study (App. E). Pooled ratings and Part C rates live in D.human (Tables 18, 21).
+const HS = { forms: 60, items: 40, perPart: 10, subs: 11, langs: 'nine', scripts: 'three', evals: 476 };  // App. E.1, E.4, E.6
+const H_MEDIAN = 4.0;                                             // Table 18: median of every pooled dimension
+// Table 20: Part C answers [human-like, AI-like]; skips left out. Shares: 59.1 (Table 20) and 71 (App. E.5: 29/41).
+const T20_C = [{ label: 'Verified rewrites', parts: [26, 18], tot: 44, pct: ['59.1', '40.9'] }, { label: 'Real chat messages', parts: [29, 12], tot: 41, pct: ['71', null] }];
+const T21_SET = { texts: 68, rewrites: 34, chat: 34, humanJudged: 85 }; // Table 21 caption, App. E.4
+// App. E.7: example items from the English form, verbatim. Part B slashes mark line breaks.
 const H_EX = {
   A: [
     { o: 'What role can technology play in facilitating Urdu language learning outside of South Asia?', r: 'hep i was wondering what role technology can play in helping people learn Urdu outside south asia' },
@@ -166,36 +181,55 @@ const H_EX = {
   }
 
   /* ---------- 1: corpus-scale LLM judge ---------- */
-  let cjGrp = 'Fully scored';
+  let cjView = 'rates';
+  const STRICT_SEGS = [{ color: 'var(--s3)' }, { color: 'var(--s1)' }, { color: 'var(--s2)' }, { color: 'var(--faint)' }];
   function s1(animate){
-    head(1, 'Corpus-scale LLM judge', 'An out-of-family judge gives every rewritten user turn two separate pass/fail verdicts.');
+    head(1, 'Corpus-scale LLM judge', 'An out-of-family judge gives sampled user turns two separate pass/fail verdicts, and every user turn of the release a stricter four-way intent label.');
     const sp = spec([
-      ['Sample', `All ${fmt0(552654)} user turns of ${fmt0(T5_CONVS)} conversations, plus ${fmt0(44848)} turns sampled from the rest`],
+      ['Sample', `All ${fmt0(T6_DESIGN.persona)} user turns of conversations with a model persona, plus ${fmt0(T6_DESIGN.sample)} turns from ${fmt0(T6_DESIGN.sampleConvs)} randomly sampled other conversations. Rates are weighted to the corpus.`],
       ['Inspector', 'MiniMax-M2.5, a reasoning model that is not one of the production rewriters'],
       ['Intent passes', 'Same request, no added task or invented content, same language. Cross-lingual turns are judged against their translation.'],
-      ['Style passes', 'Takes on the persona’s tone, vocabulary, register or typing habits. Only a generic rewrite fails.']
+      ['Style passes', 'Takes on the persona’s tone, vocabulary, register or typing habits. Only a generic rewrite fails.'],
+      ['Strict label', 'The same judge compares each user turn with its seed turn, without seeing the persona, and labels it same request, added content, dropped content or scope change. Translated turns are compared with the English source.']
     ]);
     const all = D.corpusJudge[0];
     const bg = big([[fmt1(all.intent) + '%', 'intent kept', C_INT], [fmt1(all.style) + '%', 'style adopted', C_STY], [fmt1(all.both) + '%', 'pass both', C_BOTH]]);
-    const fd = finding('Gemma-4-31B, the larger rewriter, passes both checks 9.3 points more often than Ministral-3-14B (69.9% vs 60.5%).');
+    const cg = D.corpusJudge.find(r => r.slice === 'Gemma-4-31B'), cm = D.corpusJudge.find(r => r.slice === 'Ministral-3-14B');
+    const fd = finding(`Gemma-4-31B, the larger rewriter, passes both checks ${fmt1(cg.both - cm.both)} points more often than Ministral-3-14B (${fmt1(cg.both)}% vs ${fmt1(cm.both)}%). Under the strict label, ${fmt1(STRICT.labels[0][1])}% of turns keep the exact request and ${fmt1(STRICT.core)}% keep the core request.`);
     fade([...sp.children, bg, fd], animate);
-    const tb = tabs(rd, [['Fully scored', fmt0(552654) + ' fully scored turns'], ['Random sample', fmt0(44848) + ' sampled turns']], cjGrp, v => { cjGrp = v; draw(); }, 'Turn set');
-    const c = block('Pass rates by subset', 'Table 5');
-    const cp = cap('');
-    const det = el('details', 'tbl', null, rd); el('summary', null, 'Data table', det); const tw = el('div', 'tblwrap', null, det);
+    const tb = tabs(rd, [['rates', 'Pass rates'], ['strict', 'Strict intent label']], cjView, v => { cjView = v; draw(); }, 'View');
+    const body = el('div', 'rbody', null, rd);
     const draw = () => {
-      const rows = D.corpusJudge.filter(r => r.group === cjGrp);
-      const row = r => ({ label: r.slice, bold: r.slice === 'All turns', values: [r.intent, r.style, r.both], tip: [{ l: fmt0(r.n) + ' turns' }] });
-      const by = names => rows.filter(r => names.includes(r.slice)).map(row);
-      c.replaceChildren(legend(AXES));
-      const holder = el('div', null, null, c);
-      gbars(holder, { groups: [[null, by(['All turns'])], ['By rewriter', by(['Gemma-4-31B', 'Ministral-3-14B'])], ['By seed set', by(['WildChat', 'UltraChat', 'Nemotron'])]], series: AXES });
-      el('div', 'unit', '% of evaluated turns. 95% Wilson intervals within ±' + (cjGrp === 'Fully scored' ? T5_CI[0] : T5_CI[1]) + ' points.', c);
-      cp.textContent = cjGrp === 'Fully scored' ? 'This set holds UltraChat and Nemotron conversations. Open-ended UltraChat leaves more room for style than Nemotron.' : 'The sample lands within 1.5 points of the fully scored turns. Real WildChat prompts are restyled least often (60.5% style).';
-      table(tw, ['Subset', 'Turns', 'Intent %', 'Style %', 'Both %'], rows.map(r => [r.slice, fmt0(r.n), fmt1(r.intent), fmt1(r.style), fmt1(r.both)]), [1, 2, 3, 4]);
+      body.replaceChildren();
+      if (cjView === 'rates'){
+        const c = block('Pass rates by subset', 'Table 6', body);
+        const rows = D.corpusJudge;
+        const row = r => ({ label: r.slice, bold: r.slice === 'All turns', values: [r.intent, r.style, r.both], tip: [{ l: fmt0(r.n) + ' judged turns' }] });
+        const by = names => rows.filter(r => names.includes(r.slice)).map(row);
+        c.appendChild(legend(AXES));
+        gbars(el('div', null, null, c), { groups: [[null, by(['All turns'])], ['By rewriter', by(['Gemma-4-31B', 'Ministral-3-14B'])], ['By seed set', by(['WildChat', 'UltraChat', 'Nemotron'])]], series: AXES });
+        el('div', 'unit', '% of user turns, weighted to the corpus. 95% intervals within ±' + T6_CI + ' points.', c);
+        cap('Open-ended UltraChat leaves more room for style (76.0%) than Nemotron’s denser, often technical instructions (65.2%). Real WildChat prompts are restyled least often (60.5% style).', body);
+        const det = el('details', 'tbl', null, body); el('summary', null, 'Data table', det); const tw = el('div', 'tblwrap', null, det);
+        table(tw, ['Subset', 'Judged turns', 'Intent %', 'Style %', 'Both %'], rows.map(r => [r.slice, fmt0(r.n), fmt1(r.intent), fmt1(r.style), fmt1(r.both)]), [1, 2, 3, 4]);
+      } else {
+        const H2 = STRICT.human;
+        const c = block('Strict intent label, every user turn', 'App. C', body);
+        hbars(c, { rows: STRICT.labels.map(([l, v], i) => ({ label: l, values: [v], colors: [STRICT_SEGS[i].color], bold: i === 0 })), series: [{ name: '% of user turns', color: STRICT_SEGS[0].color }], max: 100, ticks: [0, 25, 50, 75, 100], barH: 16, unit: `% of ${fmt0(STRICT.n)} labeled user turns. Core request kept in ${fmt1(STRICT.core)}% under both judges.` });
+        const c2 = block('Agreement on the strict label', 'App. C', body);
+        const qTip = () => [{ l: `Qwen3.6-35B-A3B on ${fmt0(STRICT.audit.n)} turns` }], aTip = () => [{ l: `${H2.n} turns, same request vs drift` }];
+        hbars(c2, { rows: [
+          { label: 'Second judge, four-way', values: [STRICT.audit.k4], tip: qTip },
+          { label: 'Second judge, two-way', values: [STRICT.audit.k2], tip: qTip },
+          { label: 'Judge vs one annotator', values: [H2.kJudge[0]], tip: aTip },
+          { label: 'Judge vs the other', values: [H2.kJudge[1]], tip: aTip },
+          { label: 'Annotator vs annotator', values: [H2.kAnn], tip: aTip }
+        ], series: [{ name: 'Cohen’s κ', color: 'var(--s3)' }], max: 1, ticks: [0, 0.25, 0.5, 0.75, 1], fmt: fmt2, barH: 14, unit: `Cohen’s κ. Two-way: same request vs drift. Second judge: ${fmt0(STRICT.audit.n)} turns. Two annotators: ${H2.n} turns, blind to the persona, the rewriter and the judge’s label.` });
+        cap(`In the ${H2.dis} turns where the two annotators agree with each other but not with the judge, the judge is the stricter side ${H2.stricter} times, so the drift rates are, if anything, conservative. The annotators find the core request kept in ${H2.core} of ${H2.n} turns. The lenient intent check passes ${fmt1(STRICT.lenient)}% of the turns this label flags. Every released turn carries the label. We recommend training on the strict subset, the conversations in which every user turn keeps the same request; retraining on it changes no downstream result.`, body);
+      }
     };
-    fade([tb, c.parentNode, cp], animate, 200, 300);
-    // Source: paper Section 5, App. C, Table 5
+    fade([tb, body], animate, 200, 300);
+    // Source: paper Section 5, App. C, Table 6, Strict intent label, Human check of the strict judge
     return draw;
   }
 
@@ -207,14 +241,16 @@ const H_EX = {
       ['Inspector', 'None. String, entity and embedding checks.'],
       ['Depth', 'How much of the surface changed, and whether the meaning survived (LaBSE similarity)'],
       ['Retention', 'Numbers, code, identifiers and quoted literals still intact'],
-      ['Adherence', 'Each marker checked against the persona’s tier, e.g. emoji: none, rare, frequent or kaomoji']
+      ['Adherence', 'Each marker checked against the persona’s tier, e.g. emoji: none, rare, frequent or kaomoji'],
+      ['Reference', 'The same metrics on 800 seeds rewritten with no persona, the PersonaHub form, the SynthPAI form and ours']
     ]);
-    const fd = finding('Rewrites change much of the surface (edit distance 0.358) and keep the meaning (LaBSE 0.854). Emoji rules are met in 98.4% of turns, capitalization rules in only 60.9%.');
+    const jf = n => D.judgeFree.find(m => m.name.startsWith(n)).v;
+    const fd = finding(`Rewrites change much of the surface (edit distance ${fmt3(jf('Normalized edit'))}) yet keep most core vocabulary (${fmt1(jf('Core'))}%) and the meaning (LaBSE ${fmt3(jf('LaBSE'))}). Emoji rules are met in ${fmt1(jf('Emoji'))}% of turns, punctuation and capitalization rules only moderately.`);
     fade([...sp.children, fd], animate);
     const grid = el('div', 'qgrid', null, rd);
     const groups = ['Transformation depth', 'Constraint retention', 'Style adherence'];
     const blocks = groups.map(g => {
-      const c = block(g, 'Table 8', grid); c.classList.add('meters');
+      const c = block(g, 'Table 9', grid); c.classList.add('meters');
       D.judgeFree.filter(m => m.grp === g).forEach(m => {
         const d = el('div', 'meter', null, c);
         el('span', null, m.name, d);
@@ -224,11 +260,41 @@ const H_EX = {
       el('div', 'unit', g === 'Transformation depth' ? 'Distances and similarity in [0, 1]; retention in %' : g === 'Constraint retention' ? '% of turns with the item intact' : '% of turns meeting the persona’s tier', c.parentNode);
       return c.parentNode;
     });
-    const lc = block('Length ratio by persona verbosity', 'Table 8', grid);
-    const draw = () => hbars(lc, { rows: T8_LEN.rows.map(r => ({ label: r[0], values: [r[1]] })), series: [{ name: 'length ratio', color: 'var(--s1)' }], max: 1.5, fmt: v => v.toFixed(2) + '×', ticks: [0, 0.5, 1, 1.5], barH: 14, unit: 'Rewrite length ÷ original, median. Per-item ρ = ' + T8_LEN.rho + '.' });
-    fade([...blocks, lc.parentNode], animate, 200, 300);
-    // Source: paper Section 5, App. C, Table 8
+    const lc = block('Length ratio by persona verbosity', 'Table 9', grid);
+    const lcap = cap('Messages grow for personas who write long ones but barely shrink for those who write short ones.');
+    const rc = block('Each step up in style information', 'App. C', rd);
+    const rcap = cap('Richer style formats move the text further from the seed and follow the persona’s punctuation more closely. Ours changes the text most and adheres best.');
+    const draw = () => {
+      hbars(lc, { rows: T9_LEN.rows.map(r => ({ label: r[0], values: [r[1]] })), series: [{ name: 'length ratio', color: 'var(--s1)' }], max: 2, fmt: v => v.toFixed(2) + '×', ticks: [0, 0.5, 1, 1.5, 2], barH: 14, unit: 'Rewrite length ÷ original, median. Per-item ρ = ' + T9_LEN.rho + '.' });
+      rowHeat(rc, C_REF);
+    };
+    fade([...blocks, lc.parentNode, lcap, rc.parentNode, rcap], animate, 200, 300);
+    // Source: paper Section 5, App. C, Table 9, Reference rows for the judge-free metrics
     return draw;
+  }
+
+  // Heat table colored within each row (rows have different scales). rows: [[label, values, scale, dir]]
+  function rowHeat(c, rows){
+    const w = W(c), narrow = w < 520;
+    const cols = narrow ? ['No\npersona', 'Persona-\nHub', 'Synth-\nPAI', 'Persona-\nFactory'] : ['No persona', 'PersonaHub\nform', 'SynthPAI\nform', 'PersonaFactory'];
+    const labs = rows.map(r => (narrow ? r[0].replace('Normalized edit distance', 'Edit distance').replace(' register', '') : r[0]) + (r[2] === 100 ? ' (%)' : ''));
+    const lw = Math.min(Math.ceil(measure(labs)) + 12, Math.floor(w * 0.38)), headH = 34, cellH = 28;
+    const cw = (w - lw) / cols.length, h = headH + rows.length * cellH + 2;
+    const svg = svgFor(c, w, h);
+    cols.forEach((t, j) => { const ln = t.split('\n'); ln.forEach((s, k) => T(s, { x: lw + cw * j + cw / 2, y: headH - 8 - (ln.length - 1 - k) * 13, 'text-anchor': 'middle', class: 'muted' }, svg)); });
+    rows.forEach(([lab, vals, scale, dir], i) => {
+      const y = headH + i * cellH, lo = Math.min(...vals), hi = Math.max(...vals);
+      const rl = T(fit(labs[i], lw - 10), { x: lw - 8, y: y + cellH / 2 + 4, 'text-anchor': 'end' }, svg);
+      if (rl.textContent !== labs[i]) S('title', {}, rl).textContent = labs[i];
+      vals.forEach((v, j) => {
+        const p = (dir < 0 ? hi - v : v - lo) / (hi - lo || 1), x = lw + cw * j;
+        const txt = scale === 1 ? fmt3(v) : fmt1(v);
+        const r = S('rect', { x: x + 1, y: y + 1, width: cw - 2, height: cellH - 2, rx: 3, fill: `color-mix(in oklab, var(--seq-hi) ${Math.round(15 + p * 85)}%, var(--seq-lo))` }, svg);
+        T(txt, { x: x + cw / 2, y: y + cellH / 2 + 4, 'text-anchor': 'middle', class: p > 0.5 ? 'on' : 'val' }, svg);
+        bind(r, [{ v: txt + (scale === 1 ? '' : '%'), l: lab + ' · ' + D.representations.names[j] }]);
+      });
+    });
+    el('div', 'unit', 'Same 800 seeds, persona and rewriter (Gemma-4-31B). Stronger color = further from the seed, or closer to the persona’s punctuation; scaled within each row.', c);
   }
 
   /* ---------- 3: structured vs flat ---------- */
@@ -242,20 +308,20 @@ const H_EX = {
     const wp = el('div', 'wp', null, piece);
     const wh = el('div', 'wph', null, wp); el('span', null, 'The two style formats', wh); el('span', 'src', 'Figure 2 persona', wh);
     const fl = el('div', 'rep flat', null, wp);
-    const fh = el('div', 'reph', null, fl); el('b', null, 'Flat', fh); el('span', null, 'one free-text style sentence', fh);
+    const fh = el('div', 'reph', null, fl); el('b', null, 'Flat', fh); el('span', null, 'one or two free-text style sentences', fh);
     el('p', 'flattxt', FIG2.flat, fl);
     const st = el('div', 'rep struct', null, wp);
     const sh = el('div', 'reph', null, st); el('b', null, 'Structured', sh); el('span', null, 'per-axis style keys', sh);
     const kv = el('dl', 'keys', null, st); FIG2.keys.forEach(([k, v]) => { el('dt', null, k, kv); el('dd', null, v, kv); });
     const mk = el('p', 'marks', 'Keyed markers in the Florida rewrite: ', wp); FIG2.marks.forEach((m, i) => { if (i) mk.appendChild(document.createTextNode(' · ')); el('mark', null, m, mk); });
-    const fd = finding('Every judge prefers the structured keys. The pipeline judge picks them in 60% of pairs and the flat sentence in 33%. Intent and length do not change.');
+    const fd = finding('Every judge prefers the structured keys. The pipeline judge picks them in 60% of pairs and the flat description in 33%. Intent and length do not change.');
     fade([...sp.children, fl, st, mk, fd], animate, 190);
     const SV = D.structVsFlat;
     const short0 = j => j.replace('MiniMax-M2.5 (original)', 'MiniMax-M2.5, original').replace('MiniMax-M2.5 (larger budget)', 'MiniMax-M2.5, larger budget');
-    const c1 = block('Which rewrite matches the persona better?', 'Tables 1, 12');
+    const c1 = block('Which rewrite matches the persona better?', 'Tables 1, 13');
     const c2 = block('Structured share of decisive verdicts', 'Fig. 20');
-    const c3 = block('Intent kept, measured per rewrite', 'Table 12');
-    const cp = cap('Mean rewrite length: ' + fmt0(SV.table1.len[0]) + ' characters structured, ' + fmt0(SV.table1.len[1]) + ' flat.');
+    const c3 = block('Intent kept, measured per rewrite', 'Table 13');
+    const cp = cap('Mean rewrite length: ' + fmt0(SV.table1.len[0]) + ' characters structured, ' + fmt0(SV.table1.len[1]) + ' flat. The external judges agree on direction: clearly for both Qwen models, narrowly for DeepSeek-V4-Flash, whose interval touches parity. With at most two chat markers per turn, three judges still prefer the structured layer, by a smaller margin (' + CAP_DEC.on[0] + '–' + CAP_DEC.on[1] + '% of decisive verdicts, against ' + fmt1(CAP_DEC.off[0]) + '–' + CAP_DEC.off[1] + '% without the cap).');
     const draw = () => {
       const nar = W(c1) < 480;
       const short = j => nar ? j.replace('MiniMax-M2.5 (original)', 'MiniMax, original').replace('MiniMax-M2.5 (larger budget)', 'MiniMax, rerun').replace(/^(Qwen3\.\d-\d+B).*/, '$1') : short0(j);
@@ -266,11 +332,11 @@ const H_EX = {
       dots(el('div', null, null, c2), { rows: SV.judges.map(j => ({ label: nar ? short(j.judge) : `${short(j.judge)} (n=${j.n})`, pts: [j.n === 433 ? { v: j.dec, hollow: true, s: 0, tip: [{ l: j.judge + ', ' + j.n + ' parsed verdicts. No interval reported.' }] } : { v: j.dec, lo: j.lo, hi: j.hi, s: j.kind === 'pipeline' ? 0 : 1, tip: [{ l: j.judge + ', ' + j.n + ' parsed verdicts' }] }] })), series: [{ name: 'Pipeline judge', color: 'var(--s1)' }, { name: 'External judge', color: 'var(--s3)' }], min: 40, max: 80, ticks: [40, 50, 60, 70, 80], ref: 50, refLabel: 'parity' });
       el('div', 'unit', '% of decisive verdicts (ties excluded), 95% Wilson intervals. Open dot: original pass, no interval reported.', c2);
       const lg3 = legend([{ name: 'Flat', color: 'transparent', kind: 'dot' }, { name: 'Structured', color: 'var(--s1)', kind: 'dot' }]); lg3.querySelector('i').style.boxShadow = 'inset 0 0 0 2px var(--s2)'; c3.replaceChildren(lg3);
-      dots(el('div', null, null, c3), { rows: SV.judges.map((j, i) => ({ label: short(j.judge), pts: [{ v: T12_INTENT[i][0], s: 0 }, { v: T12_INTENT[i][1], s: 1 }] })), series: [{ name: 'Flat', color: 'var(--s2)', ring: true }, { name: 'Structured', color: 'var(--s1)' }], min: 80, max: 100, ticks: [80, 85, 90, 95, 100], mode: 'pair', fmt: v => (Number.isInteger(v) ? String(v) : fmt1(v)) + '%' });
+      dots(el('div', null, null, c3), { rows: SV.judges.map((j, i) => ({ label: short(j.judge), pts: [{ v: T13_INTENT[i][0], s: 0 }, { v: T13_INTENT[i][1], s: 1 }] })), series: [{ name: 'Flat', color: 'var(--s2)', ring: true }, { name: 'Structured', color: 'var(--s1)' }], min: 80, max: 100, ticks: [80, 85, 90, 95, 100], mode: 'pair', fmt: v => (Number.isInteger(v) ? String(v) : fmt1(v)) + '%' });
       el('div', 'unit', '% of rewrites that keep the request. Ring: flat. Dot: structured.', c3);
     };
     fade([c1.parentNode, c2.parentNode, c3.parentNode, cp], animate, 220, 400);
-    // Source: paper Section 5, App. C, Tables 1, 12, Fig. 20
+    // Source: paper Section 5, App. C, D (marker cap), Tables 1, 13, Fig. 20
     return draw;
   }
 
@@ -305,7 +371,7 @@ const H_EX = {
         drawDose(c);
         cap(repSub === 'x' ? 'On cross-lingual prompts, intent falls to 89.2% with the richest format. Most of the intent cost is here.' : repSub === 'en' ? 'In English, intent barely moves: 99.3% with PersonaFactory.' : 'Style rises at every step. The PersonaHub form changes the text about as much as the others, yet lifts style only from 3.1% to 5.5%.', body);
       } else if (repTab === 'enc'){
-        const c = block('Share of profiles whose attribute reaches the rewriter', 'Table 14', body);
+        const c = block('Share of profiles whose attribute reaches the rewriter', 'Table 15', body);
         const narrow = W(c) < 520;
         heat(c, { rows: R.encodes.rows, cols: narrow ? ['No\npersona', 'Persona-\nHub', 'Synth-\nPAI', 'Persona-\nFactory'] : ['No persona', 'PersonaHub\nform', 'SynthPAI\nform', 'PersonaFactory'], m: R.encodes.vals, min: 0, max: 100, fmt: v => String(v), cellH: 28, labelMax: 120 });
         el('div', 'unit', '% of N = 555 profiles. Stronger color = more profiles carry it.', c);
@@ -314,18 +380,18 @@ const H_EX = {
         const sub = tabs(body, [['main', 'Main (95% CI)'], ['rewriter', 'By rewriter'], ['judge', 'By judge']], pfView, v => { pfView = v; draw(); }, 'Robustness view'); sub.classList.add('sub');
         const opp = ['No persona', 'PersonaHub form', 'SynthPAI form'];
         if (pfView === 'main'){
-          const c = block('PersonaFactory rewrite preferred, by opponent', 'Tables 2, 15', body);
+          const c = block('PersonaFactory rewrite preferred, by opponent', 'Tables 2, 16', body);
           c.appendChild(legend([{ name: 'PF preferred, 95% CI', color: 'var(--s1)', kind: 'dot' }, { name: 'Worst case', color: 'var(--faint)', kind: 'dot' }]));
-          dots(el('div', null, null, c), { rows: opp.map((o, i) => ({ label: 'vs. ' + o, pts: [{ v: R.pfPreferred[i], lo: R.pfCI[i][0], hi: R.pfCI[i][1], s: 0, tip: [{ l: 'win ratio ' + R.winRatio[i] }] }, { v: T15_WORST[i], s: 1, tip: [{ l: 'every unparsed comparison given to the competitor' }] }] })), series: [{ name: 'PF preferred', color: 'var(--s1)' }, { name: 'Worst case', color: 'var(--faint)' }], min: 50, max: 100, ticks: [50, 60, 70, 80, 90, 100], ref: 50, refLabel: 'parity', sub: 15 });
+          dots(el('div', null, null, c), { rows: opp.map((o, i) => ({ label: 'vs. ' + o, pts: [{ v: R.pfPreferred[i], lo: R.pfCI[i][0], hi: R.pfCI[i][1], s: 0, tip: [{ l: 'win ratio ' + R.winRatio[i] }] }, { v: T16_WORST[i], s: 1, tip: [{ l: 'every unparsed comparison given to the competitor' }] }] })), series: [{ name: 'PF preferred', color: 'var(--s1)' }, { name: 'Worst case', color: 'var(--faint)' }], min: 50, max: 100, ticks: [50, 60, 70, 80, 90, 100], ref: 50, refLabel: 'parity', sub: 15 });
           el('div', 'unit', '% of pairs where the judge prefers the PersonaFactory rewrite', c);
-          cap('Win ratios 17.90:1, 20.46:1 and 4.83:1. Worst case: every unparsed comparison counted for the competitor.', body);
+          cap('Win ratios 17.90:1, 20.46:1 and 4.83:1. Worst case: every unparsed comparison counted for the competitor. The SynthPAI form also carries less style information. Rendered with the same content and length, the structured form ties on style (' + MATCHED[0] + '–' + MATCHED[1] + '% of pairs) but keeps the request more often and reads more naturally.', body);
         } else if (pfView === 'rewriter'){
-          const c = block('PF preferred with each rewriter', 'Table 16', body);
+          const c = block('PF preferred with each rewriter', 'Table 17', body);
           const keys = Object.keys(R.robust.byRewriter);
-          hbars(c, { rows: opp.map((o, i) => ({ label: 'vs. ' + o, values: keys.map(k => R.robust.byRewriter[k][i]), tip: j => [{ l: 'win ratio ' + T16_RATIO[keys[j]][i] }] })), series: keys.map((k, i) => ({ name: k + ' rewriter', color: ['var(--s1)', 'var(--s2)'][i] })), max: 100, ticks: [0, 25, 50, 75, 100], ref: { v: 50 }, barH: 12, gapIn: 3, unit: '% of pairs, MiniMax-M2.5 judge' });
+          hbars(c, { rows: opp.map((o, i) => ({ label: 'vs. ' + o, values: keys.map(k => R.robust.byRewriter[k][i]), tip: j => [{ l: 'win ratio ' + T17_RATIO[keys[j]][i] }] })), series: keys.map((k, i) => ({ name: k + ' rewriter', color: ['var(--s1)', 'var(--s2)'][i] })), max: 100, ticks: [0, 25, 50, 75, 100], ref: { v: 50 }, barH: 12, gapIn: 3, unit: '% of pairs, MiniMax-M2.5 judge' });
           cap('The ranking holds with Ministral-3-14B. Against the SynthPAI form the margin narrows from 4.83:1 to 2.64:1.', body);
         } else {
-          const c = block('PF preferred under four judges', 'Table 16', body);
+          const c = block('PF preferred under four judges', 'Table 17', body);
           const keys = Object.keys(R.robust.byJudge);
           heat(c, { rows: keys, cols: W(c) < 520 ? ['vs. no\npersona', 'vs. Persona-\nHub', 'vs. Synth-\nPAI'] : ['vs. no persona', 'vs. PersonaHub form', 'vs. SynthPAI form'], m: keys.map(k => R.robust.byJudge[k]), min: 50, max: 100, fmt: v => fmt1(v), cellH: 32, labelMax: 130, tipLabel: (r, col) => r + ' judge · ' + col.replace('\n', ' ') });
           el('div', 'unit', '% of pairs, 200-item subset, Gemma-4-31B rewriter. Stronger color = stronger preference.', c);
@@ -342,18 +408,18 @@ const H_EX = {
         el('div', 'unit', '% of decisive verdicts, 95% Wilson intervals. Real-persona pairs are judged reference-free.', c2);
         cap('PersonaFactory still leads when judges see only the style attribute values. Real SynthPAI profiles, hand-written for 300 English Reddit users, do about as well.', body);
       } else {
-        const c = block('Style adherence, judge-free', 'Table 15', body);
+        const c = block('Style adherence, judge-free', 'Table 16', body);
         const cols = W(c) < 520 ? ['No\npersona', 'Persona-\nHub', 'Synth-\nPAI', 'Persona-\nFactory'] : ['No persona', 'PersonaHub\nform', 'SynthPAI\nform', 'PersonaFactory'];
         const A = R.adherence;
         heat(c, { rows: Object.keys(A), cols, m: Object.values(A), min: 0.3, max: 1, fmt: fmt3, cellH: 28, labelMax: 130 });
         el('div', 'unit', 'Share of rewrites matching the persona’s tier, in [0, 1]. Color scale 0.3 to 1.', c);
-        const c2 = block('Cost: content kept intact', 'Table 15', body);
+        const c2 = block('Cost: content kept intact', 'Table 16', body);
         const K = R.cost; const rows = Object.keys(K);
         const kept = rows.filter(r => !/sanity/.test(r));
         heat(c2, { rows: kept.map(r => r.replace('Quoted literals intact', 'Quoted literals')), cols, m: kept.map(r => K[r]), min: 0.85, max: 1, fmt: fmt3, cellH: 28, labelMax: 130 });
         const san = K['Assistant sanity (%)'];
         el('div', 'unit', `Share of rewrites with the item intact, in [0, 1]. Color scale 0.85 to 1. Assistant sanity stays at ${fmt1(Math.min(...san))}–${fmt1(Math.max(...san))}%.`, c2);
-        cap(`Punctuation adherence rises from 0.405 to 0.757; entity retention falls by four points. External judges rate PersonaFactory rewrites ${NATURAL[0]} to ${NATURAL[1]} points less natural.`, body);
+        cap(`Punctuation adherence rises from 0.405 to 0.757; entity retention falls by four points. External judges rate PersonaFactory rewrites ${NATURAL[0]} to ${NATURAL[1]} points less natural. With at most two chat markers per turn, they read as naturally as SynthPAI-form rewrites and keep ${CAP_STYLE[0]} to ${CAP_STYLE[1]} points more style.`, body);
       }
     };
     function drawDose(c){
@@ -387,7 +453,7 @@ const H_EX = {
       el('div', 'unit', '% of rewrites, N = 800 paired items' + (repSub === 'all' ? ', 95% Wilson intervals' : ''), c);
     }
     fade([tb, body], animate, 220, 500);
-    // Source: paper Section 5, App. D, Tables 2, 14–16, Figs. 21, 23
+    // Source: paper Section 5, App. D, Tables 2, 15–17, Figs. 21, 23
     return draw;
   }
 
@@ -405,9 +471,9 @@ const H_EX = {
     const fd = finding('With the style layer, every judge prefers the rewrite to the real message. The rewrites overuse greetings, slang and emoji, so a win mostly means more casual typing.');
     fade([...sp.children, fd], animate);
     const tb = tabs(rd, CAL.judges.map((j, i) => [String(i), j]), String(calJ), v => { calJ = +v; draw(); }, 'Judge');
-    const c1 = block('“Which reads more like a real person?”', 'Table 13');
+    const c1 = block('“Which reads more like a real person?”', 'Table 14');
     const c2 = block('Typing features vs real users', 'Fig. 22b', rd, true);
-    const cp = cap('Lowercase starts and dropped final punctuation match real-user rates. The other markers still need calibration.');
+    const cp = cap('Lowercase starts and dropped final punctuation match real-user rates. Greetings, chat slang, emoji, ellipses and repeated punctuation appear several times more often than real users type them. A cap of two chat markers per turn addresses this; exact calibration is future work.');
     const ARM = { 'A: raw source record': 'Real vs A, raw record', 'B: background, no style layer': 'Real vs B, no style', 'C: background + style layer': 'Real vs C, + style' };
     const draw = () => {
       c1.replaceChildren(legend([{ name: 'Real message wins', color: 'var(--faint)' }, { name: 'Draw (flips with order)', color: 'var(--rule-2)' }, { name: 'Rewrite wins', color: 'var(--s1)' }]));
@@ -419,7 +485,7 @@ const H_EX = {
       el('div', 'unit', '% of first user turns, same 182 English seeds. Ring: real users. Dot: rewrite with the style layer.', c2);
     };
     fade([tb, c1.parentNode, c2.parentNode, cp], animate, 220, 400);
-    // Source: paper App. D, Table 13, Fig. 22
+    // Source: paper App. D, Table 14, Fig. 22
     return draw;
   }
 
@@ -435,11 +501,11 @@ const H_EX = {
     ]);
     const fd = finding('Judges differ in how strict they are but agree on direction. MiniMax-M2.5 is the strictest on style and is not a production rewriter, so it serves as the pipeline judge. Every pair that includes it reaches κ\u00a0≥\u00a00.32 on style.');
     fade([...sp.children, fd], animate);
-    const c1 = block('Judge severity', 'Table 9');
+    const c1 = block('Judge severity', 'Table 10');
     const ctl = el('div', 'rtools', null, rd);
     tabs(ctl, [['style', 'Style verdict'], ['intent', 'Intent verdict']], agV, v => { agV = v; drawAg(); }, 'Verdict');
     tabs(ctl, [['raw', 'Raw'], ['kappa', 'Cohen’s κ'], ['ac1', 'Gwet’s AC1']], agM, v => { agM = v; drawAg(); }, 'Measure');
-    const c2 = block('Pairwise agreement', 'Tables 10, 11');
+    const c2 = block('Pairwise agreement', 'Tables 11, 12');
     const cp = cap('');
     const drawAg = () => {
       let m;
@@ -447,7 +513,7 @@ const H_EX = {
       else { m = JS4.map(() => JS4.map(() => null)); J.kappa.forEach(k => { const a = JS4.indexOf(k[0]), b = JS4.indexOf(k[1]); const v = agM === 'kappa' ? (agV === 'style' ? k[2] : k[4]) : (agV === 'style' ? k[3] : k[5]); m[a][b] = v; m[b][a] = v; }); }
       const nm = agM === 'raw' ? 'raw agreement' : agM === 'kappa' ? 'Cohen’s κ' : 'Gwet’s AC1';
       heat(c2, { rows: JS4, cols: JS4, m, min: agM === 'kappa' ? 0 : 0.5, max: 1, fmt: v => agM === 'raw' ? v.toFixed(3) : v.toFixed(2), cellH: 32, labelMax: 90, tipLabel: (r, c) => `${r} – ${c} · ${nm} (${agV})` });
-      el('div', 'unit', nm[0].toUpperCase() + nm.slice(1) + ' on the ' + agV + ' verdict. Stronger color = more agreement.', c2);
+      el('div', 'unit', nm[0].toUpperCase() + nm.slice(1) + ' on the ' + agV + ' verdict, ' + (agV === 'style' ? 99 : 100) + ' items. Stronger color = more agreement.', c2);
       $$('text', c2).forEach(t => { if (t.textContent === 'n/a') t.textContent = '–'; });
       cp.textContent = agM === 'raw' ? 'Share of identical verdicts. High pass rates inflate raw agreement.' : agM === 'kappa' ? 'Every pair with MiniMax reaches κ ≥ 0.32 on style and ≥ 0.22 on intent. GLM–Ministral style κ is 0.06 because both pass over 92% of items.' : 'AC1 corrects for the prevalence effect of lenient judges. With it, GLM–Ministral rises to 0.85 on style.';
     };
@@ -456,7 +522,7 @@ const H_EX = {
       drawAg();
     };
     fade([c1.parentNode, ctl, c2.parentNode, cp], animate, 220, 400);
-    // Source: paper Section 5, App. C, Tables 9–11
+    // Source: paper Section 5, App. C, Tables 10–12
     return draw;
   }
 
@@ -468,19 +534,19 @@ const H_EX = {
       ['External judges', 'DeepSeek-V4-Flash, Qwen3.5-397B-A17B, Qwen3.6-35B-A3B, Muse-Glimmer-30B'],
       ['Cross-check', 'Gemma-4-31B, GLM-4.7-Flash, Ministral-3-14B'],
       ['No judge', 'Deterministic surface, entity and marker checks'],
-      ['People', 'AI experts reading samples in languages they know well']
+      ['People', 'AI experts rating samples in languages they know well; two blind annotators checking the strict intent label']
     ]);
-    const fd = finding('All judges and the human raters agree that rewrites keep the request and sound like the persona. Calibration is still open: rewrites use style markers more often than real users do.');
+    const fd = finding('Judges and human raters agree that rewrites keep the request and sound like the persona. A strict label finds the exact request in about three of four turns and the core request in nearly all. Calibration is still open: rewrites use chat markers more often than real users do.');
     fade([...sp.children, fd], animate);
-    const all = D.corpusJudge[0], SV = D.structVsFlat.table1;
+    const all = D.corpusJudge[0], SV = D.structVsFlat.table1, JF = n => D.judgeFree.find(m => m.name.startsWith(n)).v;
     const ROWS = [
-      ['LLM judge', fmt1(all.intent) + '% · ' + fmt1(all.style) + '%', 'intent kept · style adopted over ' + fmt0(all.n) + ' turns', 'Table 5'],
-      ['Judge-free', '96.1%', 'numbers intact; emoji rules met in 98.4% of turns', 'Table 8'],
-      ['Structured vs flat', SV.prefAll[0] + ' : ' + SV.prefAll[1], '% of pairs preferring structured vs flat; intent equal at ' + SV.intent[0] + '%', 'Tables 1, 12'],
-      ['Other formats', fmt1(R.pfPreferred[2]) + '%', 'PersonaFactory preferred over the SynthPAI form; ' + fmt1(R.pfPreferred[0]) + '–' + fmt1(R.pfPreferred[1]) + '% over the others', 'Tables 2, 16'],
-      ['Real users', fmt1(CAL.arms['C: background + style layer'][0][2]) + '%', 'rewrite with the style layer judged more real than the real message (MiniMax-M2.5)', 'Table 13'],
-      ['Judge robustness', 'κ ≥ 0.32', 'style agreement of every judge with the pipeline judge', 'Table 11'],
-      ['Human raters', fmt1(D.human.turing[0].human) + '%', 'of rewrites taken for human-written in a blind test; meaning, style and plausibility get a median of 4 out of 5', 'Tables 17, 20']
+      ['LLM judge', fmt1(all.intent) + '% · ' + fmt1(all.style) + '%', 'intent kept · style adopted, weighted to the corpus; ' + fmt1(STRICT.labels[0][1]) + '% keep the exact request under the strict label', 'Table 6'],
+      ['Judge-free', fmt1(JF('Numbers')) + '%', 'numbers intact; all entities kept in ' + fmt1(JF('All entities')) + '% of turns', 'Table 9'],
+      ['Structured vs flat', SV.prefAll[0] + ' : ' + SV.prefAll[1], '% of pairs preferring structured vs flat; intent equal at ' + SV.intent[0] + '%', 'Tables 1, 13'],
+      ['Other formats', fmt1(R.pfPreferred[2]) + '%', 'PersonaFactory preferred over the SynthPAI form; ' + fmt1(R.pfPreferred[0]) + '–' + fmt1(R.pfPreferred[1]) + '% over the others', 'Tables 2, 17'],
+      ['Real users', fmt1(CAL.arms['C: background + style layer'][0][2]) + '%', 'rewrite with the style layer judged more real than the real message (MiniMax-M2.5)', 'Table 14'],
+      ['Judge robustness', 'κ ≥ 0.32', 'style agreement of every judge with the pipeline judge', 'Table 12'],
+      ['Human raters', fmt1(D.human.turing[0].human) + '%', 'of rewrites taken for human-written in a blind test; meaning, style and plausibility get a median of 4 out of 5', 'Tables 18, 21']
     ];
     const ul = el('ol', 'sheet', null, rd);
     ROWS.forEach((r, i) => {
@@ -563,20 +629,25 @@ const H_EX = {
   }
   function countChart(c){
     const segs = [{ name: 'Human-like', color: C_HUM }, { name: 'AI-like', color: C_AI }];
-    const w = W(c), barH = 26, top = 4, h = barH + 8;
+    const w = W(c), barH = 26, rowH = 36, top = 4, h = top + T20_C.length * rowH;
+    const lw = Math.min(Math.ceil(measure(T20_C.map(r => r.label))) + 10, Math.floor(w * 0.38));
     const svg = svgFor(c, w, h);
-    const sx = v => (w - 2) * v / T19_VER.tot;
-    let x = 0;
-    T19_VER.parts.forEach((v, j) => {
-      const len = sx(v);
-      const rect = S('rect', { x: x + (j ? 1 : 0), y: top, width: Math.max(0, len - 1), height: barH, rx: 3, fill: segs[j].color }, svg);
-      const lab = `${v} · ${fmt1(T19_VER.pct[j])}%`;
-      if (len > measure([lab]) + 14) T(lab, { x: x + len / 2, y: top + barH / 2 + 4, 'text-anchor': 'middle', class: 'on' }, svg);
-      bind(rect, [{ c: segs[j].color, v: String(v), l: `${segs[j].name} (${fmt1(T19_VER.pct[j])}%)` }, { l: `of ${T19_VER.tot} judgments on verified rewrites` }]);
-      x += len;
+    T20_C.forEach((r, i) => {
+      const y = top + i * rowH + (rowH - barH) / 2;
+      T(fit(r.label, lw - 8), { x: lw - 8, y: y + barH / 2 + 4, 'text-anchor': 'end' }, svg);
+      const sx = v => (w - lw - 2) * v / r.tot;
+      let x = lw;
+      r.parts.forEach((v, j) => {
+        const len = sx(v), p = r.pct[j];
+        const rect = S('rect', { x: x + (j ? 1 : 0), y, width: Math.max(0, len - 1), height: barH, rx: 3, fill: segs[j].color }, svg);
+        const lab = p ? `${v} · ${p}%` : String(v);
+        if (len > measure([lab]) + 14) T(lab, { x: x + len / 2, y: y + barH / 2 + 4, 'text-anchor': 'middle', class: 'on' }, svg);
+        bind(rect, [{ c: segs[j].color, v: String(v), l: segs[j].name + (p ? ` (${p}%)` : '') }, { l: `of ${r.tot} answered judgments · ${r.label.toLowerCase()}` }]);
+        x += len;
+      });
     });
     c.insertBefore(legend(segs.map(s => ({ name: s.name, color: s.color }))), svg);
-    unit(c, `Rater answers on texts verified as corpus rewrites (${T19_VER.tot} in total).`);
+    unit(c, `Rater answers, skips left out: ${T20_C[0].tot} on texts verified as corpus rewrites, ${T20_C[1].tot} on WildChat user messages.`);
   }
   function judgeChart(c){
     const rows = H.turing, w = W(c);
@@ -601,13 +672,13 @@ const H_EX = {
         T(fmt1(v), { x: w - 2, y: cy + dy + 4, 'text-anchor': 'end', class: 'val', style: 'font-size:11.5px' }, svg);
       });
       bind(S('rect', { class: 'hit', x: 0, y: y0, width: w, height: rowH }, svg), [
-        { l: r.judge + (i ? ' · 3 answers per text' : ` · ${T20_SET.humanJudged} answered judgments`) },
+        { l: r.judge + (i ? ' · 3 answers per text' : ` · ${T21_SET.humanJudged} answered judgments`) },
         { c: C_HUM, v: fmt1(r.human) + '%', l: `rewrites taken for human-written [${fmt1(r.hlo)}, ${fmt1(r.hhi)}]` },
         { c: C_ACC, v: fmt1(r.acc) + '%', l: `accuracy [${fmt1(r.alo)}, ${fmt1(r.ahi)}]` }]);
     });
     const lg = legend([{ name: 'Rewrites taken for human', color: C_HUM, kind: 'dot' }, { name: 'Accuracy', color: C_ACC, kind: 'dot' }, { name: 'Chance, 50%', color: 'var(--faint)', kind: 'line' }]);
     lg.lastChild.firstChild.classList.add('dash'); c.insertBefore(lg, svg);
-    unit(c, `${T20_SET.texts} texts: ${T20_SET.rewrites} verified rewrites, ${T20_SET.chat} chat-log messages. Lines: 95% intervals.`);
+    unit(c, `${T21_SET.texts} texts: ${T21_SET.rewrites} verified rewrites, ${T21_SET.chat} chat-log messages. Lines: 95% intervals.`);
   }
 
   // one pane per sub-tab: fills the left box and the readout, returns the chart draw
@@ -618,7 +689,7 @@ const H_EX = {
       [['Forms', `${HS.forms} languages, one form each, up to ${HS.items} items (${HS.perPart} per part)`],
        ['Raters', 'AI experts who volunteer, unpaid, and rate only languages they know well'],
        ['Scales', '1 to 5 for meaning, style and plausibility, plus a confidence rating in Part C'],
-       ['So far', `${HS.subs} submissions in ${HS.langs} languages, ${HS.evals} item ratings. Collection is still running.`]].forEach(([k, v]) => { const r = el('div', null, null, sp); el('dt', null, k, r); el('dd', null, v, r); });
+       ['So far', `${HS.subs} submissions in ${HS.langs} languages and ${HS.scripts} scripts, ${HS.evals} item evaluations. Collection is still running.`]].forEach(([k, v]) => { const r = el('div', null, null, sp); el('dt', null, k, r); el('dd', null, v, r); });
       const fd = pfind(`Raters give meaning, style and plausibility a median of 4 out of 5. In the blind test they thought a person wrote ${Math.round(H.turing[0].human)}% of the rewrites.`, box);
       fade([...sp.children, fd], animate);
       const bg = hbigs([['4 of 5', 'median for meaning, style and plausibility', C_MEAN], [fmt1(H.turing[0].human) + '%', 'of rewrites taken for human-written by raters', C_HUM], [Math.round(Math.min(...llm())) + '–' + Math.round(Math.max(...llm())) + '%', 'taken for human-written by four LLM judges']]);
@@ -661,10 +732,10 @@ const H_EX = {
       [['Yes', 'this text appears as authentic and readable as typical messages written by real users.'], ['No', 'parts of this text seem unusual, such as odd wording or synthetic text patterns, suggesting it might be AI-generated.'], ['Skip this item.', '']].forEach(([a, b]) => { const li = el('li', null, null, ol); el('b', null, a + (b ? ': ' : ''), li); if (b) li.append(b); });
       el('p', 'hq sm', 'Follow-up: How confident are you?', fb);
       hscale(fb, 'guessing', 'very confident', P.C[2], animate, 'mean confidence');
-      const fd = pfind(`Raters took ${fmt1(H.turing[0].human)}% of the rewrites for human-written and identified the source correctly ${fmt1(H.turing[0].acc)}% of the time, close to chance. The LLM judges took even more rewrites for human-written.`, box);
+      const fd = pfind(`Raters took ${fmt1(H.turing[0].human)}% of the rewrites for human-written and identified the source correctly ${fmt1(H.turing[0].acc)}% of the time, only slightly better than chance. Real chat messages were taken for human-written in ${T20_C[1].pct[0]}% of answers. The LLM judges took even more rewrites for human-written.`, box);
       fade([fb.parentNode, fd], animate);
       const bg = hbigs([[fmt1(H.turing[0].human) + '%', 'of rewrites taken for human-written', C_HUM], [fmt1(H.turing[0].acc) + '%', 'rater accuracy (chance is 50%)', C_ACC], [fmt1(Math.min(...llm())) + '–' + fmt1(Math.max(...llm())) + '%', 'taken for human-written by LLM judges']]);
-      const c1 = block('Rater answers on verified rewrites');
+      const c1 = block('Rater answers: rewrites and real messages');
       const c2 = block('People vs four LLM judges');
       fade([bg, c1.parentNode, c2.parentNode], animate, 200, 300);
       return () => { countChart(c1); judgeChart(c2); };
@@ -698,7 +769,7 @@ const H_EX = {
     let drawPane = () => {};
     const pane = anim => { box.replaceChildren(); rd.replaceChildren(); drawPane = HPANE[hSub](box, anim); };
     pane(animate);
-    // Source: paper Section 5, App. E, Tables 17, 19, 20
+    // Source: paper Section 5, App. E, Tables 18, 20, 21, E.5, E.6
     return () => drawPane();
   }
 
