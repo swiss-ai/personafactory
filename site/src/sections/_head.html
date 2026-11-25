@@ -93,9 +93,9 @@
     </div>
     <div class="fkey">
       <span class="fnum">Finding 3</span>
-      <h3>Models trained on it keep capability and adapt to the user</h3>
-      <div class="big">0.392 vs 0.125 <small>emoji mirroring, released vs original data</small></div>
-      <p>Apertus-v1.5-8B trained on the released conversations is on par with training on the original ones on capability benchmarks. It scores 1.8 points higher on IFEval and 3.1 lower on GSM8K, the one benchmark where it stays behind. Two judges from outside the pipeline prefer its replies to real user prompts in 54.6–57.5% of cases at equal length, and it mirrors the user's emoji use and formality more closely.</p>
+      <h3>Models trained on it keep capability and win on real prompts</h3>
+      <div class="big">54.6–57.5% <small>preferred on real user prompts at equal length</small></div>
+      <p>Apertus-v1.5-8B fine-tuned on the released conversations matches training on the original data across capability benchmarks. It scores 1.8 points higher on IFEval and 3.1 lower on GSM8K, the only benchmark where it is consistently behind. On real WildChat prompts, two judges from outside the pipeline prefer its replies at equal reply length for every training seed, and its reply style follows the user more closely.</p>
     </div>
   </div>
 </section>
