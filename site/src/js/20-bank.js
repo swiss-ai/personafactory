@@ -183,162 +183,6 @@ const BK = [
   }
  },
  {
-  "id": "vi",
-  "chip": "Ho Chi Minh City",
-  "country": "Vietnam",
-  "fig": "persona_bank 38a9a06e",
-  "tag": "VN",
-  "head": "35 · F · Ho Chi Minh City, Vietnam",
-  "seed": {
-   "region": "Southeast Asia → Vietnam → Ho Chi Minh City",
-   "occ": "Payroll clerk",
-   "sector": "Business & finance"
-  },
-  "gen": "Ministral-3-14B",
-  "val": "coherent, location and user plausible, stereotype severity 0 of 3, realism 3 of 3",
-  "bg": [
-   [
-    "Age",
-    "35",
-    [
-     "Age"
-    ]
-   ],
-   [
-    "Gender",
-    "Female",
-    [
-     "Gender"
-    ]
-   ],
-   [
-    "Job title",
-    "Senior payroll analyst at a mid-sized manufacturing firm"
-   ],
-   [
-    "Education",
-    "Vocational / Trade training, accounting and payroll administration",
-    [
-     "Education"
-    ]
-   ],
-   [
-    "Language",
-    "Vietnamese (main) · Vietnamese (Southern) (native) · dialect Sài Gòn",
-    [
-     "Main language (top 10)"
-    ]
-   ],
-   [
-    "AI stance",
-    "Skeptical",
-    [
-     "AI stance"
-    ]
-   ],
-   [
-    "Digital fluency",
-    "Medium (core segment)",
-    [
-     "Digital fluency"
-    ]
-   ],
-   [
-    "Summary",
-    "A meticulous but weary payroll clerk who relocated to Ho Chi Minh City from Nha Trang three years ago for a higher salary […] Skeptical of AI tools after a failed experiment at her last job, she still turns to chatbots for draft explanations of tax code updates […]"
-   ]
-  ],
-  "st": [
-   [
-    "Free-text style",
-    "Types in medium-length sentences with standard capitalization and occasional phonetic typos; uses emoticons like :) and :D but rarely emojis; signs off with ‘Cảm ơn nhé’ or a short phrase like ‘Nghĩ xong sẽ reply’.",
-    [
-     "Capitalization",
-     "Emoji use",
-     "Typo tendency"
-    ]
-   ],
-   [
-    "Question framing",
-    "Indirect",
-    [
-     "Question framing"
-    ]
-   ],
-   [
-    "Code-switching",
-    "Medium",
-    [
-     "Code-switching"
-    ]
-   ],
-   [
-    "Sign-off",
-    "‘Cảm ơn nhé’ or ‘Nghĩ xong sẽ reply’"
-   ],
-   [
-    "Quirks",
-    [
-     "Uses ‘nè’ or ‘nha’ as conversational fillers even in formal queries to AI (e.g., ‘làm thế nào nè để tính lương hơn...’)"
-    ]
-   ]
-  ],
-  "hl": {
-   "Generator model": [
-    "Ministral-3-14B",
-    "Ministral-3-14B"
-   ],
-   "Macro-region": [
-    "Southeast Asia",
-    "Southeast Asia"
-   ],
-   "Age": [
-    "33–37",
-    "age 35"
-   ],
-   "Gender": [
-    "Female",
-    "female"
-   ],
-   "Education": [
-    "Vocational / trade",
-    "vocational / trade training"
-   ],
-   "Digital fluency": [
-    "Medium",
-    "medium"
-   ],
-   "AI stance": [
-    "Skeptical",
-    "skeptical"
-   ],
-   "Main language (top 10)": [
-    "Vietnamese",
-    "Vietnamese"
-   ],
-   "Capitalization": [
-    "standard",
-    "standard"
-   ],
-   "Emoji use": [
-    "emoticons only",
-    "emoticons only"
-   ],
-   "Typo tendency": [
-    "phonetic spelling",
-    "phonetic spelling"
-   ],
-   "Code-switching": [
-    "Medium",
-    "medium"
-   ],
-   "Question framing": [
-    "Indirect",
-    "indirect"
-   ]
-  }
- },
- {
   "id": "zh",
   "chip": "Zurich",
   "country": "Switzerland (DE)",
@@ -816,6 +660,162 @@ const BK = [
    "Emoji use": [
     "none",
     "none"
+   ]
+  }
+ },
+ {
+  "id": "vi",
+  "chip": "Ho Chi Minh City",
+  "country": "Vietnam",
+  "fig": "persona_bank 38a9a06e",
+  "tag": "VN",
+  "head": "35 · F · Ho Chi Minh City, Vietnam",
+  "seed": {
+   "region": "Southeast Asia → Vietnam → Ho Chi Minh City",
+   "occ": "Payroll clerk",
+   "sector": "Business & finance"
+  },
+  "gen": "Ministral-3-14B",
+  "val": "coherent, location and user plausible, stereotype severity 0 of 3, realism 3 of 3",
+  "bg": [
+   [
+    "Age",
+    "35",
+    [
+     "Age"
+    ]
+   ],
+   [
+    "Gender",
+    "Female",
+    [
+     "Gender"
+    ]
+   ],
+   [
+    "Job title",
+    "Senior payroll analyst at a mid-sized manufacturing firm"
+   ],
+   [
+    "Education",
+    "Vocational / Trade training, accounting and payroll administration",
+    [
+     "Education"
+    ]
+   ],
+   [
+    "Language",
+    "Vietnamese (main) · Vietnamese (Southern) (native) · dialect Sài Gòn",
+    [
+     "Main language (top 10)"
+    ]
+   ],
+   [
+    "AI stance",
+    "Skeptical",
+    [
+     "AI stance"
+    ]
+   ],
+   [
+    "Digital fluency",
+    "Medium (core segment)",
+    [
+     "Digital fluency"
+    ]
+   ],
+   [
+    "Summary",
+    "A meticulous but weary payroll clerk who relocated to Ho Chi Minh City from Nha Trang three years ago for a higher salary […] Skeptical of AI tools after a failed experiment at her last job, she still turns to chatbots for draft explanations of tax code updates […]"
+   ]
+  ],
+  "st": [
+   [
+    "Free-text style",
+    "Types in medium-length sentences with standard capitalization and occasional phonetic typos; uses emoticons like :) and :D but rarely emojis; signs off with ‘Cảm ơn nhé’ or a short phrase like ‘Nghĩ xong sẽ reply’.",
+    [
+     "Capitalization",
+     "Emoji use",
+     "Typo tendency"
+    ]
+   ],
+   [
+    "Question framing",
+    "Indirect",
+    [
+     "Question framing"
+    ]
+   ],
+   [
+    "Code-switching",
+    "Medium",
+    [
+     "Code-switching"
+    ]
+   ],
+   [
+    "Sign-off",
+    "‘Cảm ơn nhé’ or ‘Nghĩ xong sẽ reply’"
+   ],
+   [
+    "Quirks",
+    [
+     "Uses ‘nè’ or ‘nha’ as conversational fillers even in formal queries to AI (e.g., ‘làm thế nào nè để tính lương hơn...’)"
+    ]
+   ]
+  ],
+  "hl": {
+   "Generator model": [
+    "Ministral-3-14B",
+    "Ministral-3-14B"
+   ],
+   "Macro-region": [
+    "Southeast Asia",
+    "Southeast Asia"
+   ],
+   "Age": [
+    "33–37",
+    "age 35"
+   ],
+   "Gender": [
+    "Female",
+    "female"
+   ],
+   "Education": [
+    "Vocational / trade",
+    "vocational / trade training"
+   ],
+   "Digital fluency": [
+    "Medium",
+    "medium"
+   ],
+   "AI stance": [
+    "Skeptical",
+    "skeptical"
+   ],
+   "Main language (top 10)": [
+    "Vietnamese",
+    "Vietnamese"
+   ],
+   "Capitalization": [
+    "standard",
+    "standard"
+   ],
+   "Emoji use": [
+    "emoticons only",
+    "emoticons only"
+   ],
+   "Typo tendency": [
+    "phonetic spelling",
+    "phonetic spelling"
+   ],
+   "Code-switching": [
+    "Medium",
+    "medium"
+   ],
+   "Question framing": [
+    "Indirect",
+    "indirect"
    ]
   }
  },
