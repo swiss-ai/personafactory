@@ -1,11 +1,11 @@
 # PersonaFactory: Stylistic User Prompt Augmentation with Synthetic Persona Bank
 
-[![Paper](https://img.shields.io/badge/Paper-coming%20soon-b31b1b)](#citation)
+[![arXiv](https://img.shields.io/badge/arXiv-2611.34785-b31b1b)](https://arxiv.org/abs/2611.34785)
 [![Project page](https://img.shields.io/badge/Project-page-7e22ce)](https://swiss-ai.github.io/personafactory/)
 [![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)](https://huggingface.co/datasets/swiss-ai/PersonaFactory)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 
-This repository contains the official implementation of *"PersonaFactory: Stylistic User Prompt Augmentation with Synthetic Persona Bank"*. The interactive project page is at [swiss-ai.github.io/personafactory](https://swiss-ai.github.io/personafactory/).
+This repository contains the official implementation of [*"PersonaFactory: Stylistic User Prompt Augmentation with Synthetic Persona Bank"*](https://arxiv.org/abs/2611.34785). The interactive project page is at [swiss-ai.github.io/personafactory](https://swiss-ai.github.io/personafactory/).
 
 ## Authors
 
@@ -163,9 +163,13 @@ The code is released under the [MIT License](LICENSE). The dataset is released u
 ## Citation
 
 ```bibtex
-@misc{doan2026personafactory,
+@misc{doan2026personafactorystylisticuserprompt,
       title={PersonaFactory: Stylistic User Prompt Augmentation with Synthetic Persona Bank},
       author={Bich Ngoc Doan and Hanna Yukhymenko and Imanol Schlag},
       year={2026},
+      eprint={2611.34785},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2611.34785},
 }
 ```

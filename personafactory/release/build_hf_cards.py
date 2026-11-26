@@ -25,10 +25,14 @@ ISO = {'English': 'en', 'Chinese': 'zh', 'Spanish': 'es', 'Russian': 'ru', 'Fren
 TITLE = 'PersonaFactory: Stylistic User Prompt Augmentation with Synthetic Persona Bank'
 AUTHORS = 'Bich Ngoc Doan, Hanna Yukhymenko and Imanol Schlag'
 CITATION = """```bibtex
-@misc{doan2026personafactory,
+@misc{doan2026personafactorystylisticuserprompt,
       title={PersonaFactory: Stylistic User Prompt Augmentation with Synthetic Persona Bank},
       author={Bich Ngoc Doan and Hanna Yukhymenko and Imanol Schlag},
       year={2026},
+      eprint={2611.34785},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2611.34785},
 }
 ```"""
 # per-subset cards are rendered with placeholder repo names; merged_card() rewrites them to the one repo (REPO)
@@ -38,7 +42,7 @@ BANK_REPO, CHATS_REPO = 'swiss-ai/PersonaFactory-PersonaBank', 'swiss-ai/Persona
 def badges(other_repo, other_label):
     return '\n'.join([
         f'[![{other_label}](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-{other_label.replace(" ", "%20")}-yellow)](https://huggingface.co/datasets/{other_repo})',
-        '[![Paper](https://img.shields.io/badge/Paper-coming%20soon-b31b1b)](#citation)'])
+        '[![arXiv](https://img.shields.io/badge/arXiv-2611.34785-b31b1b)](https://arxiv.org/abs/2611.34785)'])
 
 
 def iso_codes(names):
@@ -323,7 +327,7 @@ configs:
 """
     return head + f"""# PersonaFactory
 
-[![Paper](https://img.shields.io/badge/Paper-coming%20soon-b31b1b)](#citation)
+[![arXiv](https://img.shields.io/badge/arXiv-2611.34785-b31b1b)](https://arxiv.org/abs/2611.34785)
 [![Persona bank](https://img.shields.io/badge/persona__bank-{b['n']:,}%20profiles-yellow)](#persona_bank)
 [![Chats](https://img.shields.io/badge/chats-{c['n']:,}%20conversations-yellow)](#chats)
 
