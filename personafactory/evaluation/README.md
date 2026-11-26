@@ -17,7 +17,7 @@ are compute jobs: run them on a serving or GPU node (`scripts/slurm/eval_*.sbatc
 |---|---|---|
 | Full-corpus LLM-judge table (`tab:full-judge`), fully scored rows | `corpus_judge/prep_items.py` -> `corpus_judge/run_judge.py` -> `corpus_judge/aggregate.py` | `corpus_judge.json` |
 | Full-corpus LLM-judge table, sample rows | `postprocess/judge_sample_prep.py` -> `corpus_judge/run_judge.py` -> `postprocess/judge_sample_agg.py` (random sample of the remaining conversations, same templates and judge; see `postprocess/README.md`) | `judge_sample.json` (`all`, `by_generator`, `by_source_name`) |
-| Corpus-wide judge estimate (96.6% intent, 67.1% style, 64.8% both) | `corpus_judge/estimate.py` | `judge_estimate.json` |
+| Corpus-wide judge estimate (96.6% intent, 67.1% style, 64.9% both) | `corpus_judge/estimate.py` | `judge_estimate.json` |
 | Full-corpus judge-free fidelity table (`tab:fidelity`), LaBSE row | `corpus_judge/labse_full.py` (all turns of the corpus; `corpus_judge/labse.py` for a judged subset) | `labse_full.json` |
 | Full-corpus judge-free fidelity table, all other rows | `release/stats/corpus_numbers.py`, `entity_integrity.py`, `style_adherence.py`, `length_by_tendency.py` (see `release/README.md`) | `corpus_numbers.json`, `entity_integrity.json`, `style_adherence.json`, `length_by_tendency.json` |
 | Structured vs flat A/B (`tab:structured`) | `structured_vs_flat/ab_style_test.py`, `structured_vs_flat/re_judge_ab.py`, `structured_vs_flat/ab_table.py` | `ab_style_results.jsonl`, `ab_first_pass.jsonl` |
