@@ -1,10 +1,11 @@
 # PersonaFactory: Stylistic User Prompt Augmentation with Synthetic Persona Bank
 
 [![Paper](https://img.shields.io/badge/Paper-coming%20soon-b31b1b)](#citation)
+[![Project page](https://img.shields.io/badge/Project-page-7e22ce)](https://swiss-ai.github.io/personafactory/)
 [![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)](https://huggingface.co/datasets/swiss-ai/PersonaFactory)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 
-This repository contains the official implementation of *"PersonaFactory: Stylistic User Prompt Augmentation with Synthetic Persona Bank"*.
+This repository contains the official implementation of *"PersonaFactory: Stylistic User Prompt Augmentation with Synthetic Persona Bank"*. The interactive project page is at [swiss-ai.github.io/personafactory](https://swiss-ai.github.io/personafactory/).
 
 ## Authors
 
@@ -14,7 +15,7 @@ This repository contains the official implementation of *"PersonaFactory: Stylis
 
 ## Abstract
 
-Large language models increasingly replace real people in the AI development pipeline, as they are used to generate training dialogues at scale, control alignment and evaluation. However, out-of-the-box models produce monolingual and stylistically flat texts as synthetic user prompts, failing to replicate the real user-AI communication mechanics. We present PersonaFactory, an end-to-end pipeline to generate detailed user personas, later using them to augment existing user prompts from their point of view. As part of this work, we showcase two major data contributions, facilitating research in LLM-based stylistic chat generation. First, we release a bank of over 740,000 structured, fully synthetic personas, focusing on their background and communication behavior with a chatbot. Second, we release a corpus of roughly 1.24 million persona-styled synthetic conversations spanning 85 languages, produced by using the generated bank of personas to augment existing user prompts and match personas to them based on original prompt intent and profile background. We also provide an ablation study of the assistant persona design for response augmentation and downstream performance after training on such conversations. Finally, we evaluate the effect of personal features on style adoption and intent preservation, using an LLM-judge and heuristic metrics to assess augmentation efficiency. We find that simulating users' unique behavioral features in the conversation greatly benefits from a structured, attribute-based approach, compared to a single free-text description in existing personalization methods. We show that the produced augmented data is hard to distinguish from human-written texts for real people and that PersonaFactory as a training artifact can improve model adaptive behavior purely from data impact without steering.
+Large language models increasingly replace real people in the AI development pipeline, as they are used to generate training dialogues at scale and to drive alignment and evaluation. However, out-of-the-box models produce monolingual and stylistically flat texts as synthetic user prompts, failing to replicate the real user-AI communication mechanics. We present PersonaFactory, an end-to-end pipeline that generates detailed user personas and uses them to augment existing user prompts from their point of view, producing a bank of over 740,000 structured synthetic personas detailing their background and communication behaviors, and a corpus of roughly 1.24 million persona-styled synthetic conversations spanning 85 languages. We evaluate the effect of personal features on style adoption and intent preservation, using an LLM-judge and heuristic metrics to assess augmentation fidelity together with the downstream impact on assistant persona control through training data. Results show that our structured, attribute-based style representation enables per-axis control and better intent preservation at comparable style fidelity than free-text persona descriptions used in existing methods. A human expert evaluation found the augmented conversations plausible, with favorable ratings for intent preservation, style naturalness, and multilingual authenticity. Finally, PersonaFactory conversations achieve comparable performance to original training data on capability benchmarks, are preferred on real user prompts at equal reply length, and adapt their reply style more closely to users without explicit steering.
 
 ## Overview
 
@@ -38,7 +39,7 @@ Each persona has a **background** layer (who the person is: location, occupation
 
 ## Installation
 
-Python 3.12.
+Python 3.10 or later (tested with 3.12).
 
 ```bash
 git clone https://github.com/swiss-ai/personafactory.git
@@ -63,7 +64,7 @@ chats = load_dataset("swiss-ai/PersonaFactory", "chats", split="train")
 bank = load_dataset("swiss-ai/PersonaFactory", "persona_bank", split="train")
 ```
 
-`data/sample/` holds 343 conversations (all 86 language labels, every seed source, setting and responder) and their 338 personas in the released schema, and `docs/DATA.md` describes all fields.
+`data/sample/` holds 340 conversations (all 85 languages plus the label for turns too short to detect, every seed source, setting and responder) and their 335 personas in the released schema, and `docs/DATA.md` describes all fields.
 
 ### Augment conversations
 
@@ -113,6 +114,7 @@ docs/DATA.md        released schema and working-directory layout
 scripts/examples/   end-to-end commands per part, with the released settings
 scripts/slurm/      generic Slurm templates (no cluster-specific settings) and model serving
 assets/             README figures
+site/               project page (static; `python3 site/build.py`), deployed to GitHub Pages by .github/workflows/pages.yml
 ```
 
 Each subpackage has its own README with inputs, outputs, settings and commands.
@@ -144,7 +146,7 @@ Default models per role (configurable on every CLI):
 | Responders | `google/gemma-4-31B-it`, `mistralai/Ministral-3-14B-Instruct-2512` (50/50 per conversation) |
 | Persona matching | `sentence-transformers/all-MiniLM-L6-v2` |
 | Fidelity | `sentence-transformers/LaBSE` |
-| External judges (style A/B, downstream WildChat comparison) | `Qwen/Qwen3.6-35B-A3B-FP8`, `Muse-Glimmer-30B` |
+| External judges (style A/B, downstream WildChat comparison) | `Qwen/Qwen3.6-35B-A3B-FP8`, `meta-models/Muse-Glimmer-30B` |
 
 `scripts/slurm/serve_models.sh` starts the generation models (vLLM for Gemma and Ministral, SGLang for MiniMax-M2.5) and exports their URLs.
 
@@ -156,7 +158,7 @@ The personas are synthetic and do not describe real people, and the bank is not 
 
 ## License
 
-The code is released under the [MIT License](LICENSE). The dataset is released under Apache 2.0 (see the [dataset card](https://huggingface.co/datasets/swiss-ai/PersonaFactory)).
+The code is released under the [MIT License](LICENSE). The dataset is released under Apache 2.0 (see the [dataset card](https://huggingface.co/datasets/swiss-ai/PersonaFactory)). The files in `data/sample/` are a sample of that dataset and follow its license; text that comes from the seed conversations stays under the seed datasets' terms.
 
 ## Citation
 
