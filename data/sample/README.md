@@ -4,8 +4,8 @@ A small, fixed sample of the released dataset ([swiss-ai/PersonaFactory](https:/
 
 | File | Contents |
 |---|---|
-| `conversations_sample.json` | 340 conversations from the `chats` subset: up to two per (language, setting) for all 86 language labels (85 languages plus the label for turns too short to detect), plus at least three per (seed source, setting, responder, with or without model persona) |
-| `persona_bank_sample.json` | the 335 personas these conversations use, from the `persona_bank` subset (background, style, validation) |
+| `conversations_sample.json` | 341 conversations from the `chats` subset: up to two per (language, setting) for all 86 language labels (85 languages plus the label for turns too short to detect), plus at least three per (seed source, setting, responder, with or without model persona) |
+| `persona_bank_sample.json` | the 336 personas these conversations use, from the `persona_bank` subset (background, style, validation) |
 | `model_personas.json` | the 12 assistant response styles (model personas) |
 
 Records use the released schema (see the dataset card and `docs/DATA.md`). `persona_id` joins a conversation to its

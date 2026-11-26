@@ -64,7 +64,7 @@ chats = load_dataset("swiss-ai/PersonaFactory", "chats", split="train")
 bank = load_dataset("swiss-ai/PersonaFactory", "persona_bank", split="train")
 ```
 
-`data/sample/` holds 340 conversations (all 85 languages plus the label for turns too short to detect, every seed source, setting and responder) and their 335 personas in the released schema, and `docs/DATA.md` describes all fields.
+`data/sample/` holds 341 conversations (all 85 languages plus the label for turns too short to detect, every seed source, setting and responder) and their 336 personas in the released schema, and `docs/DATA.md` describes all fields.
 
 ### Augment conversations
 

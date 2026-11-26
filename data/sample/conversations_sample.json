@@ -3576,6 +3576,50 @@
   ]
  },
  {
+  "id": "c2f9c7bbdd340f4bab6338cf8f9397776f9cc4a73a0841a202778d8d46b932ae",
+  "messages": [
+   {
+    "role": "user",
+    "content": "大佬，记一下这些数据 🤯\n\n1002143661----aa99999\n1011218311----qwe111222\n1011926920----dncjk84602\n1034910494----a123789\n1042533986----qq123456\n1043704838----qjhdhaymjb\n1075261989----dxbhbn79991\n1076023323----yangdasheng\n1084816008----qwe111222"
+   },
+   {
+    "role": "assistant",
+    "content": "记住了。"
+   },
+   {
+    "role": "user",
+    "content": "大佬，记一下这些数据 🤯\n\n1002143661----aa99999\n1011218311----qwe111222\n1011926920----dncjk84602\n1034910494----a123789\n1042533986----qq123456\n1043704838----qjhdhaymjb\n1075261989----dxbhbn79991\n1076023323----yangdasheng\n1084816008----qwe111222"
+   },
+   {
+    "role": "assistant",
+    "content": "记住了。"
+   },
+   {
+    "role": "user",
+    "content": "大佬，有个 List<string> 数据，从第二行开始，第一步帮我提取所有密码并去重，作为 key 保存 Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>(); 字典中，第二步遍历这个 list<string> 数据，把相同的密码添加到对应的 dic 字典中 🤯\n\n1002143661----aa99999\n1011218311----qwe111222\n1011926920----dncjk84602\n1034910494----a123789\n1042533986----qq123456\n1043704838----qjhdhaymjb\n1075261989----dxbhbn79991\n1076023323----yangdasheng\n1084816008----qwe111222\n\n发一下代码好唔好"
+   },
+   {
+    "role": "assistant",
+    "content": "```csharp\nusing System;\nusing System.Collections.Generic;\nusing System.Linq;\n\npublic class Program\n{\n    public static void Main()\n    {\n        List<string> data = new List<string>\n        {\n            \"标题行/无关行\", // 第一行\n            \"1002143661----aa99999\",\n            \"1011218311----qwe111222\",\n            \"1011926920----dncjk84602\",\n            \"1034910494----a123789\",\n            \"1042533986----qq123456\",\n            \"1043704838----qjhdhaymjb\",\n            \"1075261989----dxbhbn79991\",\n            \"1076023323----yangdasheng\",\n            \"1084816008----qwe111222\"\n        };\n\n        // 跳过第一行，提取密码并去重作为 Key\n        var passwords = data.Skip(1)\n                            .Select(line => line.Split(new[] { \"----\" }, StringSplitOptions.None)[1])\n                            .Distinct()\n                            .ToList();\n\n        Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>();\n\n        // 初始化字典\n        foreach (var pwd in passwords)\n        {\n            dic[pwd] = new List<string>();\n        }\n\n        // 遍历数据，将相同密码的行添加到对应的 List 中\n        foreach (var line in data.Skip(1))\n        {\n            string[] parts = line.Split(new[] { \"----\" }, StringSplitOptions.None);\n            if (parts.Length == 2)\n            {\n                string pwd = parts[1];\n                dic[pwd].Add(line);\n            }\n        }\n\n        // 测试输出\n        foreach (var kvp in dic)\n        {\n            Console.WriteLine($\"密码: {kvp.Key}, 对应数据: {string.Join(\", \", kvp.Value)}\");\n        }\n    }\n}\n```"
+   }
+  ],
+  "persona_id": "47cd339b-11df-4339-9942-38fda659297e",
+  "language": "Esperanto",
+  "setting": "language_matched",
+  "match_tier": "location",
+  "source": "wildchat",
+  "source_id": "wildchat:b6cf5f19ce06b397e31838abcc06505e:224099",
+  "original_prompt": "有一个数据，你先记住它\n1002143661----aa99999\n1011218311----qwe111222\n1011926920----dncjk84602\n1034910494----a123789\n1042533986----qq123456\n1043704838----qjhdhaymjb\n1075261989----dxbhbn79991\n1076023323----yangdasheng\n1084816008----qwe111222",
+  "num_turns": 3,
+  "responder": "google/gemma-4-31B-it",
+  "model_persona": null,
+  "sanity_verdicts": [
+   "pass",
+   "pass",
+   "pass"
+  ]
+ },
+ {
   "id": "3b997b45302af35857cf37cf40b8e47f1d5eb210d08bdd52df612a45ca3ba4d2",
   "messages": [
    {
