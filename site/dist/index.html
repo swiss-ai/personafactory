@@ -371,8 +371,10 @@ svg.viz text { pointer-events: none; }
 /* the spec sheet refills every few seconds: keep its footer to one line so its height never changes */
 .pspec-foot #psState { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 
-.chip .flag { display: inline-flex; vertical-align: -0.18em; }
-.chip .flag svg { height: 14px; width: auto; border-radius: 2px; box-shadow: 0 0 0 1px var(--rule-2); display: block; }
+.chip.has-flag { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 6px 15px; font-size: 15px; font-weight: 600; }
+.chip .flag { display: inline-flex; }
+.chip .flag svg { height: 22px; width: auto; border-radius: 3px; box-shadow: 0 0 0 1px var(--rule-2); display: block; }
+.chips:has(.has-flag) { gap: 8px; }
 
 /* ---- ablations.css ---- */
 /* ---------- Tuning station: control panel + gauges ---------- */
@@ -1247,6 +1249,8 @@ svg.viz text { pointer-events: none; }
 
 #eval .demo-foot .mono { font-family: var(--f-mono); font-size: 12px; }
 @media (prefers-reduced-motion: reduce) { #eval .pre { transition: none; } #eval .hscale .pin { transition: none; } }
+#eval .sheet .sv .up { color: var(--good); }
+#eval .sheet .sv .from { color: var(--faint); }
 
 /* ---- zz-bg.css ---- */
 /* Shop-floor background (js/95-bg.js). The SVG sits behind the whole page and paints the chapter bands
@@ -2282,7 +2286,7 @@ const FLAGS = {
 function flagChip(btn, label){
   const m = label.match(/^([^(]+?)\s*(?:\((.+)\))?$/), flag = m && FLAGS[m[1].trim()];
   if (!flag){ btn.textContent = label; return; }
-  btn.textContent = '';
+  btn.textContent = ''; btn.classList.add('has-flag');
   const f = document.createElement('span'); f.className = 'flag'; f.innerHTML = flag; f.setAttribute('aria-hidden', 'true');
   btn.append(f);
   if (m[2]) btn.append(' ' + m[2]);
@@ -5424,13 +5428,13 @@ const H_EX = {
     fade([...sp.children, fd], animate);
     const all = D.corpusJudge[0], SV = D.structVsFlat.table1, JF = n => D.judgeFree.find(m => m.name.startsWith(n)).v;
     const ROWS = [
-      ['LLM judge', fmt1(all.intent) + '% · ' + fmt1(all.style) + '%', 'intent kept · style adopted, weighted to the corpus; ' + fmt1(STRICT.labels[0][1]) + '% keep the exact request under the strict label', 'Table 6'],
-      ['Judge-free', fmt1(JF('Numbers')) + '%', 'numbers intact; all entities kept in ' + fmt1(JF('All entities')) + '% of turns', 'Table 9'],
-      ['Structured vs flat', SV.prefAll[0] + ' : ' + SV.prefAll[1], '% of pairs preferring structured vs flat; intent equal at ' + SV.intent[0] + '%', 'Tables 1, 13'],
-      ['Other formats', fmt1(R.pfPreferred[2]) + '%', 'PersonaFactory preferred over the SynthPAI form; ' + fmt1(R.pfPreferred[0]) + '–' + fmt1(R.pfPreferred[1]) + '% over the others', 'Tables 2, 17'],
-      ['Real users', fmt1(CAL.arms['C: background + style layer'][0][2]) + '%', 'rewrite with the style layer judged more real than the real message (MiniMax-M2.5)', 'Table 14'],
-      ['Judge robustness', 'κ ≥ 0.32', 'style agreement of every judge with the pipeline judge', 'Table 12'],
-      ['Human raters', fmt1(D.human.turing[0].human) + '%', 'of rewrites taken for human-written in a blind test; meaning, style and plausibility get a median of 4 out of 5', 'Tables 18, 21']
+      ['LLM judge', [[fmt1(all.intent) + '%', 'up'], [' · '], [fmt1(all.style) + '%', 'up']], 'intent kept · style adopted, weighted to the corpus; ' + fmt1(STRICT.labels[0][1]) + '% keep the exact request under the strict label', 'Table 6'],
+      ['Judge-free', [[fmt1(JF('Numbers')) + '%', 'up']], 'numbers intact; all entities kept in ' + fmt1(JF('All entities')) + '% of turns', 'Table 9'],
+      ['Structured vs flat', [[String(SV.prefAll[0]), 'up'], [' : '], [String(SV.prefAll[1]), 'from']], '% of pairs preferring structured vs flat; intent equal at ' + SV.intent[0] + '%', 'Tables 1, 13'],
+      ['Other formats', [[fmt1(R.pfPreferred[2]) + '%', 'up']], 'PersonaFactory preferred over the SynthPAI form; ' + fmt1(R.pfPreferred[0]) + '–' + fmt1(R.pfPreferred[1]) + '% over the others', 'Tables 2, 17'],
+      ['Real users', [[fmt1(CAL.arms['C: background + style layer'][0][2]) + '%', 'up']], 'rewrite with the style layer judged more real than the real message (MiniMax-M2.5)', 'Table 14'],
+      ['Judge robustness', [['κ ≥ 0.32']], 'style agreement of every judge with the pipeline judge', 'Table 12'],
+      ['Human raters', [[fmt1(D.human.turing[0].human) + '%', 'up']], 'of rewrites taken for human-written in a blind test; meaning, style and plausibility get a median of 4 out of 5', 'Tables 18, 21']
     ];
     const ul = el('ol', 'sheet', null, rd);
     ROWS.forEach((r, i) => {
@@ -5439,9 +5443,11 @@ const H_EX = {
       const b = el('button', null, null, li); b.type = 'button';
       el('span', 'sn', String(i + 1), b);
       const t = el('span', 'st', null, b); el('b', null, r[0], t); el('span', 'src', r[3], t);
-      el('span', 'sv', r[1], b);
+      // quality wins in green; the comparison side of a pair in grey
+      const sv = el('span', 'sv', null, b);
+      r[1].forEach(([txt, cls]) => cls ? el('span', cls, txt, sv) : sv.append(txt));
       el('span', 'sd', r[2], b);
-      b.setAttribute('aria-label', `Open inspection ${i + 1}, ${r[0]}: ${r[1]}, ${r[2]}`);
+      b.setAttribute('aria-label', `Open inspection ${i + 1}, ${r[0]}: ${sv.textContent}, ${r[2]}`);
       b.addEventListener('click', () => { line.stop(); if (at === 7) hSub = 'all'; line.show(at, false); });
     });
     fade([...ul.children], animate, 140, 300);

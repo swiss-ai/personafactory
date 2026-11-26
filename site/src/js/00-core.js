@@ -302,7 +302,7 @@ const FLAGS = {
 function flagChip(btn, label){
   const m = label.match(/^([^(]+?)\s*(?:\((.+)\))?$/), flag = m && FLAGS[m[1].trim()];
   if (!flag){ btn.textContent = label; return; }
-  btn.textContent = '';
+  btn.textContent = ''; btn.classList.add('has-flag');
   const f = document.createElement('span'); f.className = 'flag'; f.innerHTML = flag; f.setAttribute('aria-hidden', 'true');
   btn.append(f);
   if (m[2]) btn.append(' ' + m[2]);

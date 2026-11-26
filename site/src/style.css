@@ -357,5 +357,7 @@ svg.viz text { pointer-events: none; }
 /* the spec sheet refills every few seconds: keep its footer to one line so its height never changes */
 .pspec-foot #psState { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 
-.chip .flag { display: inline-flex; vertical-align: -0.18em; }
-.chip .flag svg { height: 14px; width: auto; border-radius: 2px; box-shadow: 0 0 0 1px var(--rule-2); display: block; }
+.chip.has-flag { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 6px 15px; font-size: 15px; font-weight: 600; }
+.chip .flag { display: inline-flex; }
+.chip .flag svg { height: 22px; width: auto; border-radius: 3px; box-shadow: 0 0 0 1px var(--rule-2); display: block; }
+.chips:has(.has-flag) { gap: 8px; }
