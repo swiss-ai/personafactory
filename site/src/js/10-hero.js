@@ -66,8 +66,8 @@ const CONVS = [
     const jx = last.cx + dir * 46;
     S('path', { d: `M${jx} ${beltY + 18} l ${dir * 26} 46`, stroke: 'var(--bad)', 'stroke-width': 2, fill: 'none', 'stroke-dasharray': '4 4' }, g);
     const lx = dir > 0 ? jx + 34 : jx + 14;
-    T(rejectLabel[0], { x: lx, y: beltY + 44, 'text-anchor': 'start', style: 'font:600 11px var(--f-sans);fill:var(--ink-2)' }, g);
-    T(rejectLabel[1], { x: lx, y: beltY + 59, 'text-anchor': 'start', style: 'font:11px var(--f-sans);fill:var(--faint)' }, g);
+    if (rejectLabel) T(rejectLabel[0], { x: lx, y: beltY + 44, 'text-anchor': 'start', style: 'font:600 11px var(--f-sans);fill:var(--ink-2)' }, g);
+    if (rejectLabel) T(rejectLabel[1], { x: lx, y: beltY + 59, 'text-anchor': 'start', style: 'font:11px var(--f-sans);fill:var(--faint)' }, g);
 
     const START = dir > 0 ? x0 + 8 : x1 - 8 - CW;
     const SPAN = dir > 0 ? (x1 - 30 - CW) - START : START - (x0 + 30);
@@ -203,7 +203,7 @@ const CONVS = [
       { cx: 512, w: 176, k: 'REGENERATE', s1: 'assistant turns', s2: 'continuity judge' },
       { cx: 298, w: 176, k: 'SANITY GATE', s1: 'six failure classes', s2: '78.9% pass', dark: true }
     ],
-    items: CONVS, rejectEvery: 5, rejectLabel: ['21.1% fail the gate', 'not released'],
+    items: CONVS, rejectEvery: 5, rejectLabel: null,
     stageOf: (C, st) => ({
       icon: st >= 2 ? 'style' : st >= 1 ? 'bg' : 'chat', badge: st >= 4,
       l1: st >= 1 ? `${C.who} · ${C.tier}` : `seed prompt · ${C.src}`,
