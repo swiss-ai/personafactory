@@ -61,10 +61,9 @@ const CONVS = [
       S('rect', { x: s.cx - 3, y: top + 86, width: 6, height: 52, fill: 'var(--ink-2)' }, g);
       presses.push(S('rect', { x: s.cx - 24, y: top + 136, width: 48, height: 8, rx: 2, fill: 'var(--ink-2)' }, g));
     });
-    // reject chute after the last station
+    // rejected cards drop off the belt just after the last station
     const last = stations[stations.length - 1];
     const jx = last.cx + dir * 46;
-    S('path', { d: `M${jx} ${beltY + 18} l ${dir * 26} 46`, stroke: 'var(--bad)', 'stroke-width': 2, fill: 'none', 'stroke-dasharray': '4 4' }, g);
     const lx = dir > 0 ? jx + 34 : jx + 14;
     if (rejectLabel) T(rejectLabel[0], { x: lx, y: beltY + 44, 'text-anchor': 'start', style: 'font:600 11px var(--f-sans);fill:var(--ink-2)' }, g);
     if (rejectLabel) T(rejectLabel[1], { x: lx, y: beltY + 59, 'text-anchor': 'start', style: 'font:11px var(--f-sans);fill:var(--faint)' }, g);
