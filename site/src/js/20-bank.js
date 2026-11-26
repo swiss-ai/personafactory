@@ -16,6 +16,7 @@ const BK = [
  {
   "id": "fl",
   "chip": "Florida",
+  "country": "USA",
   "fig": "persona_bank 38c6bf98",
   "tag": "FL",
   "head": "27 · M · Florida, USA",
@@ -184,6 +185,7 @@ const BK = [
  {
   "id": "vi",
   "chip": "Ho Chi Minh City",
+  "country": "Vietnam",
   "fig": "persona_bank 38a9a06e",
   "tag": "VN",
   "head": "35 · F · Ho Chi Minh City, Vietnam",
@@ -339,6 +341,7 @@ const BK = [
  {
   "id": "be",
   "chip": "Bern",
+  "country": "Switzerland (DE · Bern)",
   "fig": "persona_bank 0c188865",
   "tag": "BE",
   "head": "23 · M · Bern, Switzerland",
@@ -486,6 +489,7 @@ const BK = [
  {
   "id": "zh",
   "chip": "Zurich",
+  "country": "Switzerland (DE · Zurich)",
   "fig": "persona_bank eca507a4",
   "tag": "ZH",
   "head": "35 · M · Zurich, Switzerland",
@@ -637,6 +641,7 @@ const BK = [
  {
   "id": "ge",
   "chip": "Geneva",
+  "country": "Switzerland (FR)",
   "fig": "persona_bank 72e3225b",
   "tag": "GE",
   "head": "52 · F · Geneva, Switzerland",
@@ -794,6 +799,7 @@ const BK = [
  {
   "id": "ua",
   "chip": "Zaporizhzhia",
+  "country": "Ukraine",
   "fig": "persona_bank bc100812",
   "tag": "ZP",
   "head": "35 · M · Zaporizhzhia, Ukraine",
@@ -964,6 +970,7 @@ const BK = [
  {
   "id": "sk",
   "chip": "Bratislava",
+  "country": "Slovakia",
   "fig": "persona_bank 862ad91e",
   "tag": "BA",
   "head": "36 · M · Bratislava, Slovakia",
@@ -1145,7 +1152,7 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
   const local = [];
 
   BK.forEach((x, i) => {
-    const b = el('button', 'chip', x.chip, chips); b.type = 'button'; b.setAttribute('aria-pressed', i ? 'false' : 'true');
+    const b = el('button', 'chip', x.country || x.chip, chips); b.type = 'button'; b.setAttribute('aria-pressed', i ? 'false' : 'true');
     b.title = 'Persona from the released bank';
     b.addEventListener('click', () => { $$('.chip', chips).forEach(c => c.setAttribute('aria-pressed', c === b ? 'true' : 'false')); p = x; line.stop(); line.show(line.stage, false); });
   });
