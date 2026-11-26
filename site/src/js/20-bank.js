@@ -1152,7 +1152,7 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
   const local = [];
 
   BK.forEach((x, i) => {
-    const b = el('button', 'chip', x.country || x.chip, chips); b.type = 'button'; b.setAttribute('aria-pressed', i ? 'false' : 'true');
+    const b = el('button', 'chip', null, chips); flagChip(b, x.country || x.chip); b.type = 'button'; b.setAttribute('aria-pressed', i ? 'false' : 'true');
     b.title = 'Persona from the released bank';
     b.addEventListener('click', () => { $$('.chip', chips).forEach(c => c.setAttribute('aria-pressed', c === b ? 'true' : 'false')); p = x; line.stop(); line.show(line.stage, false); });
   });

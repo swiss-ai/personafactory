@@ -371,6 +371,8 @@ svg.viz text { pointer-events: none; }
 /* the spec sheet refills every few seconds: keep its footer to one line so its height never changes */
 .pspec-foot #psState { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 
+.chip .flag { font-size: 1.2em; line-height: 1; vertical-align: -0.08em; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
+
 /* ---- ablations.css ---- */
 /* ---------- Tuning station: control panel + gauges ---------- */
 #ablations .stages { grid-template-columns: repeat(5, minmax(0, 1fr)); }
@@ -2264,6 +2266,19 @@ function legend(items){
   items.forEach(it => { const sp = document.createElement('span'); const i = document.createElement('i'); i.style.background = it.color; if (it.kind === 'line') i.className = 'line'; if (it.kind === 'dot') i.style.borderRadius = '50%'; if (it.outline) i.style.outline = '1px solid var(--rule-2)'; sp.append(i, document.createTextNode(it.name)); lg.appendChild(sp); });
   return lg;
 }
+
+/* persona chips: a flag instead of the country name; the full label stays as tooltip and accessible name.
+   Labels look like "Switzerland (DE · Bern)": the part in brackets is kept next to the flag. */
+const FLAGS = { 'USA': '🇺🇸', 'Switzerland': '🇨🇭', 'Ukraine': '🇺🇦', 'Vietnam': '🇻🇳', 'Slovakia': '🇸🇰' };
+function flagChip(btn, label){
+  const m = label.match(/^([^(]+?)\s*(?:\((.+)\))?$/), flag = m && FLAGS[m[1].trim()];
+  if (!flag){ btn.textContent = label; return; }
+  btn.textContent = '';
+  const f = document.createElement('span'); f.className = 'flag'; f.textContent = flag; f.setAttribute('aria-hidden', 'true');
+  btn.append(f);
+  if (m[2]) btn.append(' ' + m[2]);
+  btn.setAttribute('aria-label', label); btn.title = label;
+}
 </script>
 <script>
 /* 10-hero.js */
@@ -3902,7 +3917,7 @@ const isLong = (key, gridW) => key !== 'Age' && gridW > 560 && measure(rowsOf(ke
   const local = [];
 
   BK.forEach((x, i) => {
-    const b = el('button', 'chip', x.country || x.chip, chips); b.type = 'button'; b.setAttribute('aria-pressed', i ? 'false' : 'true');
+    const b = el('button', 'chip', null, chips); flagChip(b, x.country || x.chip); b.type = 'button'; b.setAttribute('aria-pressed', i ? 'false' : 'true');
     b.title = 'Persona from the released bank';
     b.addEventListener('click', () => { $$('.chip', chips).forEach(c => c.setAttribute('aria-pressed', c === b ? 'true' : 'false')); p = x; line.stop(); line.show(line.stage, false); });
   });
@@ -4627,7 +4642,7 @@ const CHECKS = ['Language matches', 'Instruction / format kept', 'Not truncated'
 (function demo(){
   const chips = $('#exChips'), pcard = $('#pcard'), chat = $('#chat'), stagesEl = $('#stages');
   let ex = EX[0], typing = null;
-  EX.forEach((e, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = e.chip; b.setAttribute('aria-pressed', i ? 'false' : 'true'); b.addEventListener('click', () => { $$('.chip', chips).forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false')); ex = e; line.stop(); line.show(3, false); }); chips.appendChild(b); });
+  EX.forEach((e, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; flagChip(b, e.chip); b.setAttribute('aria-pressed', i ? 'false' : 'true'); b.addEventListener('click', () => { $$('.chip', chips).forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false')); ex = e; line.stop(); line.show(3, false); }); chips.appendChild(b); });
 
   function fieldRow(f){
     const d = document.createElement('div'); d.className = 'field'; if (f[0]) d.dataset.f = f[0];

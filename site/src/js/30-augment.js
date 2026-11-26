@@ -484,7 +484,7 @@ const CHECKS = ['Language matches', 'Instruction / format kept', 'Not truncated'
 (function demo(){
   const chips = $('#exChips'), pcard = $('#pcard'), chat = $('#chat'), stagesEl = $('#stages');
   let ex = EX[0], typing = null;
-  EX.forEach((e, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = e.chip; b.setAttribute('aria-pressed', i ? 'false' : 'true'); b.addEventListener('click', () => { $$('.chip', chips).forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false')); ex = e; line.stop(); line.show(3, false); }); chips.appendChild(b); });
+  EX.forEach((e, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; flagChip(b, e.chip); b.setAttribute('aria-pressed', i ? 'false' : 'true'); b.addEventListener('click', () => { $$('.chip', chips).forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false')); ex = e; line.stop(); line.show(3, false); }); chips.appendChild(b); });
 
   function fieldRow(f){
     const d = document.createElement('div'); d.className = 'field'; if (f[0]) d.dataset.f = f[0];

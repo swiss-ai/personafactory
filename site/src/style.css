@@ -356,3 +356,5 @@ svg.viz text { pointer-events: none; }
 
 /* the spec sheet refills every few seconds: keep its footer to one line so its height never changes */
 .pspec-foot #psState { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+
+.chip .flag { font-size: 1.2em; line-height: 1; vertical-align: -0.08em; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }

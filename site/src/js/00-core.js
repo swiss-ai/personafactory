@@ -289,3 +289,16 @@ function legend(items){
   items.forEach(it => { const sp = document.createElement('span'); const i = document.createElement('i'); i.style.background = it.color; if (it.kind === 'line') i.className = 'line'; if (it.kind === 'dot') i.style.borderRadius = '50%'; if (it.outline) i.style.outline = '1px solid var(--rule-2)'; sp.append(i, document.createTextNode(it.name)); lg.appendChild(sp); });
   return lg;
 }
+
+/* persona chips: a flag instead of the country name; the full label stays as tooltip and accessible name.
+   Labels look like "Switzerland (DE · Bern)": the part in brackets is kept next to the flag. */
+const FLAGS = { 'USA': '🇺🇸', 'Switzerland': '🇨🇭', 'Ukraine': '🇺🇦', 'Vietnam': '🇻🇳', 'Slovakia': '🇸🇰' };
+function flagChip(btn, label){
+  const m = label.match(/^([^(]+?)\s*(?:\((.+)\))?$/), flag = m && FLAGS[m[1].trim()];
+  if (!flag){ btn.textContent = label; return; }
+  btn.textContent = '';
+  const f = document.createElement('span'); f.className = 'flag'; f.textContent = flag; f.setAttribute('aria-hidden', 'true');
+  btn.append(f);
+  if (m[2]) btn.append(' ' + m[2]);
+  btn.setAttribute('aria-label', label); btn.title = label;
+}
