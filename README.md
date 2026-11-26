@@ -31,7 +31,7 @@ Each persona has a **background** layer (who the person is: location, occupation
 * **Evaluation**: corpus-scale LLM judge and judge-free fidelity metrics, structured versus flat style representation, per-attribute ablation, persona-format comparison, style extension A/B.
 * **Training**: assistant-side SFT ablation and downstream fine-tuning of Apertus-v1.5-8B on the released conversations.
 
-**Released data**: 743,010 personas from 177 countries and 599 sub-regions; 1,242,761 conversations in 85 languages ([swiss-ai/PersonaFactory](https://huggingface.co/datasets/swiss-ai/PersonaFactory))
+**Released data**: 743,010 personas from 177 countries and 599 sub-regions; 1,237,976 conversations in 85 languages ([swiss-ai/PersonaFactory](https://huggingface.co/datasets/swiss-ai/PersonaFactory))
 
 **Model serving**: any OpenAI-compatible endpoint (vLLM, SGLang, hosted APIs); endpoint arguments accept one base URL or a comma-separated list of replicas
 
