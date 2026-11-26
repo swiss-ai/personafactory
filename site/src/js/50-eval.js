@@ -540,13 +540,13 @@ const H_EX = {
     fade([...sp.children, fd], animate);
     const all = D.corpusJudge[0], SV = D.structVsFlat.table1, JF = n => D.judgeFree.find(m => m.name.startsWith(n)).v;
     const ROWS = [
-      ['LLM judge', fmt1(all.intent) + '% · ' + fmt1(all.style) + '%', 'intent kept · style adopted, weighted to the corpus; ' + fmt1(STRICT.labels[0][1]) + '% keep the exact request under the strict label', 'Table 6'],
-      ['Judge-free', fmt1(JF('Numbers')) + '%', 'numbers intact; all entities kept in ' + fmt1(JF('All entities')) + '% of turns', 'Table 9'],
-      ['Structured vs flat', SV.prefAll[0] + ' : ' + SV.prefAll[1], '% of pairs preferring structured vs flat; intent equal at ' + SV.intent[0] + '%', 'Tables 1, 13'],
-      ['Other formats', fmt1(R.pfPreferred[2]) + '%', 'PersonaFactory preferred over the SynthPAI form; ' + fmt1(R.pfPreferred[0]) + '–' + fmt1(R.pfPreferred[1]) + '% over the others', 'Tables 2, 17'],
-      ['Real users', fmt1(CAL.arms['C: background + style layer'][0][2]) + '%', 'rewrite with the style layer judged more real than the real message (MiniMax-M2.5)', 'Table 14'],
-      ['Judge robustness', 'κ ≥ 0.32', 'style agreement of every judge with the pipeline judge', 'Table 12'],
-      ['Human raters', fmt1(D.human.turing[0].human) + '%', 'of rewrites taken for human-written in a blind test; meaning, style and plausibility get a median of 4 out of 5', 'Tables 18, 21']
+      ['LLM judge', [[fmt1(all.intent) + '%', 'up'], [' · '], [fmt1(all.style) + '%', 'up']], 'intent kept · style adopted, weighted to the corpus; ' + fmt1(STRICT.labels[0][1]) + '% keep the exact request under the strict label', 'Table 6'],
+      ['Judge-free', [[fmt1(JF('Numbers')) + '%', 'up']], 'numbers intact; all entities kept in ' + fmt1(JF('All entities')) + '% of turns', 'Table 9'],
+      ['Structured vs flat', [[String(SV.prefAll[0]), 'up'], [' : '], [String(SV.prefAll[1]), 'from']], '% of pairs preferring structured vs flat; intent equal at ' + SV.intent[0] + '%', 'Tables 1, 13'],
+      ['Other formats', [[fmt1(R.pfPreferred[2]) + '%', 'up']], 'PersonaFactory preferred over the SynthPAI form; ' + fmt1(R.pfPreferred[0]) + '–' + fmt1(R.pfPreferred[1]) + '% over the others', 'Tables 2, 17'],
+      ['Real users', [[fmt1(CAL.arms['C: background + style layer'][0][2]) + '%', 'up']], 'rewrite with the style layer judged more real than the real message (MiniMax-M2.5)', 'Table 14'],
+      ['Judge robustness', [['κ ≥ 0.32']], 'style agreement of every judge with the pipeline judge', 'Table 12'],
+      ['Human raters', [[fmt1(D.human.turing[0].human) + '%', 'up']], 'of rewrites taken for human-written in a blind test; meaning, style and plausibility get a median of 4 out of 5', 'Tables 18, 21']
     ];
     const ul = el('ol', 'sheet', null, rd);
     ROWS.forEach((r, i) => {
@@ -555,9 +555,11 @@ const H_EX = {
       const b = el('button', null, null, li); b.type = 'button';
       el('span', 'sn', String(i + 1), b);
       const t = el('span', 'st', null, b); el('b', null, r[0], t); el('span', 'src', r[3], t);
-      el('span', 'sv', r[1], b);
+      // quality wins in green; the comparison side of a pair in grey
+      const sv = el('span', 'sv', null, b);
+      r[1].forEach(([txt, cls]) => cls ? el('span', cls, txt, sv) : sv.append(txt));
       el('span', 'sd', r[2], b);
-      b.setAttribute('aria-label', `Open inspection ${i + 1}, ${r[0]}: ${r[1]}, ${r[2]}`);
+      b.setAttribute('aria-label', `Open inspection ${i + 1}, ${r[0]}: ${sv.textContent}, ${r[2]}`);
       b.addEventListener('click', () => { line.stop(); if (at === 7) hSub = 'all'; line.show(at, false); });
     });
     fade([...ul.children], animate, 140, 300);

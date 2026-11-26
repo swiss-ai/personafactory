@@ -150,3 +150,5 @@
 
 #eval .demo-foot .mono { font-family: var(--f-mono); font-size: 12px; }
 @media (prefers-reduced-motion: reduce) { #eval .pre { transition: none; } #eval .hscale .pin { transition: none; } }
+#eval .sheet .sv .up { color: var(--good); }
+#eval .sheet .sv .from { color: var(--faint); }
