@@ -138,3 +138,5 @@
   #compare .sheet .sv { text-align: left; font-size: 17px; }
 }
 @media (prefers-reduced-motion: reduce) { #compare .pre { transition: none; } }
+#compare .sheet .sv .up { color: var(--good); }
+#compare .sheet .sv .from { color: var(--faint); }

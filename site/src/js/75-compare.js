@@ -314,11 +314,11 @@ const CMP = {
     fade([...routes.children, fd], animate, 220);
     const A = CMP.arms, RW = CMP.reply.rows, F = CMP.fmt;
     const ROWS = [
-      ['Other datasets', CMP.ph.cue + '%', `of ${fmt0(CMP.ph.released)} released PersonaHub personas mention any writing cue`],
-      ['Same prompt, new profile', fmt1(F.style[3]) + '%', `style adopted with the PersonaFactory profile, against ${fmt1(F.style[2])}% for the SynthPAI form and ${fmt1(F.style[1])}% for PersonaHub’s`],
-      ['Convert a record', fmt1(A.A[0][2]) + ' → ' + fmt1(A.B[0][2]) + '%', 'rewrite picked over the real message, raw record against converted background (MiniMax-M2.5)'],
-      ['Add a style layer', fmt1(A.C[0][2]) + '%', `rewrite picked with the style layer; ${fmt1(A.C[1][2])}% and ${fmt1(A.C[2][2])}% with the other two judges`],
-      ['Restyle replies', fmt1(RW[1][3]) + ' → ' + fmt1(RW[2][3]) + '%', 'style adoption on the assistant side, at a cost of about five points of sanity pass']
+      ['Other datasets', { v: CMP.ph.cue + '%' }, `of ${fmt0(CMP.ph.released)} released PersonaHub personas mention any writing cue`],
+      ['Same prompt, new profile', { up: fmt1(F.style[3]) + '%' }, `style adopted with the PersonaFactory profile, against ${fmt1(F.style[2])}% for the SynthPAI form and ${fmt1(F.style[1])}% for PersonaHub’s`],
+      ['Convert a record', { from: fmt1(A.A[0][2]), up: fmt1(A.B[0][2]) + '%' }, 'rewrite picked over the real message, raw record against converted background (MiniMax-M2.5)'],
+      ['Add a style layer', { up: fmt1(A.C[0][2]) + '%' }, `rewrite picked with the style layer; ${fmt1(A.C[1][2])}% and ${fmt1(A.C[2][2])}% with the other two judges`],
+      ['Restyle replies', { from: fmt1(RW[1][3]), up: fmt1(RW[2][3]) + '%' }, 'style adoption on the assistant side, at a cost of about five points of sanity pass']
     ];
     const ol = mk('ol', 'sheet', null, R);
     ROWS.forEach((r, i) => {
@@ -326,7 +326,10 @@ const CMP = {
       const b = mk('button', null, null, li); b.type = 'button';
       mk('span', 'sn', String(i + 1), b);
       const t = mk('span', 'st', null, b); mk('b', null, r[0], t);
-      mk('span', 'sv', r[1], b);
+      // improvements in green: the result of each step, and in a before → after pair only the after value
+      const sv = mk('span', 'sv', null, b), x = r[1];
+      if (x.from) { mk('span', 'from', x.from, sv); sv.append(' → '); }
+      mk('span', x.up ? 'up' : null, x.up || x.v, sv);
       mk('span', 'sd', r[2], b);
       b.addEventListener('click', () => { line.stop(); line.show(i, false); root.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' }); });
     });

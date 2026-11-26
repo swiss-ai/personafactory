@@ -371,7 +371,8 @@ svg.viz text { pointer-events: none; }
 /* the spec sheet refills every few seconds: keep its footer to one line so its height never changes */
 .pspec-foot #psState { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 
-.chip .flag { font-size: 1.2em; line-height: 1; vertical-align: -0.08em; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
+.chip .flag { display: inline-flex; vertical-align: -0.18em; }
+.chip .flag svg { height: 14px; width: auto; border-radius: 2px; box-shadow: 0 0 0 1px var(--rule-2); display: block; }
 
 /* ---- ablations.css ---- */
 /* ---------- Tuning station: control panel + gauges ---------- */
@@ -736,6 +737,8 @@ svg.viz text { pointer-events: none; }
   #compare .sheet .sv { text-align: left; font-size: 17px; }
 }
 @media (prefers-reduced-motion: reduce) { #compare .pre { transition: none; } }
+#compare .sheet .sv .up { color: var(--good); }
+#compare .sheet .sv .from { color: var(--faint); }
 
 /* ---- corpus.css ---- */
 /* ---- corpus station: seed logs to release ---- */
@@ -2267,14 +2270,20 @@ function legend(items){
   return lg;
 }
 
-/* persona chips: a flag instead of the country name; the full label stays as tooltip and accessible name.
-   Labels look like "Switzerland (DE · Bern)": the part in brackets is kept next to the flag. */
-const FLAGS = { 'USA': '🇺🇸', 'Switzerland': '🇨🇭', 'Ukraine': '🇺🇦', 'Vietnam': '🇻🇳', 'Slovakia': '🇸🇰' };
+/* persona chips: an inline SVG flag instead of the country name (emoji flags do not render on Windows);
+   the full label stays as tooltip and accessible name. A part in brackets, e.g. "Switzerland (DE)", is kept next to the flag. */
+const FLAGS = {
+ "USA": "<svg viewBox=\"0 0 19 10\"><rect width=\"19\" height=\"10\" fill=\"#fff\"/><rect y=\"0.000\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"1.538\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"3.077\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"4.615\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"6.154\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"7.692\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"9.231\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect width=\"7.6\" height=\"5.385\" fill=\"#3c3b6e\"/><circle cx=\"0.95\" cy=\"0.90\" r=\".32\" fill=\"#fff\"/><circle cx=\"2.85\" cy=\"0.90\" r=\".32\" fill=\"#fff\"/><circle cx=\"4.75\" cy=\"0.90\" r=\".32\" fill=\"#fff\"/><circle cx=\"6.65\" cy=\"0.90\" r=\".32\" fill=\"#fff\"/><circle cx=\"0.95\" cy=\"2.10\" r=\".32\" fill=\"#fff\"/><circle cx=\"2.85\" cy=\"2.10\" r=\".32\" fill=\"#fff\"/><circle cx=\"4.75\" cy=\"2.10\" r=\".32\" fill=\"#fff\"/><circle cx=\"6.65\" cy=\"2.10\" r=\".32\" fill=\"#fff\"/><circle cx=\"0.95\" cy=\"3.30\" r=\".32\" fill=\"#fff\"/><circle cx=\"2.85\" cy=\"3.30\" r=\".32\" fill=\"#fff\"/><circle cx=\"4.75\" cy=\"3.30\" r=\".32\" fill=\"#fff\"/><circle cx=\"6.65\" cy=\"3.30\" r=\".32\" fill=\"#fff\"/><circle cx=\"0.95\" cy=\"4.50\" r=\".32\" fill=\"#fff\"/><circle cx=\"2.85\" cy=\"4.50\" r=\".32\" fill=\"#fff\"/><circle cx=\"4.75\" cy=\"4.50\" r=\".32\" fill=\"#fff\"/><circle cx=\"6.65\" cy=\"4.50\" r=\".32\" fill=\"#fff\"/></svg>",
+ "Switzerland": "<svg viewBox=\"0 0 32 32\"><rect width=\"32\" height=\"32\" fill=\"#da291c\"/><rect x=\"13\" y=\"6\" width=\"6\" height=\"20\" fill=\"#fff\"/><rect x=\"6\" y=\"13\" width=\"20\" height=\"6\" fill=\"#fff\"/></svg>",
+ "Ukraine": "<svg viewBox=\"0 0 3 2\"><rect width=\"3\" height=\"1\" fill=\"#0057b7\"/><rect y=\"1\" width=\"3\" height=\"1\" fill=\"#ffd700\"/></svg>",
+ "Vietnam": "<svg viewBox=\"0 0 30 20\"><rect width=\"30\" height=\"20\" fill=\"#da251d\"/><polygon points=\"15.00,4.40 16.41,8.46 20.71,8.55 17.28,11.14 18.53,15.25 15.00,12.80 11.47,15.25 12.72,11.14 9.29,8.55 13.59,8.46\" fill=\"#ffff00\"/></svg>",
+ "Slovakia": "<svg viewBox=\"0 0 9 6\"><rect width=\"9\" height=\"2\" fill=\"#fff\"/><rect y=\"2\" width=\"9\" height=\"2\" fill=\"#0b4ea2\"/><rect y=\"4\" width=\"9\" height=\"2\" fill=\"#ee1c25\"/><path d=\"M1.55 1.35h2.3v2.05c0 .95-.55 1.5-1.15 1.75-.6-.25-1.15-.8-1.15-1.75z\" fill=\"#ee1c25\" stroke=\"#fff\" stroke-width=\".18\"/><path d=\"M2.6 1.7h.2v2.1h-.2zM2.25 2.15h.9v.18h-.9zM2.15 2.6h1.1v.2h-1.1z\" fill=\"#fff\"/><path d=\"M1.75 4.05c.2-.35.55-.35.7-.1.15-.3.35-.4.5-.4s.35.1.5.4c.15-.25.5-.25.7.1-.35.55-.75.85-1.2 1.05-.45-.2-.85-.5-1.2-1.05z\" fill=\"#0b4ea2\"/></svg>"
+};
 function flagChip(btn, label){
   const m = label.match(/^([^(]+?)\s*(?:\((.+)\))?$/), flag = m && FLAGS[m[1].trim()];
   if (!flag){ btn.textContent = label; return; }
   btn.textContent = '';
-  const f = document.createElement('span'); f.className = 'flag'; f.textContent = flag; f.setAttribute('aria-hidden', 'true');
+  const f = document.createElement('span'); f.className = 'flag'; f.innerHTML = flag; f.setAttribute('aria-hidden', 'true');
   btn.append(f);
   if (m[2]) btn.append(' ' + m[2]);
   btn.setAttribute('aria-label', label); btn.title = label;
@@ -2289,7 +2298,6 @@ function flagChip(btn, label){
    Every persona and prompt on the belts is a real record from the released dataset (swiss-ai/PersonaFactory). */
 const PERSONAS = [
   { id: 'fl', who: '27 · M · Florida, US', job: 'Freight train operations lead', style: 'fixin’ to · we · no final period' },
-  { id: 'be', who: '23 · M · Bern, CH', job: 'VAT-compliance auditor', style: 'Bärndütsch · btw · Salü' },
   { id: 'zh', who: '35 · M · Zurich, CH', job: 'Pediatric speech therapist', style: '?? · oder? · okay?' },
   { id: 'ge', who: '52 · F · Geneva, CH', job: 'Regional courier supervisor', style: 'Salut · stp · n’avons' },
   { id: 'sk', who: '36 · M · Bratislava, SK', job: 'Finance transformation consultant', style: 'No, … · Dúfam na pomoc. Čau.' },
@@ -2299,7 +2307,6 @@ const PERSONAS = [
 // seed prompt → augmented first turn, from the released chats subset (seed dataset in src)
 const CONVS = [
   { ini: 'FL', who: 'Florida persona', tier: 'embedding', src: 'UltraChat', seed: 'What are some essential items that someone should pack for a camping trip…', aug: 'We fixin\' to head out and need to know what the essential items are for a camping trip…' },
-  { ini: 'BE', who: 'Bern persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Can you describe the architectural significance of the Sydney Opera House…', aug: 'Chasch du d\'architektonischi Bedütig vom Sydney Opera House beschriibe…' },
   { ini: 'ZH', who: 'Zurich persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Can you explain the mechanisms behind various sleep disorders…', aug: 'Chasch mer erkläre, wie s\' mit dene verschiedene Schlafstörige funktioniert… ?? okay?' },
   { ini: 'GE', who: 'Geneva persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'I keep running into a query timeout error in our database layer…', aug: 'Salut, j\'ai systématiquement une erreur de timeout de requête…' },
   { ini: 'BA', who: 'Bratislava persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'I’m launching a television network dedicated entirely to animated shows…', aug: 'Ahoj, spúšťam TV stanicu s focusom na animované seriály…' },
@@ -3104,157 +3111,9 @@ const BK = [
   }
  },
  {
-  "id": "be",
-  "chip": "Bern",
-  "country": "Switzerland (DE · Bern)",
-  "fig": "persona_bank 0c188865",
-  "tag": "BE",
-  "head": "23 · M · Bern, Switzerland",
-  "seed": {
-   "region": "Western Europe → Switzerland → Bern",
-   "occ": "Bookkeeping freelancer",
-   "sector": "Business & finance"
-  },
-  "gen": "Ministral-3-14B",
-  "val": "coherent, location and user plausible, stereotype severity 0 of 3, realism 3 of 3",
-  "bg": [
-   [
-    "Age",
-    "23",
-    [
-     "Age"
-    ]
-   ],
-   [
-    "Gender",
-    "Male",
-    [
-     "Gender"
-    ]
-   ],
-   [
-    "Job title",
-    "self-employed VAT-compliance auditor, SME clients"
-   ],
-   [
-    "Education",
-    "Vocational / Trade training, financial administration and accounting",
-    [
-     "Education"
-    ]
-   ],
-   [
-    "Language",
-    "German (main) · Swiss German (Bernese variant) (native)",
-    [
-     "Main language (top 10)"
-    ]
-   ],
-   [
-    "AI stance",
-    "Skeptical",
-    [
-     "AI stance"
-    ]
-   ],
-   [
-    "Digital fluency",
-    "Medium (core segment)",
-    [
-     "Digital fluency"
-    ]
-   ],
-   [
-    "Hobbies",
-    "analogue photography (Leica M10) · retro gaming (Switch, SNES emulation) · local hiking and crags above Bern · financial tech podcasts"
-   ]
-  ],
-  "st": [
-   [
-    "Free-text style",
-    "Types with moderate sentence length, spells shortcuts like ‘btw’ or ‘nvm’ but capitalizes proper nouns in Swiss German (e.g. ‘d Bärnerdütsch’), occasionally drops periods in quick replies, and signs off with a casual ‘Grüezi’ or ‘Salü’ if the conversation is local.",
-    [
-     "Punctuation"
-    ]
-   ],
-   [
-    "Code-switching",
-    "Medium: swaps into English for technical terms (e.g. ‘VAT refund’), Swiss German for informal chat",
-    [
-     "Code-switching"
-    ]
-   ],
-   [
-    "Abbreviations",
-    "btw, nvm, lol, thx, pls"
-   ],
-   [
-    "Emoji",
-    "rare/functional (e.g. 👍 for agreement, 😅 for ironic self-awareness)",
-    [
-     "Emoji use"
-    ]
-   ],
-   [
-    "Quirks",
-    [
-     "Swaps English terms into Swiss German flow (e.g. ‘Ich mach das *fine-tuning* der Zahlen’).",
-     "Occasionally inserts *Bärnerdütsch* interjections like ‘chunnt’ (means ‘really’) or ‘isch guet’ in place of German ‘klar’.",
-     "Writes ‘u’ instead of ‘ü’ in Swiss German when typing fast (e.g. ‘Lueg’ for ‘Lüeg’)"
-    ]
-   ]
-  ],
-  "hl": {
-   "Generator model": [
-    "Ministral-3-14B",
-    "Ministral-3-14B"
-   ],
-   "Macro-region": [
-    "Western Europe",
-    "Western Europe"
-   ],
-   "Age": [
-    "23–27",
-    "age 23"
-   ],
-   "Gender": [
-    "Male",
-    "male"
-   ],
-   "Education": [
-    "Vocational / trade",
-    "vocational / trade training"
-   ],
-   "Digital fluency": [
-    "Medium",
-    "medium"
-   ],
-   "AI stance": [
-    "Skeptical",
-    "skeptical"
-   ],
-   "Main language (top 10)": [
-    "German",
-    "German"
-   ],
-   "Punctuation": [
-    "minimal (no punct.)",
-    "minimal (drops end punctuation)"
-   ],
-   "Code-switching": [
-    "Medium",
-    "medium"
-   ],
-   "Emoji use": [
-    "rare / functional",
-    "rare / functional"
-   ]
-  }
- },
- {
   "id": "zh",
   "chip": "Zurich",
-  "country": "Switzerland (DE · Zurich)",
+  "country": "Switzerland (DE)",
   "fig": "persona_bank eca507a4",
   "tag": "ZH",
   "head": "35 · M · Zurich, Switzerland",
@@ -4231,82 +4090,8 @@ const EX = [
   "bot": "Start with the essentials for safety and shelter. You will need a tent, sleeping bags, pads, and a reliable light source like a headlamp or lantern. For food and water, pack a portable stove, fuel, a cooler with ice, and more water than you think you will need.\n\nTo prioritize the packing list based on your schedule, group your gear by when it will be used…"
  },
  {
-  "id": "be",
-  "chip": "Switzerland (DE · Bern)",
-  "ini": "BE",
-  "name": "23 · M · Bern, Switzerland",
-  "blurb": "Self-employed VAT-compliance auditor for small businesses; skeptical of ‘automatische Lösungen’.",
-  "src": "chats 0294ea21 · ultrachat",
-  "bg": [
-   [
-    0,
-    "Region",
-    "Western Europe → Switzerland → Bern"
-   ],
-   [
-    0,
-    "Occupation",
-    "Bookkeeping freelancer (Business & finance): self-employed VAT-compliance auditor"
-   ],
-   [
-    1,
-    "Language",
-    "German (main), Swiss German (Bernese variant) native · code-switching medium"
-   ],
-   [
-    0,
-    "AI stance",
-    "Skeptical · digital fluency medium"
-   ]
-  ],
-  "st": [
-   [
-    0,
-    "Free-text style",
-    "moderate sentence length, occasionally drops periods in quick replies"
-   ],
-   [
-    2,
-    "Abbreviations",
-    "btw, nvm, lol, thx, pls"
-   ],
-   [
-    3,
-    "Quirks",
-    "inserts Bärnerdütsch interjections like ‘isch guet’ in place of German ‘klar’"
-   ],
-   [
-    0,
-    "Sign-off",
-    "‘Grüezi’ or ‘Salü’ if the conversation is local"
-   ]
-  ],
-  "match": {
-   "lang": "English → German (Swiss)",
-   "set": "Cross-lingual (translate, then restyle)",
-   "tier": "Cross-lingual",
-   "resp": "Gemma-4-31B"
-  },
-  "turns": [
-   {
-    "seed": "Can you describe the architectural significance of the Sydney Opera House, and why it is considered a masterpiece of modern design?",
-    "aug": "[[1|Chasch du d'architektonischi Bedütig vom Sydney Opera House beschriibe]] und erkläre, worum es als Meischterwärk vom moderne Design gilt? [[3|Isch guet]], wenn du das churz machsch [[2|btw]]",
-    "gloss": "“Can you describe the architectural significance of the Sydney Opera House and explain why it counts as a masterpiece of modern design? Fine if you keep it short btw” (Bernese Swiss German; the English seed is translated, then restyled)"
-   },
-   {
-    "seed": "How has the Sydney Opera House influenced modern architecture and design?",
-    "aug": "Wie hät s Sydney Opera House d moderni Architektur und s Design beiflusst?"
-   },
-   {
-    "seed": "It's fascinating how the Sydney Opera House has had such a profound impact on modern architecture and design. Do you know of any other iconic buildings that have similarly influenced the industry?",
-    "aug": "S isch faszinierend, wie s Sydney Opera House so en tüüfe Ifluss uf d moderni Architektur und s Design gha hät. Kennsch du no anderi ikonischi Gebäude, wo d Branche ähnlich prägt händ?"
-   }
-  ],
-  "bot": "S Sydney Opera House isch vor allem wäge sinere innovative Form und dr technische Leischtig bekannt. D'Architektur bricht mit de traditionelle, rechteckige Gebäude und nutzt stattdessen die berühmte \"Schalen\" (Sails), wo d'Dynamik vom Wasser und d'Segel vo de Schiffe im Hafen widerspiegle…"
- },
- {
   "id": "zh",
-  "chip": "Switzerland (DE · Zurich)",
+  "chip": "Switzerland (DE)",
   "ini": "ZH",
   "name": "35 · M · Zurich, Switzerland",
   "blurb": "Speech therapist for neurodivergent children at a cantonal pediatric clinic.",
@@ -7206,11 +6991,11 @@ const CMP = {
     fade([...routes.children, fd], animate, 220);
     const A = CMP.arms, RW = CMP.reply.rows, F = CMP.fmt;
     const ROWS = [
-      ['Other datasets', CMP.ph.cue + '%', `of ${fmt0(CMP.ph.released)} released PersonaHub personas mention any writing cue`],
-      ['Same prompt, new profile', fmt1(F.style[3]) + '%', `style adopted with the PersonaFactory profile, against ${fmt1(F.style[2])}% for the SynthPAI form and ${fmt1(F.style[1])}% for PersonaHub’s`],
-      ['Convert a record', fmt1(A.A[0][2]) + ' → ' + fmt1(A.B[0][2]) + '%', 'rewrite picked over the real message, raw record against converted background (MiniMax-M2.5)'],
-      ['Add a style layer', fmt1(A.C[0][2]) + '%', `rewrite picked with the style layer; ${fmt1(A.C[1][2])}% and ${fmt1(A.C[2][2])}% with the other two judges`],
-      ['Restyle replies', fmt1(RW[1][3]) + ' → ' + fmt1(RW[2][3]) + '%', 'style adoption on the assistant side, at a cost of about five points of sanity pass']
+      ['Other datasets', { v: CMP.ph.cue + '%' }, `of ${fmt0(CMP.ph.released)} released PersonaHub personas mention any writing cue`],
+      ['Same prompt, new profile', { up: fmt1(F.style[3]) + '%' }, `style adopted with the PersonaFactory profile, against ${fmt1(F.style[2])}% for the SynthPAI form and ${fmt1(F.style[1])}% for PersonaHub’s`],
+      ['Convert a record', { from: fmt1(A.A[0][2]), up: fmt1(A.B[0][2]) + '%' }, 'rewrite picked over the real message, raw record against converted background (MiniMax-M2.5)'],
+      ['Add a style layer', { up: fmt1(A.C[0][2]) + '%' }, `rewrite picked with the style layer; ${fmt1(A.C[1][2])}% and ${fmt1(A.C[2][2])}% with the other two judges`],
+      ['Restyle replies', { from: fmt1(RW[1][3]), up: fmt1(RW[2][3]) + '%' }, 'style adoption on the assistant side, at a cost of about five points of sanity pass']
     ];
     const ol = mk('ol', 'sheet', null, R);
     ROWS.forEach((r, i) => {
@@ -7218,7 +7003,10 @@ const CMP = {
       const b = mk('button', null, null, li); b.type = 'button';
       mk('span', 'sn', String(i + 1), b);
       const t = mk('span', 'st', null, b); mk('b', null, r[0], t);
-      mk('span', 'sv', r[1], b);
+      // improvements in green: the result of each step, and in a before → after pair only the after value
+      const sv = mk('span', 'sv', null, b), x = r[1];
+      if (x.from) { mk('span', 'from', x.from, sv); sv.append(' → '); }
+      mk('span', x.up ? 'up' : null, x.up || x.v, sv);
       mk('span', 'sd', r[2], b);
       b.addEventListener('click', () => { line.stop(); line.show(i, false); root.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' }); });
     });
