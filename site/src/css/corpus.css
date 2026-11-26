@@ -1,0 +1,132 @@
+/* ---- corpus station: seed logs to release ---- */
+#corpus .clegend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; min-width: 0; }
+#corpus .clegend .lt { font-size: 12.5px; font-weight: 600; color: var(--faint); }
+#corpus .clegend .legend { font-size: 13px; }
+#corpus .stages { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0 12px; }
+#corpus .stage .t { font-size: 14px; }
+@media (max-width: 680px) {
+  #corpus .stages { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 10px; padding: 0 14px; }
+  #corpus .stage { padding: 8px 0 7px; gap: 5px; }
+  #corpus .stage .t { font-size: 13px; }
+}
+
+/* flow ribbon */
+#corpus .flow { padding: 10px 18px 4px; border-bottom: 1px solid var(--rule); }
+#corpus .flow svg.viz { overflow: hidden; }
+#corpus .flow .colhl { fill: color-mix(in oklab, var(--tint) 65%, transparent); opacity: 0; transition: opacity .3s; }
+#corpus .flow .colhl.now { opacity: 1; }
+#corpus .flow.running .colhl.now { fill: color-mix(in oklab, var(--machine) 13%, transparent); }
+#corpus .flow .seg, #corpus .flow .met, #corpus .flow .drop { transition: opacity .35s; }
+#corpus .flow .later { opacity: .22; }
+#corpus .flow text.mv { fill: var(--ink-2); font-family: var(--f-display); font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+#corpus .flow .now text.mv { fill: var(--ink); }
+#corpus .flow .dline { fill: none; stroke: var(--faint); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+#corpus .flow .hitc { fill: transparent; cursor: pointer; }
+@media (max-width: 680px) { #corpus .flow { padding: 8px 10px 2px; } }
+
+/* body: station piece | readout */
+#corpus .cbody { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); min-height: 440px; }
+#corpus .piece { padding: 18px; border-right: 1px solid var(--rule); display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+#corpus .rd { padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+@media (max-width: 880px) {
+  #corpus .cbody { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  #corpus .piece { border-right: 0; border-bottom: 1px solid var(--rule); }
+}
+#corpus .piece .pk { font-size: 12.5px; font-weight: 600; color: var(--machine-ink); letter-spacing: 0.02em; text-transform: uppercase; }
+#corpus .piece h3 { font-size: 20px; margin-top: -4px; }
+#corpus .piece .pl { font-size: 14.5px; color: var(--ink-2); line-height: 1.55; }
+#corpus .pre { opacity: 0; transform: translateY(4px); }
+#corpus .steps li, #corpus .loop li, #corpus .fails li, #corpus .seeds li { transition: opacity .3s, transform .3s; }
+
+/* numbered steps */
+#corpus .steps, #corpus .loop { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 0; counter-reset: st; }
+#corpus .steps li, #corpus .loop li { counter-increment: st; display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 0 10px; padding: 8px 0; border-top: 1px solid var(--rule); font-size: 14px; line-height: 1.5; }
+#corpus .steps li:first-child, #corpus .loop li:first-child { border-top: 0; }
+#corpus .steps li::before, #corpus .loop li::before { content: counter(st); grid-row: span 2; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 4px; background: var(--ink); color: var(--paper); font: 600 11px var(--f-mono); margin-top: 1px; }
+#corpus .steps b, #corpus .loop b { font-weight: 600; color: var(--ink); }
+#corpus .steps span, #corpus .loop span { color: var(--ink-2); }
+#corpus .loop li.back { position: relative; }
+#corpus .loop .ret { font-size: 12.5px; color: var(--machine-ink) !important; font-weight: 500; grid-column: 2; }
+
+/* seed list */
+#corpus .seeds { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 10px; }
+#corpus .seeds li { display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 10px; align-items: start; }
+#corpus .seeds i { width: 12px; height: 12px; border-radius: 3px; margin-top: 5px; }
+#corpus .seeds b { display: block; font-size: 15px; }
+#corpus .seeds span { display: block; font-size: 13.5px; color: var(--faint); line-height: 1.45; }
+
+/* big numbers */
+#corpus .bigs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 6px; }
+#corpus .bigs div { border-top: 2px solid var(--ink); padding-top: 6px; min-width: 0; }
+#corpus .bigs b { display: block; font-family: var(--f-display); font-weight: 800; font-size: 22px; letter-spacing: -0.03em; line-height: 1.15; font-variant-numeric: tabular-nums; }
+#corpus .bigs span { display: block; font-size: 13px; color: var(--faint); line-height: 1.4; }
+
+/* six failure classes */
+#corpus .fails { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; font-size: 14px; }
+#corpus .fails li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 6px; line-height: 1.4; }
+#corpus .fails li::before { content: "\00d7"; color: var(--bad); font-weight: 700; font-family: system-ui, "DejaVu Sans", sans-serif; }
+@media (max-width: 420px) { #corpus .fails { grid-template-columns: minmax(0, 1fr); } }
+
+/* readout blocks */
+#corpus .rblock { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+#corpus .rblock + .rblock { margin-top: 2px; }
+#corpus .rh { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; font-size: 14.5px; font-weight: 600; color: var(--ink); }
+#corpus .rd .chart { position: relative; min-height: 30px; }
+#corpus .rd .cap { font-size: 14px; color: var(--faint); line-height: 1.5; }
+#corpus .rd .seg { align-self: flex-start; }
+#corpus .rtools { display: flex; gap: 10px; }
+#corpus .kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; margin: 0; font-size: 13.5px; line-height: 1.45; }
+#corpus .kv dt { color: var(--faint); }
+#corpus .kv dd { margin: 0; color: var(--ink); }
+@media (max-width: 420px) { #corpus .kv { grid-template-columns: minmax(0, 1fr); gap: 0; } #corpus .kv dd { margin-bottom: 6px; } }
+
+/* re-voiced vs kept split */
+#corpus .split { display: flex; flex-direction: column; gap: 8px; }
+#corpus .sbar { display: flex; height: 16px; gap: 2px; }
+#corpus .sbar i { display: block; height: 100%; border-radius: 3px; }
+#corpus .sbar i.a { background: var(--s1); }
+#corpus .sbar i.b { background: var(--faint); min-width: 4px; }
+#corpus .sbar i:focus-visible { outline-offset: 1px; }
+
+/* persona matching cascade */
+#corpus .cdesc { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; min-height: 3em; }
+#corpus .casc { position: relative; display: flex; flex-direction: column; gap: 8px; }
+#corpus .casc .tn { flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--rule-2); background: var(--surface); font: 600 11px var(--f-mono); color: var(--ink-2); position: relative; z-index: 1; transition: background .2s, color .2s, border-color .2s; }
+#corpus .cstart { padding: 0 8px; display: flex; gap: 10px; align-items: center; font-size: 13px; color: var(--faint); }
+#corpus .cstart .tn { border-style: dashed; }
+#corpus .ladder { position: relative; display: flex; flex-direction: column; }
+#corpus .ladder::before { content: ""; position: absolute; left: 19.25px; top: -12px; bottom: 22px; border-left: 1.5px solid var(--rule-2); }
+#corpus .tier { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 0 10px; padding: 7px 8px; border-radius: 6px; transition: background .2s; }
+#corpus .tier .tb { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+#corpus .tier .th { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+#corpus .tier .th b { font-size: 14.5px; font-weight: 600; }
+#corpus .tier .tv { font-size: 12px; font-weight: 600; white-space: nowrap; }
+#corpus .tier .tw { font-size: 13px; color: var(--faint); line-height: 1.45; }
+#corpus .tier .tm { display: grid; grid-template-columns: minmax(0, 1fr) 9.5em; gap: 10px; align-items: center; margin-top: 3px; }
+#corpus .tier .bar { height: 7px; background: var(--tint); border-radius: 4px; overflow: hidden; }
+#corpus .tier .bar i { display: block; height: 100%; background: var(--s1); border-radius: 4px; }
+#corpus .tier .tval { font-size: 12.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+#corpus .tier.out .th b { color: var(--ink-2); font-weight: 500; }
+#corpus .tier.xl { margin-top: 4px; padding: 8px 7px; border: 1px dashed var(--rule-2); }
+#corpus .tier.xl .tn { font-size: 9.5px; }
+#corpus .tier.miss .tv { color: var(--faint); font-weight: 500; }
+#corpus .tier.miss .tn { color: var(--faint); }
+#corpus .tier.hit { background: var(--pf-tint); }
+#corpus .tier.hit .tn { background: var(--pf); border-color: var(--pf); color: var(--pf-on); }
+#corpus .tier.hit .tv { color: var(--pf); }
+#corpus .tier.out.hit { background: color-mix(in oklab, var(--tint) 70%, transparent); }
+#corpus .tier.out.hit .tn { background: var(--ink-2); border-color: var(--ink-2); color: var(--paper); }
+#corpus .tier.out.hit .tv { color: var(--ink-2); }
+#corpus .tok { position: absolute; left: 0; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--machine); box-shadow: 0 0 0 3px color-mix(in oklab, var(--machine) 30%, transparent); z-index: 2; pointer-events: none; transition: transform .34s cubic-bezier(.5, 0, .5, 1); }
+@media (prefers-reduced-motion: reduce) { #corpus .tok, #corpus .pre { transition: none; } }
+#corpus .piece .chips .chip { font-size: 13px; padding: 3px 10px; }
+
+#corpus .demo-foot .mono { font-family: var(--f-mono); font-size: 12px; }
+#corpus .flow .cut { stroke: var(--surface); stroke-width: 2; }
+#corpus svg.viz text.grp { fill: var(--ink); font-weight: 600; font-size: 13px; }
+#corpus .flow text.dv { fill: var(--ink-2); font-weight: 600; }
+#corpus .rd .meters { gap: 8px; }
+#corpus .rd .meter { grid-template-columns: minmax(0, 1fr) auto; font-size: 13.5px; }
+#corpus .rd .meter .mv { font-weight: 500; font-size: 13px; color: var(--ink-2); }
+#corpus .rd .meter .bar b { background: var(--q3); }
+#corpus .rd svg.viz text.val { paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }

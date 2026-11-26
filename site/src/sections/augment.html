@@ -1,0 +1,35 @@
+<section class="sec" id="augment">
+  <div class="sec-head">
+    <h2>From persona to conversation</h2>
+    <p class="lede">We start from a real chat log. A matched persona re-voices each user turn, and the request and its constraints stay the same. The assistant turns are then regenerated, and a judge screens the whole conversation. Pick a conversation from the released dataset and run it through the line.</p>
+  </div>
+
+  <div class="demo" id="demo">
+    <div class="demo-top">
+      <div class="chips" id="exChips" role="group" aria-label="Example conversation"></div>
+      <div class="demo-btns">
+        <button class="ctl primary" id="playBtn" data-play type="button">Run the line</button>
+        <button class="ctl" id="skipBtn" data-all type="button">Show all</button>
+      </div>
+    </div>
+    <div class="stages" id="stages">
+      <button class="stage" data-s="0" type="button"><span class="k">1</span><span class="t">Persona selection</span></button>
+      <button class="stage" data-s="1" type="button"><span class="k">2</span><span class="t">User rewriting</span></button>
+      <button class="stage" data-s="2" type="button"><span class="k">3</span><span class="t">Assistant regeneration</span></button>
+      <button class="stage" data-s="3" type="button"><span class="k">4</span><span class="t">Sanity check</span></button>
+    </div>
+    <div class="demo-body">
+      <div class="pcard" id="pcard"></div>
+      <div class="chat" id="chat" aria-live="polite"></div>
+    </div>
+    <div class="demo-foot"><span>Numbered marks link a span of the rewrite to the profile field it comes from. Hover either side.</span><span class="mono" id="exSrc"></span></div>
+  </div>
+
+  <div class="pipe">
+    <div><span class="req">R1 · keep the task</span><b>Conservative matching</b><p>Language and script are detected first. The persona must be a native speaker of the prompt's language. Among those, the match comes from location, then top-1 embedding similarity, then the language pool. If nothing matches, the turn is kept verbatim.</p></div>
+    <div><span class="req">R2 · diversify register</span><b>Constrained rewrite</b><!-- R2: Section 4 (p = 0.25, marker cap, 50% length guard) and Appendix D (quirk probability and marker cap; the corpus used p = 0.25 and a prompt instruction, without the explicit cap). -->
+    <p>Quotes, code, URLs and numbers are masked and restored. Quirks fire with p = 0.25 per turn, but p alone does not prevent over-styling. A cap of two chat markers per turn does, and it is the recommended setting; the released corpus was generated without it. Rewrites shorter than 50% of the original are rejected.</p></div>
+    <div><span class="req">R3 · stay on trajectory</span><b>Continuity supervision</b><p>The real next user message serves as weak supervision. A judge checks that the regenerated reply still leads to it, and the reply is adapted for up to two rounds.</p></div>
+    <div><span class="req">R4 · no hidden shortcut</span><b>Six-class sanity gate</b><p>Language mismatch, format violation, truncation, fabricated experience, hallucination, unaddressed request. Only the conversation turns are stored. The persona is not.</p></div>
+  </div>
+</section>

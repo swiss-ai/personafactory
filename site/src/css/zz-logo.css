@@ -1,0 +1,49 @@
+/* Logo: header factory glyph (gear + chimney puffs) and the title's gear "o" driving a belt of personas. */
+
+/* ---- header ---- */
+.brand { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; }
+.brand .lg-name { display: block; }
+.lg-mark { width: 31px; height: 26px; flex: none; overflow: visible; margin-top: -4px; }
+.lg-bldg { fill: var(--ink); }
+.lg-teeth { fill: var(--pf); stroke: var(--paper); stroke-width: 1.7; paint-order: stroke; transition: fill .2s; }
+.brand.is-on .lg-teeth, .brand:focus-visible .lg-teeth { fill: var(--machine); }
+.brand:focus-visible { outline-offset: 5px; }
+/* the full nav only just fits from 1061px; give it the glyph's width until there is room */
+
+.lg-puff { fill: var(--pf); opacity: 0; animation: lg-puff 1.6s cubic-bezier(.25, .6, .35, 1) forwards; }
+@keyframes lg-puff {
+  0%   { transform: translate(3.75px, 4px) scale(.35); opacity: 0; }
+  20%  { opacity: .85; }
+  100% { transform: translate(var(--dx, 10px), -8px) scale(1); opacity: 0; }
+}
+
+/* ---- title ---- */
+.lg-title { position: relative; }
+.lg-word { display: inline-block; white-space: nowrap; }
+/* the gear sits outside the h1 (so the heading's name stays "PersonaFactory") and is placed over the "o" by JS;
+   without JS the plain "o" shows and the gear stays hidden */
+.lg-ogear { position: absolute; left: 0; top: 0; width: 0; height: 0; display: none; overflow: visible; fill: var(--pf); transition: fill .2s; pointer-events: none; }
+.lg-title.is-live .lg-ogear { display: block; }
+.lg-title.is-live .lg-o { color: transparent; }
+.lg-title.is-hot .lg-ogear { fill: var(--machine); }
+.lg-ogear.is-press { animation: lg-press .26s ease-out; }
+@keyframes lg-press { 40% { transform: scale(.84); } }
+
+.lg-line { display: block; margin: .06em auto 0; }
+.lg-line svg { display: block; overflow: visible; }
+.lg-bar { fill: var(--belt); stroke: var(--belt-2); stroke-width: 1; }
+.lg-riv { stroke: var(--belt-2); stroke-linecap: round; }
+.lg-p.c0 { fill: var(--ink-2); }
+.lg-p.c1 { fill: var(--pf); }
+.lg-p.c2 { fill: var(--faint); }
+.lg-p.c3 { fill: var(--pf-line); }
+.lg-p.new { fill: var(--machine); }
+.lg-line + .tsub { margin-top: 16px; }
+
+.lg-stamp { position: absolute; z-index: 1; margin: 0; padding: 0; border: 0; background: none; border-radius: 10px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.lg-stamp:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-puff, .lg-ogear.is-press { animation: none; }
+  .lg-teeth, .lg-ogear { transition: none; }
+}

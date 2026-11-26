@@ -1,0 +1,41 @@
+<section class="sec" id="ablations">
+  <div class="sec-head">
+    <h2>Tuning the machine</h2>
+    <p class="lede">The rewriting step has five settings. The paper changes one at a time and holds the rest fixed. Pick a setting to see what was measured.</p>
+  </div>
+
+  <div class="demo line" id="abLine">
+    <div class="demo-top">
+      <div class="abkey" id="abKey"></div>
+      <div class="demo-btns">
+        <button class="ctl primary" data-play type="button">Run the line</button>
+        <button class="ctl" data-all type="button">Show all</button>
+      </div>
+    </div>
+    <div class="stages">
+      <button class="stage" data-s="0" type="button"><span class="k">1</span><span class="t">Persona selection</span></button>
+      <button class="stage" data-s="1" type="button"><span class="k">2</span><span class="t">Rewrite prompt</span></button>
+      <button class="stage" data-s="2" type="button"><span class="k">3</span><span class="t">Cross-lingual</span></button>
+      <button class="stage" data-s="3" type="button"><span class="k">4</span><span class="t">Rewriter</span></button>
+      <button class="stage" data-s="4" type="button"><span class="k">5</span><span class="t">One attribute</span></button>
+    </div>
+    <div class="abbody">
+      <div class="panel" id="abPanel" role="group" aria-label="Control panel"></div>
+      <div class="rd" id="abRead" aria-live="polite"></div>
+    </div>
+    <div class="demo-foot"><span>Bars show the selected setting. The tick shows the setting it is compared with.</span><span class="mono" id="abSrc"></span></div>
+  </div>
+
+  <div class="grid g2" id="abCards">
+    <div class="card">
+      <h3>Rewriter versus attribute <span class="src">Table 23 · Fig. 25 <span class="approx">read from figure</span></span></h3>
+      <div class="chart" id="abSpread"></div>
+      <p class="cap">On a shared axis, the eight attribute families sit close together while the four rewriters spread out.</p>
+    </div>
+    <div class="card">
+      <h3>Family means <span class="src">Table 23</span></h3>
+      <div class="tblwrap" id="abFam"></div>
+      <p class="cap">Each family averages its two conditions over four rewriters. Every family scores 0.06 to 0.07 below the no-persona baseline on script stability.</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<section class="sec" id="corpus">
+  <div class="sec-head">
+    <h2>From seed logs to the released corpus</h2>
+    <p class="lede">We start from three public chat datasets. After seven stations, 1,237,976 conversations in 85 languages remain, with 2,387,392 user turns. Run the line, or pick a station to see what it does and how much gets through.</p>
+  </div>
+
+  <div class="demo line" id="corpusLine">
+    <div class="demo-top">
+      <div class="clegend"><span class="lt">Ribbon by seed set</span><div id="cLegend"></div></div>
+      <div class="demo-btns">
+        <button class="ctl primary" data-play type="button">Run the line</button>
+        <button class="ctl" data-all type="button">Show all</button>
+      </div>
+    </div>
+    <div class="stages">
+      <button class="stage" data-s="0" type="button"><span class="k">1</span><span class="t">Seed logs</span></button>
+      <button class="stage" data-s="1" type="button"><span class="k">2</span><span class="t">Language</span></button>
+      <button class="stage" data-s="2" type="button"><span class="k">3</span><span class="t">Matching</span></button>
+      <button class="stage" data-s="3" type="button"><span class="k">4</span><span class="t">Rewrite</span></button>
+      <button class="stage" data-s="4" type="button"><span class="k">5</span><span class="t">Assistant</span></button>
+      <button class="stage" data-s="5" type="button"><span class="k">6</span><span class="t">Gate</span></button>
+      <button class="stage" data-s="6" type="button"><span class="k">7</span><span class="t">Release</span></button>
+    </div>
+    <div class="flow" id="cFlow" aria-label="Conversations at each station, split by seed set"></div>
+    <div class="cbody">
+      <div class="piece" id="cPiece" aria-live="polite"></div>
+      <div class="rd" id="cRead"></div>
+    </div>
+    <div class="demo-foot"><span>Ribbon height is proportional to the number of conversations. The paper reports counts only from the gate onward. Click a column to open that station.</span><span class="mono" id="cSrc"></span></div>
+  </div>
+</section>

@@ -1,0 +1,42 @@
+<section class="sec" id="bank">
+  <div class="sec-head">
+    <h2>Persona assembly</h2>
+    <p class="lede">A seed cell fixes where a persona lives and what they do. Two generated layers follow: a <b>background</b> (who they are) and a <b>style</b> (how they type). An independent judge then decides whether the profile enters the bank. Pick a persona from the released bank.</p>
+  </div>
+
+  <div class="demo line" id="bkLine">
+    <div class="demo-top">
+      <div class="chips" id="bkChips" role="group" aria-label="Persona from the released bank"></div>
+      <div class="demo-btns">
+        <button class="ctl primary" data-play type="button">Run the line</button>
+        <button class="ctl" data-all type="button">Show all</button>
+      </div>
+    </div>
+    <div class="stages" id="bkStages">
+      <button class="stage" data-s="0" type="button"><span class="k">1</span><span class="t">Seed cell</span></button>
+      <button class="stage" data-s="1" type="button"><span class="k">2</span><span class="t">Background</span></button>
+      <button class="stage" data-s="2" type="button"><span class="k">3</span><span class="t">Style layer</span></button>
+      <button class="stage" data-s="3" type="button"><span class="k">4</span><span class="t">Judge</span></button>
+      <button class="stage" data-s="4" type="button"><span class="k">5</span><span class="t">Into the bank</span></button>
+    </div>
+    <div class="asm-body">
+      <div class="pcard" id="bkCard"></div>
+      <div class="readout" id="bkOut" aria-live="polite"></div>
+    </div>
+    <div class="demo-foot"><span>Pink marks this persona's value. Hover a marked field to see its chart.</span><span class="mono" id="bkSrc"></span></div>
+  </div>
+
+  <div class="subhead">
+    <h3>Bank at a glance</h3>
+    <p>All 743,010 released profiles, by layer.</p>
+  </div>
+  <div class="filters">
+    <div class="seg" id="bkSeg" role="group" aria-label="Persona layer">
+      <button type="button" data-v="seed" aria-pressed="true">Seed grid</button>
+      <button type="button" data-v="background" aria-pressed="false">Background</button>
+      <button type="button" data-v="style" aria-pressed="false">Style</button>
+      <button type="button" data-v="gate" aria-pressed="false">Quality gate</button>
+    </div>
+  </div>
+  <div class="grid g3" id="bkGrid"></div>
+</section>

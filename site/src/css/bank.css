@@ -1,0 +1,78 @@
+/* ---------- Persona assembly station ---------- */
+#bank .stages { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 680px) { #bank .stages { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 8px; } #bank .stage .t { font-size: 13.5px; } }
+#bank .asm-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; }
+@media (max-width: 880px) { #bank .asm-body { grid-template-columns: minmax(0, 1fr); } }
+#bank .pcard { align-self: stretch; }
+
+/* work piece */
+#bank .who > div { min-width: 0; }
+#bank .field[data-k] { cursor: default; }
+#bank .field .fn.has { background: var(--s2); color: var(--on-strong); font-size: 8px; }
+#bank .field.dim .fv { color: var(--faint); font-style: italic; }
+#bank .quirks { margin: 0; padding-left: 16px; }
+#bank .quirks li + li { margin-top: 2px; }
+#bank .missing { font-size: 12.5px; line-height: 1.45; color: var(--faint); padding: 6px 4px 2px; border-top: 1px solid var(--rule); }
+#bank .layer .lh + .missing { border-top: 0; }
+#bank .stamps { display: flex; flex-wrap: wrap; gap: 8px; }
+#bank .stamp { font-size: 12.5px; font-weight: 700; padding: 3px 9px; border-radius: 3px; }
+#bank .stamp.ok { color: var(--good); background: color-mix(in oklab, var(--good) 14%, transparent); }
+#bank .stamp.bank { color: var(--pf); background: var(--pf-tint); }
+
+/* readout */
+#bank .readout { padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+#bank .rh { margin: 0; font-family: var(--f-title); font-stretch: 92%; font-weight: 650; font-size: 17px; line-height: 1.25; }
+#bank .minis { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); grid-auto-flow: row dense; gap: 18px 22px; }
+#bank .minis .mini.wide { grid-column: 1 / -1; }
+#bank .mini { min-width: 0; display: flex; flex-direction: column; gap: 6px; border-radius: 4px; transition: background .15s, box-shadow .15s; }
+#bank .mini.lit { background: var(--hl); box-shadow: 0 0 0 6px var(--hl); }
+#bank .mini.lit .pv, #bank .mini.lit .unit { color: var(--hl-ink); }
+#bank .mh { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 10px; font-size: 13.5px; line-height: 1.3; }
+#bank .mh b { font-weight: 600; min-width: 0; }
+#bank .tags { display: inline-flex; gap: 6px; align-items: baseline; flex-wrap: wrap; }
+#bank .pv { font-size: 12.5px; line-height: 1.4; color: var(--ink-2); display: flex; gap: 6px; align-items: baseline; }
+#bank .pv i { flex: none; width: 9px; height: 9px; border-radius: 2px; background: var(--s2); transform: translateY(1px); }
+#bank .pv.none { color: var(--faint); font-style: italic; }
+#bank .rnote { font-size: 13.5px; line-height: 1.5; color: var(--ink-2); border-left: 3px solid var(--machine); padding-left: 10px; }
+#bank .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+#bank .tiles[data-n="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#bank .tiles[data-n="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 520px) { #bank .tiles[data-n="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } #bank .tiles b { font-size: 17px; } }
+#bank .tiles > div { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; display: grid; min-width: 0; }
+#bank .tiles b { font-family: var(--f-display); font-size: 19px; line-height: 1.2; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+#bank .tiles small { font-size: 12.5px; line-height: 1.35; color: var(--faint); }
+#bank .meters .mh { margin-bottom: 2px; }
+#bank .meter { font-size: 13.5px; }
+#bank .funnel { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+#bank .funnel li { display: grid; gap: 2px; padding: 9px 0 9px 16px; border-left: 3px solid var(--s1); position: relative; }
+#bank .funnel li.step { border-left: 3px dashed var(--rule-2); }
+#bank .funnel .ft { display: flex; flex-wrap: wrap; gap: 0 10px; align-items: baseline; }
+#bank .funnel b { font-family: var(--f-display); font-size: 21px; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+#bank .funnel li.step b { font-size: 16px; color: var(--machine-ink); }
+#bank .funnel .ft span { font-size: 14px; color: var(--ink); }
+#bank .funnel small { font-size: 12.5px; color: var(--faint); line-height: 1.4; }
+#bank .funnel .bar { height: 10px; background: var(--tint); border-radius: 4px; overflow: hidden; margin-top: 4px; }
+#bank .funnel .bar i { display: block; height: 100%; background: var(--s1); border-radius: 4px; }
+
+/* glance cards */
+#bank .card h3 .tags { font-family: var(--f-sans); }
+#bank #bkGrid { margin-top: 18px; }
+#bank .card .subk { font-size: 13.5px; font-weight: 600; color: var(--ink-2); margin: 10px 0 2px; }
+#bank .card .subk:first-child { margin-top: 0; }
+
+/* entering pieces while the line runs */
+@keyframes bk-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+#bank .in { animation: bk-in .38s ease-out both; }
+#bank .field.in { animation-duration: .3s; }
+
+/* chart label of the persona's own category */
+#bank svg.viz text.hlab { fill: var(--machine-ink); }
+
+/* keep the readout in view while the persona card grows (clip, not hidden, so sticky works) */
+#bank .demo { overflow: clip; }
+@media (min-width: 881px) { #bank .readout { position: sticky; top: calc(var(--head-h) + 12px); } }
+#bank .meters.mine { gap: 7px; }
+#bank .meters.mine .meter { font-size: 13px; }
+#bank .meters.mine .mk { color: var(--faint); }
+#bank .meters.mine .bar { height: 6px; }
+#bank .meters.mine .bar b { background: var(--s2); }
