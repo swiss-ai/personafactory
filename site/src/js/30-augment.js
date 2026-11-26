@@ -73,82 +73,8 @@ const EX = [
   "bot": "Start with the essentials for safety and shelter. You will need a tent, sleeping bags, pads, and a reliable light source like a headlamp or lantern. For food and water, pack a portable stove, fuel, a cooler with ice, and more water than you think you will need.\n\nTo prioritize the packing list based on your schedule, group your gear by when it will be used…"
  },
  {
-  "id": "be",
-  "chip": "Switzerland (DE · Bern)",
-  "ini": "BE",
-  "name": "23 · M · Bern, Switzerland",
-  "blurb": "Self-employed VAT-compliance auditor for small businesses; skeptical of ‘automatische Lösungen’.",
-  "src": "chats 0294ea21 · ultrachat",
-  "bg": [
-   [
-    0,
-    "Region",
-    "Western Europe → Switzerland → Bern"
-   ],
-   [
-    0,
-    "Occupation",
-    "Bookkeeping freelancer (Business & finance): self-employed VAT-compliance auditor"
-   ],
-   [
-    1,
-    "Language",
-    "German (main), Swiss German (Bernese variant) native · code-switching medium"
-   ],
-   [
-    0,
-    "AI stance",
-    "Skeptical · digital fluency medium"
-   ]
-  ],
-  "st": [
-   [
-    0,
-    "Free-text style",
-    "moderate sentence length, occasionally drops periods in quick replies"
-   ],
-   [
-    2,
-    "Abbreviations",
-    "btw, nvm, lol, thx, pls"
-   ],
-   [
-    3,
-    "Quirks",
-    "inserts Bärnerdütsch interjections like ‘isch guet’ in place of German ‘klar’"
-   ],
-   [
-    0,
-    "Sign-off",
-    "‘Grüezi’ or ‘Salü’ if the conversation is local"
-   ]
-  ],
-  "match": {
-   "lang": "English → German (Swiss)",
-   "set": "Cross-lingual (translate, then restyle)",
-   "tier": "Cross-lingual",
-   "resp": "Gemma-4-31B"
-  },
-  "turns": [
-   {
-    "seed": "Can you describe the architectural significance of the Sydney Opera House, and why it is considered a masterpiece of modern design?",
-    "aug": "[[1|Chasch du d'architektonischi Bedütig vom Sydney Opera House beschriibe]] und erkläre, worum es als Meischterwärk vom moderne Design gilt? [[3|Isch guet]], wenn du das churz machsch [[2|btw]]",
-    "gloss": "“Can you describe the architectural significance of the Sydney Opera House and explain why it counts as a masterpiece of modern design? Fine if you keep it short btw” (Bernese Swiss German; the English seed is translated, then restyled)"
-   },
-   {
-    "seed": "How has the Sydney Opera House influenced modern architecture and design?",
-    "aug": "Wie hät s Sydney Opera House d moderni Architektur und s Design beiflusst?"
-   },
-   {
-    "seed": "It's fascinating how the Sydney Opera House has had such a profound impact on modern architecture and design. Do you know of any other iconic buildings that have similarly influenced the industry?",
-    "aug": "S isch faszinierend, wie s Sydney Opera House so en tüüfe Ifluss uf d moderni Architektur und s Design gha hät. Kennsch du no anderi ikonischi Gebäude, wo d Branche ähnlich prägt händ?"
-   }
-  ],
-  "bot": "S Sydney Opera House isch vor allem wäge sinere innovative Form und dr technische Leischtig bekannt. D'Architektur bricht mit de traditionelle, rechteckige Gebäude und nutzt stattdessen die berühmte \"Schalen\" (Sails), wo d'Dynamik vom Wasser und d'Segel vo de Schiffe im Hafen widerspiegle…"
- },
- {
   "id": "zh",
-  "chip": "Switzerland (DE · Zurich)",
+  "chip": "Switzerland (DE)",
   "ini": "ZH",
   "name": "35 · M · Zurich, Switzerland",
   "blurb": "Speech therapist for neurodivergent children at a cantonal pediatric clinic.",

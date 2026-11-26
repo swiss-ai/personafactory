@@ -4,7 +4,6 @@
    Every persona and prompt on the belts is a real record from the released dataset (swiss-ai/PersonaFactory). */
 const PERSONAS = [
   { id: 'fl', who: '27 · M · Florida, US', job: 'Freight train operations lead', style: 'fixin’ to · we · no final period' },
-  { id: 'be', who: '23 · M · Bern, CH', job: 'VAT-compliance auditor', style: 'Bärndütsch · btw · Salü' },
   { id: 'zh', who: '35 · M · Zurich, CH', job: 'Pediatric speech therapist', style: '?? · oder? · okay?' },
   { id: 'ge', who: '52 · F · Geneva, CH', job: 'Regional courier supervisor', style: 'Salut · stp · n’avons' },
   { id: 'sk', who: '36 · M · Bratislava, SK', job: 'Finance transformation consultant', style: 'No, … · Dúfam na pomoc. Čau.' },
@@ -14,7 +13,6 @@ const PERSONAS = [
 // seed prompt → augmented first turn, from the released chats subset (seed dataset in src)
 const CONVS = [
   { ini: 'FL', who: 'Florida persona', tier: 'embedding', src: 'UltraChat', seed: 'What are some essential items that someone should pack for a camping trip…', aug: 'We fixin\' to head out and need to know what the essential items are for a camping trip…' },
-  { ini: 'BE', who: 'Bern persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Can you describe the architectural significance of the Sydney Opera House…', aug: 'Chasch du d\'architektonischi Bedütig vom Sydney Opera House beschriibe…' },
   { ini: 'ZH', who: 'Zurich persona', tier: 'cross-lingual', src: 'UltraChat', seed: 'Can you explain the mechanisms behind various sleep disorders…', aug: 'Chasch mer erkläre, wie s\' mit dene verschiedene Schlafstörige funktioniert… ?? okay?' },
   { ini: 'GE', who: 'Geneva persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'I keep running into a query timeout error in our database layer…', aug: 'Salut, j\'ai systématiquement une erreur de timeout de requête…' },
   { ini: 'BA', who: 'Bratislava persona', tier: 'cross-lingual', src: 'Nemotron', seed: 'I’m launching a television network dedicated entirely to animated shows…', aug: 'Ahoj, spúšťam TV stanicu s focusom na animované seriály…' },

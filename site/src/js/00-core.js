@@ -290,14 +290,20 @@ function legend(items){
   return lg;
 }
 
-/* persona chips: a flag instead of the country name; the full label stays as tooltip and accessible name.
-   Labels look like "Switzerland (DE · Bern)": the part in brackets is kept next to the flag. */
-const FLAGS = { 'USA': '🇺🇸', 'Switzerland': '🇨🇭', 'Ukraine': '🇺🇦', 'Vietnam': '🇻🇳', 'Slovakia': '🇸🇰' };
+/* persona chips: an inline SVG flag instead of the country name (emoji flags do not render on Windows);
+   the full label stays as tooltip and accessible name. A part in brackets, e.g. "Switzerland (DE)", is kept next to the flag. */
+const FLAGS = {
+ "USA": "<svg viewBox=\"0 0 19 10\"><rect width=\"19\" height=\"10\" fill=\"#fff\"/><rect y=\"0.000\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"1.538\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"3.077\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"4.615\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"6.154\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"7.692\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect y=\"9.231\" width=\"19\" height=\"0.769\" fill=\"#b22234\"/><rect width=\"7.6\" height=\"5.385\" fill=\"#3c3b6e\"/><circle cx=\"0.95\" cy=\"0.90\" r=\".32\" fill=\"#fff\"/><circle cx=\"2.85\" cy=\"0.90\" r=\".32\" fill=\"#fff\"/><circle cx=\"4.75\" cy=\"0.90\" r=\".32\" fill=\"#fff\"/><circle cx=\"6.65\" cy=\"0.90\" r=\".32\" fill=\"#fff\"/><circle cx=\"0.95\" cy=\"2.10\" r=\".32\" fill=\"#fff\"/><circle cx=\"2.85\" cy=\"2.10\" r=\".32\" fill=\"#fff\"/><circle cx=\"4.75\" cy=\"2.10\" r=\".32\" fill=\"#fff\"/><circle cx=\"6.65\" cy=\"2.10\" r=\".32\" fill=\"#fff\"/><circle cx=\"0.95\" cy=\"3.30\" r=\".32\" fill=\"#fff\"/><circle cx=\"2.85\" cy=\"3.30\" r=\".32\" fill=\"#fff\"/><circle cx=\"4.75\" cy=\"3.30\" r=\".32\" fill=\"#fff\"/><circle cx=\"6.65\" cy=\"3.30\" r=\".32\" fill=\"#fff\"/><circle cx=\"0.95\" cy=\"4.50\" r=\".32\" fill=\"#fff\"/><circle cx=\"2.85\" cy=\"4.50\" r=\".32\" fill=\"#fff\"/><circle cx=\"4.75\" cy=\"4.50\" r=\".32\" fill=\"#fff\"/><circle cx=\"6.65\" cy=\"4.50\" r=\".32\" fill=\"#fff\"/></svg>",
+ "Switzerland": "<svg viewBox=\"0 0 32 32\"><rect width=\"32\" height=\"32\" fill=\"#da291c\"/><rect x=\"13\" y=\"6\" width=\"6\" height=\"20\" fill=\"#fff\"/><rect x=\"6\" y=\"13\" width=\"20\" height=\"6\" fill=\"#fff\"/></svg>",
+ "Ukraine": "<svg viewBox=\"0 0 3 2\"><rect width=\"3\" height=\"1\" fill=\"#0057b7\"/><rect y=\"1\" width=\"3\" height=\"1\" fill=\"#ffd700\"/></svg>",
+ "Vietnam": "<svg viewBox=\"0 0 30 20\"><rect width=\"30\" height=\"20\" fill=\"#da251d\"/><polygon points=\"15.00,4.40 16.41,8.46 20.71,8.55 17.28,11.14 18.53,15.25 15.00,12.80 11.47,15.25 12.72,11.14 9.29,8.55 13.59,8.46\" fill=\"#ffff00\"/></svg>",
+ "Slovakia": "<svg viewBox=\"0 0 9 6\"><rect width=\"9\" height=\"2\" fill=\"#fff\"/><rect y=\"2\" width=\"9\" height=\"2\" fill=\"#0b4ea2\"/><rect y=\"4\" width=\"9\" height=\"2\" fill=\"#ee1c25\"/><path d=\"M1.55 1.35h2.3v2.05c0 .95-.55 1.5-1.15 1.75-.6-.25-1.15-.8-1.15-1.75z\" fill=\"#ee1c25\" stroke=\"#fff\" stroke-width=\".18\"/><path d=\"M2.6 1.7h.2v2.1h-.2zM2.25 2.15h.9v.18h-.9zM2.15 2.6h1.1v.2h-1.1z\" fill=\"#fff\"/><path d=\"M1.75 4.05c.2-.35.55-.35.7-.1.15-.3.35-.4.5-.4s.35.1.5.4c.15-.25.5-.25.7.1-.35.55-.75.85-1.2 1.05-.45-.2-.85-.5-1.2-1.05z\" fill=\"#0b4ea2\"/></svg>"
+};
 function flagChip(btn, label){
   const m = label.match(/^([^(]+?)\s*(?:\((.+)\))?$/), flag = m && FLAGS[m[1].trim()];
   if (!flag){ btn.textContent = label; return; }
   btn.textContent = '';
-  const f = document.createElement('span'); f.className = 'flag'; f.textContent = flag; f.setAttribute('aria-hidden', 'true');
+  const f = document.createElement('span'); f.className = 'flag'; f.innerHTML = flag; f.setAttribute('aria-hidden', 'true');
   btn.append(f);
   if (m[2]) btn.append(' ' + m[2]);
   btn.setAttribute('aria-label', label); btn.title = label;
