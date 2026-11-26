@@ -135,6 +135,8 @@ cpu python -m personafactory.postprocess.drop_crosslingual_russian --release-dir
 # 15. Corpus statistics and the judge table (conversations still in the release)
 cpu python -m personafactory.postprocess.corpus_stats --release-dir "$REL" --gen "$RUN/gen"
 cpu python -m personafactory.postprocess.judge_sample_agg --judge-dir "$J" --release-dir "$REL"
-# Released: 1,242,761 conversations (wildchat 721,353, ultrachat 311,884, nemotron 209,524; language_matched 689,030,
-# cross_lingual 553,731; Gemma-4-31B-it 906,613, Ministral-3-14B 336,148), 473,137 distinct personas.
+# Released (paper, Table 3): 1,237,976 conversations (wildchat 718,365, ultrachat 310,798, nemotron 208,813;
+# language_matched 685,209, cross_lingual 552,767; Gemma-4-31B-it 905,661, Ministral-3-14B 332,315), 2,387,392 user turns.
+# The paper's count includes a final rule-based filter that drops 4,785 conversations in which a user turn restates the
+# instructions of the rewrite prompt; that filter is not part of this script.
 # Figure and further statistics: personafactory/release/README.md (release.stats.*) on $REL.

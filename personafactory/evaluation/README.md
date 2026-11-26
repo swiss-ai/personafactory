@@ -17,7 +17,7 @@ are compute jobs: run them on a serving or GPU node (`scripts/slurm/eval_*.sbatc
 |---|---|---|
 | Full-corpus LLM-judge table (`tab:full-judge`), fully scored rows | `corpus_judge/prep_items.py` -> `corpus_judge/run_judge.py` -> `corpus_judge/aggregate.py` | `corpus_judge.json` |
 | Full-corpus LLM-judge table, sample rows | `postprocess/judge_sample_prep.py` -> `corpus_judge/run_judge.py` -> `postprocess/judge_sample_agg.py` (random sample of the remaining conversations, same templates and judge; see `postprocess/README.md`) | `judge_sample.json` (`all`, `by_generator`, `by_source_name`) |
-| Corpus-wide judge estimate (96.6% intent, 67.1% style, 64.8% both) | `corpus_judge/estimate.py` | `judge_estimate.json` |
+| Corpus-wide judge estimate (96.6% intent, 67.1% style, 64.9% both) | `corpus_judge/estimate.py` | `judge_estimate.json` |
 | Full-corpus judge-free fidelity table (`tab:fidelity`), LaBSE row | `corpus_judge/labse_full.py` (all turns of the corpus; `corpus_judge/labse.py` for a judged subset) | `labse_full.json` |
 | Full-corpus judge-free fidelity table, all other rows | `release/stats/corpus_numbers.py`, `entity_integrity.py`, `style_adherence.py`, `length_by_tendency.py` (see `release/README.md`) | `corpus_numbers.json`, `entity_integrity.json`, `style_adherence.json`, `length_by_tendency.json` |
 | Structured vs flat A/B (`tab:structured`) | `structured_vs_flat/ab_style_test.py`, `structured_vs_flat/re_judge_ab.py`, `structured_vs_flat/ab_table.py` | `ab_style_results.jsonl`, `ab_first_pass.jsonl` |
@@ -63,8 +63,8 @@ python -m personafactory.evaluation.corpus_judge.estimate --scored $J/corpus_jud
 
 `estimate.py` computes `(rate_scored * T_scored + rate_sample * (T_total - T_scored)) / T_total`, with `T_scored` the
 user turns of the fully scored subset and `T_total` all user turns of the release. With the paper's strata
-(552,654 fully scored turns at 97.2 / 68.2 / 66.4, the 44,848-turn sample at 96.4 / 66.8 / 64.3, 2,396,834 user turns
-in total) it gives 96.6% intent, 67.1% style and 64.8% both. The backbone rows of the table group turns by the model
+(552,654 fully scored turns from the conversations with a model persona, a 44,687-turn sample from 24,570 of the other
+conversations, 2,387,392 user turns in total) it gives 96.6% intent, 67.1% style and 64.9% both. The backbone rows of the table group turns by the model
 that rewrote the user turns.
 
 LaBSE (`sentence-transformers/LaBSE`, CLS pooling, dense tanh head, L2 normalization, max 256 tokens, fp16; one GPU):
@@ -80,7 +80,7 @@ python -m personafactory.evaluation.corpus_judge.labse_full --release-dir $REL -
 ```
 
 The LaBSE row of the fidelity table is the turn-pair mean over the whole corpus (`combined.all` with a reused
-subset, else `corpus.all`; 0.791 in the paper, over 2,397,124 turn pairs). The source turn is the seed user turn
+subset, else `corpus.all`; 0.791 in the paper). The source turn is the seed user turn
 (the English seed for cross-lingual turns), and verbatim turns are included. `scripts/slurm/eval_fidelity.sbatch`
 runs this job together with the CPU rows of the table.
 

@@ -10,8 +10,8 @@ of user turns it stands for in the release:
 
 T_scored is the number of user turns of the fully scored subset (default: its `turns` count), T_total the number of
 user turns in the release (--total-turns, or counted from --release-dir). The paper's estimate (96.6% intent,
-67.1% style, 64.8% both) is this formula on the 552,654 fully scored turns and the 44,848-turn sample, with
-T_total = 2,396,834.
+67.1% style, 64.9% both) is this formula on the 552,654 fully scored turns and the 44,687-turn sample, with
+T_total = 2,387,392.
 
 Inputs:  --scored  aggregate.py report (overall rates under `entire_release`)
          --sample  sample aggregate report (overall rates under `all` or `entire_release`)

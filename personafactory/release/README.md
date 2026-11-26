@@ -99,7 +99,7 @@ Every script accepts `--out` to write its report elsewhere.
 
 ### 6. Full-corpus judge-free fidelity table
 
-All rows are computed over the whole released corpus (1,242,761 conversations). Transformation depth (token Jaccard
+All rows are computed over the whole released corpus (1,237,976 conversations in the paper). Transformation depth (token Jaccard
 distance, normalized edit distance, core-vocabulary retention) and the length ratio compare the first rewritten user
 turn with the seed prompt (`source_text`) of language-matched conversations; constraint retention and style adherence
 use the first user turn of every conversation; LaBSE uses every user turn.

@@ -7,7 +7,7 @@ with two subsets, one `train` split each:
 
 ```python
 from datasets import load_dataset
-chats = load_dataset("swiss-ai/PersonaFactory", "chats", split="train")          # 1,242,761 conversations
+chats = load_dataset("swiss-ai/PersonaFactory", "chats", split="train")          # 1,237,976 conversations
 bank = load_dataset("swiss-ai/PersonaFactory", "persona_bank", split="train")    # 743,010 profiles
 ```
 
