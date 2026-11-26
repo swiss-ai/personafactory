@@ -6,7 +6,7 @@
 const EX = [
  {
   "id": "fl",
-  "chip": "Florida · English",
+  "chip": "USA",
   "ini": "FL",
   "name": "27 · M · Florida, USA",
   "blurb": "Freight train operations lead for a regional logistics carrier; ‘might as well try ‘em’ about AI tools.",
@@ -74,7 +74,7 @@ const EX = [
  },
  {
   "id": "be",
-  "chip": "Bern · Swiss German",
+  "chip": "Switzerland (DE · Bern)",
   "ini": "BE",
   "name": "23 · M · Bern, Switzerland",
   "blurb": "Self-employed VAT-compliance auditor for small businesses; skeptical of ‘automatische Lösungen’.",
@@ -148,7 +148,7 @@ const EX = [
  },
  {
   "id": "zh",
-  "chip": "Zurich · Swiss German",
+  "chip": "Switzerland (DE · Zurich)",
   "ini": "ZH",
   "name": "35 · M · Zurich, Switzerland",
   "blurb": "Speech therapist for neurodivergent children at a cantonal pediatric clinic.",
@@ -217,7 +217,7 @@ const EX = [
  },
  {
   "id": "ge",
-  "chip": "Geneva · French",
+  "chip": "Switzerland (FR)",
   "ini": "GE",
   "name": "52 · F · Geneva, Switzerland",
   "blurb": "Regional courier supervisor in the Swiss postal sector, testing AI dispatch tools.",
@@ -281,7 +281,7 @@ const EX = [
  },
  {
   "id": "ua",
-  "chip": "Zaporizhzhia · Ukrainian",
+  "chip": "Ukraine",
   "ini": "ZP",
   "name": "35 · M · Zaporizhzhia, Ukraine",
   "blurb": "Business insurance specialist at a regional brokerage; optimistic about tools that simplify workflows.",
@@ -343,7 +343,7 @@ const EX = [
  },
  {
   "id": "vi",
-  "chip": "Ho Chi Minh City · Vietnamese",
+  "chip": "Vietnam",
   "ini": "VN",
   "name": "35 · F · Ho Chi Minh City, Vietnam",
   "blurb": "Senior payroll analyst at a mid-sized manufacturing firm; checks chatbot answers against her payroll Zalo group.",
@@ -412,7 +412,7 @@ const EX = [
  },
  {
   "id": "sk",
-  "chip": "Bratislava · Slovak",
+  "chip": "Slovakia",
   "ini": "BA",
   "name": "36 · M · Bratislava, Slovakia",
   "blurb": "Finance transformation consultant; uses AI for data crunching but cross-checks against his P&L models.",
