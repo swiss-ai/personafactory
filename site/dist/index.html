@@ -2475,7 +2475,7 @@ const CONVS = [
       { cx: 604, w: 186, k: 'STYLE', s1: 'caps · punctuation · emoji', s2: 'typos · quirks · example' },
       { cx: 824, w: 186, k: 'JUDGE', s1: 'MiniMax-M2.5', s2: 'out-of-family, 95.5% kept', dark: true }
     ],
-    items: PERSONAS, rejectEvery: 9, rejectLabel: ['4.5% rejected', 'or repaired, re-judged'],
+    items: PERSONAS, rejectEvery: 9, rejectLabel: null,
     stageOf: (P, st) => ({ icon: st >= 2 ? 'style' : st >= 1 ? 'bg' : 'seed', badge: st >= 3, l1: st >= 1 ? P.who : 'seed cell', l2: st >= 1 ? P.job : P.who.split('·').pop().trim(), l3: st >= 2 ? P.style : '', ready: st >= 2 }),
     onStage: (c, st) => { if (c === tracked) spec(c, st); },
     onRecycle: c => { if (c === tracked) follow(newest()); },
