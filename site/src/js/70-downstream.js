@@ -553,7 +553,7 @@ const DS_CARD = {   // persona_bank 38c6bf98 (the Florida persona in Assembly) a
     left(){
       const s = DSX.seeds;
       left.appendChild(cbench('Styled user turns help only together with assistant turns written for them. A1 loses IFEval accuracy against the original data, A2 clearly beats A1, and on real prompts both external judges prefer A2 over A1 and over A0 at equal reply length.',
-        `Charts show training seed 1234 with intervals over items. Over three seeds, both judges prefer A2 over A1 (${fmt1(s.a2a1Judge[0])} to ${fmt1(s.a2a1Judge[1])}%) and over A0 (${fmt1(s.a2a0Judge[0])} to ${fmt1(s.a2a0Judge[1])}%) at equal length for every seed. One base model.`, false));
+        `Over three seeds, both judges prefer A2 over A1 (${fmt1(s.a2a1Judge[0])} to ${fmt1(s.a2a1Judge[1])}%) and over A0 (${fmt1(s.a2a0Judge[0])} to ${fmt1(s.a2a0Judge[1])}%) at equal length for every seed. Every arm fine-tunes the same base model, Apertus-v1.5-8B.`, false));
       const st = DSX.strict;
       left.appendChild(step(put(E('div', 'fact'), E('b', null, 'Strict subset. '), `Retraining A2 only on conversations in which every user turn is labelled as the same request, at equal size and with three seeds, leaves every benchmark unchanged (IFEval ${sgn(st.ifeval[0])}, interval ${ivl(st.ifeval[1], st.ifeval[2])}), and the preference over the original data remains (${fmt1(st.judge[0])} to ${fmt1(st.judge[1])}%).`)));
     },
